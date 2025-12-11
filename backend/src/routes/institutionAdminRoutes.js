@@ -1,7 +1,23 @@
 const express = require('express');
+const multer = require('multer');
 const router = express.Router();
 const institutionAdminController = require('../controllers/institutionAdminController');
 const { verifyInstitutionAdmin } = require('../middleware/institutionAdminAuth');
+
+// Configure multer for CSV file uploads
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 5 * 1024 * 1024 // 5MB limit
+  },
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype === 'text/csv' || file.originalname.endsWith('.csv')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only CSV files are allowed'), false);
+    }
+  }
+});
 
 /**
  * @route   POST /api/institution-admin/check
@@ -53,6 +69,13 @@ router.post('/users', verifyInstitutionAdmin, institutionAdminController.addInst
 router.delete('/users/:userId', verifyInstitutionAdmin, institutionAdminController.removeInstitutionUser);
 
 /**
+ * @route   POST /api/institution-admin/users/bulk-import
+ * @desc    Bulk import users from CSV
+ * @access  Private (Institution Admin)
+ */
+router.post('/users/bulk-import', verifyInstitutionAdmin, upload.single('file'), institutionAdminController.bulkImportUsers);
+
+/**
  * @route   GET /api/institution-admin/presentations
  * @desc    Get all presentations by institution users
  * @access  Private (Institution Admin)
@@ -86,6 +109,97 @@ router.put('/settings', verifyInstitutionAdmin, institutionAdminController.updat
  * @access  Private (Institution Admin)
  */
 router.get('/export', verifyInstitutionAdmin, institutionAdminController.exportData);
+
+/**
+ * @route   POST /api/institution-admin/reports/generate
+ * @desc    Generate report
+ * @access  Private (Institution Admin)
+ */
+router.post('/reports/generate', verifyInstitutionAdmin, institutionAdminController.generateReport);
+
+/**
+ * @route   GET /api/institution-admin/audit-logs
+ * @desc    Get audit logs
+ * @access  Private (Institution Admin)
+ */
+router.get('/audit-logs', verifyInstitutionAdmin, institutionAdminController.getAuditLogs);
+
+/**
+ * @route   GET /api/institution-admin/api-keys
+ * @desc    Get API keys
+ * @access  Private (Institution Admin)
+ */
+router.get('/api-keys', verifyInstitutionAdmin, institutionAdminController.getApiKeys);
+
+/**
+ * @route   POST /api/institution-admin/api-keys
+ * @desc    Create API key
+ * @access  Private (Institution Admin)
+ */
+router.post('/api-keys', verifyInstitutionAdmin, institutionAdminController.createApiKey);
+
+/**
+ * @route   DELETE /api/institution-admin/api-keys/:keyId
+ * @desc    Delete API key
+ * @access  Private (Institution Admin)
+ */
+router.delete('/api-keys/:keyId', verifyInstitutionAdmin, institutionAdminController.deleteApiKey);
+
+/**
+ * @route   GET /api/institution-admin/webhooks
+ * @desc    Get webhooks
+ * @access  Private (Institution Admin)
+ */
+router.get('/webhooks', verifyInstitutionAdmin, institutionAdminController.getWebhooks);
+
+/**
+ * @route   POST /api/institution-admin/webhooks
+ * @desc    Create webhook
+ * @access  Private (Institution Admin)
+ */
+router.post('/webhooks', verifyInstitutionAdmin, institutionAdminController.createWebhook);
+
+/**
+ * @route   DELETE /api/institution-admin/webhooks/:webhookId
+ * @desc    Delete webhook
+ * @access  Private (Institution Admin)
+ */
+router.delete('/webhooks/:webhookId', verifyInstitutionAdmin, institutionAdminController.deleteWebhook);
+
+/**
+ * @route   GET /api/institution-admin/custom-reports
+ * @desc    Get custom reports
+ * @access  Private (Institution Admin)
+ */
+router.get('/custom-reports', verifyInstitutionAdmin, institutionAdminController.getCustomReports);
+
+/**
+ * @route   POST /api/institution-admin/custom-reports
+ * @desc    Create custom report
+ * @access  Private (Institution Admin)
+ */
+router.post('/custom-reports', verifyInstitutionAdmin, institutionAdminController.createCustomReport);
+
+/**
+ * @route   POST /api/institution-admin/custom-reports/:reportId/generate
+ * @desc    Generate custom report
+ * @access  Private (Institution Admin)
+ */
+router.post('/custom-reports/:reportId/generate', verifyInstitutionAdmin, institutionAdminController.generateCustomReport);
+
+/**
+ * @route   DELETE /api/institution-admin/custom-reports/:reportId
+ * @desc    Delete custom report
+ * @access  Private (Institution Admin)
+ */
+router.delete('/custom-reports/:reportId', verifyInstitutionAdmin, institutionAdminController.deleteCustomReport);
+
+/**
+ * @route   PUT /api/institution-admin/security-settings
+ * @desc    Update security settings
+ * @access  Private (Institution Admin)
+ */
+router.put('/security-settings', verifyInstitutionAdmin, institutionAdminController.updateSecuritySettings);
 
 module.exports = router;
 

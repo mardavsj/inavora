@@ -16,11 +16,11 @@ import PricingPage from './components/pages/PricingPage.jsx';
 import About from './components/pages/About';
 import Careers from './components/pages/Careers';
 import Contact from './components/pages/Contact';
-import Enterprise from './components/pages/Enterprise';
 import PrivacyPolicy from './components/pages/PrivacyPolicy';
 import TermsOfService from './components/pages/TermsOfService';
 import SuperAdmin from './components/pages/SuperAdmin';
 import InstitutionAdmin from './components/pages/InstitutionAdmin';
+import InstitutionRegister from './components/pages/InstitutionRegister';
 import './index.css';
 import { useTranslation } from 'react-i18next';
 
@@ -36,7 +36,10 @@ function ProtectedRoute({ children }) {
     );
   }
 
-  return currentUser ? children : <Navigate to="/" replace />;
+  // Allow access if user is authenticated (Firebase) OR if they have institution admin token
+  const hasInstitutionAdminToken = sessionStorage.getItem('institutionAdminToken');
+  
+  return (currentUser || hasInstitutionAdminToken) ? children : <Navigate to="/" replace />;
 }
 
 // Public Route Component (redirect to dashboard or previous page if already logged in)
@@ -102,8 +105,6 @@ function PageTitleUpdater() {
       title = t('page_titles.careers');
     } else if (path === '/contact') {
       title = t('page_titles.contact');
-    } else if (path === '/enterprise') {
-      title = t('page_titles.enterprise');
     } else if (path === '/privacy-policy') {
       title = t('page_titles.privacy_policy');
     } else if (path === '/terms-of-service') {
@@ -142,11 +143,12 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/careers" element={<Careers />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/enterprise" element={<Enterprise />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-of-service" element={<TermsOfService />} />
             <Route path="/super-admin" element={<SuperAdmin />} />
             <Route path="/institution-admin" element={<InstitutionAdmin />} />
+            <Route path="/institution/register" element={<InstitutionRegister />} />
+            <Route path="/institution/register/verify" element={<InstitutionRegister />} />
           </Routes>
         </Router>
       </AuthProvider>

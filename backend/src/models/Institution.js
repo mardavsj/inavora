@@ -116,7 +116,103 @@ const institutionSchema = new mongoose.Schema({
   isActive: {
     type: Boolean,
     default: true
-  }
+  },
+  emailVerification: {
+    institutionEmailVerified: {
+      type: Boolean,
+      default: false
+    },
+    adminEmailVerified: {
+      type: Boolean,
+      default: false
+    },
+    institutionEmailToken: {
+      type: String,
+      default: null
+    },
+    adminEmailToken: {
+      type: String,
+      default: null
+    },
+    institutionEmailTokenExpiry: {
+      type: Date,
+      default: null
+    },
+    adminEmailTokenExpiry: {
+      type: Date,
+      default: null
+    }
+  },
+  registrationStatus: {
+    type: String,
+    enum: ['pending', 'email_verification', 'payment_pending', 'active', 'incomplete'],
+    default: 'pending'
+  },
+  registrationData: {
+    country: String,
+    phoneNumber: String,
+    institutionType: String,
+    expectedUsers: String
+  },
+  apiKeys: [{
+    id: String,
+    name: String,
+    key: String,
+    active: { type: Boolean, default: true },
+    createdAt: Date
+  }],
+  webhooks: [{
+    id: String,
+    url: String,
+    events: [String],
+    secret: String,
+    active: { type: Boolean, default: true },
+    createdAt: Date
+  }],
+  customReports: [{
+    id: String,
+    name: String,
+    description: String,
+    metrics: [String],
+    dateRange: {
+      start: String,
+      end: String
+    },
+    filters: {
+      userStatus: String,
+      presentationStatus: String
+    },
+    visualization: String,
+    schedule: String,
+    email: String,
+    frequency: String,
+    createdAt: Date
+  }],
+  securitySettings: {
+    twoFactorEnabled: { type: Boolean, default: false },
+    passwordMinLength: { type: Number, default: 8 },
+    passwordRequireUppercase: { type: Boolean, default: true },
+    passwordRequireLowercase: { type: Boolean, default: true },
+    passwordRequireNumbers: { type: Boolean, default: true },
+    passwordRequireSpecialChars: { type: Boolean, default: false },
+    sessionTimeout: { type: Number, default: 30 },
+    requireEmailVerification: { type: Boolean, default: true }
+  },
+  auditLogs: [{
+    timestamp: { type: Date, default: Date.now },
+    action: String,
+    user: String,
+    details: String,
+    ipAddress: String
+  }],
+  scheduledReports: [{
+    type: String,
+    format: String,
+    schedule: String,
+    email: String,
+    frequency: String,
+    createdAt: Date
+  }]
 }, {
   timestamps: true
 });

@@ -28,10 +28,17 @@ const verifyInstitutionAdmin = async (req, res, next) => {
 
       // Verify institution exists and is active
       const institution = await Institution.findById(decoded.institutionId);
-      if (!institution || !institution.isActive) {
+      if (!institution) {
         return res.status(403).json({ 
           success: false,
-          error: 'Access denied. Institution not found or inactive.' 
+          error: 'Access denied. Institution not found.' 
+        });
+      }
+      
+      if (!institution.isActive) {
+        return res.status(403).json({ 
+          success: false,
+          error: 'Access denied. Institution is inactive.' 
         });
       }
 

@@ -24,6 +24,18 @@ export default function Presentation() {
   const { id } = useParams();
   const { state } = useLocation();
   const { t } = useTranslation();
+  
+  // Check if we came from institution admin dashboard
+  const fromInstitutionAdmin = state?.fromInstitutionAdmin || sessionStorage.getItem('institutionAdminToken');
+  
+  // Helper function to navigate back to the appropriate dashboard
+  const navigateToDashboard = () => {
+    if (fromInstitutionAdmin) {
+      navigate('/institution-admin');
+    } else {
+      navigate('/dashboard');
+    }
+  };
   const [presentation, setPresentation] = useState(null);
   const [slides, setSlides] = useState([]);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(state?.currSlide || 0);
@@ -100,6 +112,10 @@ export default function Presentation() {
       setIsLoading(true);
       const data = await presentationService.getPresentationById(presentationId);
 
+      if (!data || !data.presentation) {
+        throw new Error('Presentation not found');
+      }
+
       setPresentation(data.presentation);
 
       if (initialSlides && initialSlides.length > 0) {
@@ -143,8 +159,20 @@ export default function Presentation() {
       }
     } catch (error) {
       console.error('Load presentation error:', error);
-      toast.error(t('toasts.presentation.failed_to_load'));
-      navigate('/dashboard');
+      
+      // Handle 404 specifically - presentation was deleted or doesn't exist
+      if (error.response?.status === 404 || error.message?.includes('not found')) {
+        toast.error(t('toasts.presentation.not_found') || 'Presentation not found');
+        // Clear any local draft for this presentation
+        if (presentationId) {
+          presentationService.clearDraftFromLocalStorage(presentationId);
+        }
+      } else {
+        toast.error(t('toasts.presentation.failed_to_load') || 'Failed to load presentation');
+      }
+      
+      // Navigate back to appropriate dashboard
+      navigateToDashboard();
     } finally {
       setIsLoading(false);
     }
@@ -164,14 +192,17 @@ export default function Presentation() {
       setIsLoading(false);
 
       // Update URL to include the new presentation ID without replace
-      navigate(`/presentation/${response.presentation.id}`);
+      // Preserve the fromInstitutionAdmin state when navigating
+      navigate(`/presentation/${response.presentation.id}`, { 
+        state: { fromInstitutionAdmin: fromInstitutionAdmin } 
+      });
 
       toast.success(t('toasts.presentation.created'));
     } catch (error) {
       console.error('Create presentation error:', error);
       toast.error(t('toasts.presentation.failed_to_create'));
       setIsLoading(false);
-      navigate('/dashboard');
+      navigateToDashboard();
     }
   };
 
@@ -867,7 +898,7 @@ export default function Presentation() {
   // Handle back to dashboard
   const handleBackToDashboard = () => {
     if (!presentation) {
-      navigate('/dashboard');
+      navigateToDashboard();
       return;
     }
 
@@ -879,7 +910,7 @@ export default function Presentation() {
     const saved = await saveToBackend();
     if (saved) {
       setExitDialog({ open: false, isProcessing: false });
-      navigate('/dashboard');
+      navigateToDashboard();
     } else {
       setExitDialog(prev => ({ ...prev, isProcessing: false }));
     }
@@ -900,7 +931,7 @@ export default function Presentation() {
     }
     presentationService.clearDraftFromLocalStorage();
     setExitDialog({ open: false, isProcessing: false });
-    navigate('/dashboard');
+    navigateToDashboard();
   };
 
   // Handle present button

@@ -1032,7 +1032,6 @@ export default function Landing() {
                   { name: t('footer.about_us'), path: "/about" },
                   { name: t('footer.pricing'), path: "/pricing" },
                   { name: t('footer.careers'), path: "/careers" },
-                  { name: t('footer.enterprise'), path: "/enterprise" },
                   { name: t('footer.contact'), path: "/contact" }
                 ].map((link) => (
                   <li key={link.name}>

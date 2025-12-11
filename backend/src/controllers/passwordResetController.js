@@ -38,12 +38,9 @@ const requestPasswordReset = asyncHandler(async (req, res, next) => {
   const ipAddress = req.ip || req.connection.remoteAddress;
   const userAgent = req.get('user-agent');
 
-  // Check if email belongs to an institution admin
+  // Check if email belongs to an institution admin (only admin email can reset password)
   let institution = await Institution.findOne({
-    $or: [
-      { email: normalizedEmail },
-      { adminEmail: normalizedEmail }
-    ],
+    adminEmail: normalizedEmail,
     isActive: true
   });
 

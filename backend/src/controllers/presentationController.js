@@ -19,6 +19,11 @@ const createPresentation = asyncHandler(async (req, res, next) => {
   const { title } = req.body;
   const userId = req.userId;
 
+  if (!userId) {
+    Logger.error('createPresentation: userId is missing', { userId, user: req.user });
+    throw new AppError('User ID is required', 401, 'UNAUTHORIZED');
+  }
+
   if (!title || !title.trim()) {
     throw new AppError('Presentation title is required', 400, 'VALIDATION_ERROR');
   }
@@ -114,10 +119,19 @@ const getPresentationById = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
   const userId = req.userId;
 
+  // First check if presentation exists at all
+  const presentationExists = await Presentation.findById(id).lean();
+  
+  if (!presentationExists) {
+    throw new AppError('Presentation not found', 404, 'RESOURCE_NOT_FOUND');
+  }
+
+  // Then check if it belongs to the user
   const presentation = await Presentation.findOne({ _id: id, userId }).lean();
 
   if (!presentation) {
-    throw new AppError('Presentation not found', 404, 'RESOURCE_NOT_FOUND');
+    // Presentation exists but doesn't belong to this user
+    throw new AppError('Presentation not found or access denied', 404, 'RESOURCE_NOT_FOUND');
   }
 
   const slides = await Slide.find({ presentationId: id })

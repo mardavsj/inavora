@@ -105,6 +105,12 @@ const PricingPage = () => {
     ];
 
     const handleUpgrade = async (planId) => {
+        // Institution plan should redirect to registration flow
+        if (planId === 'institution') {
+            navigate('/institution/register');
+            return;
+        }
+
         if (!user) {
             toast.error(t('pricing.login_required_message'));
             navigate('/login', { state: { from: '/pricing' } });

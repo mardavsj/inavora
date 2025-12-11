@@ -30,6 +30,7 @@ const careersRoutes = require('./routes/careersRoutes');
 const jobPostingRoutes = require('./routes/jobPostingRoutes');
 const superAdminRoutes = require('./routes/superAdminRoutes');
 const institutionAdminRoutes = require('./routes/institutionAdminRoutes');
+const institutionRegistrationRoutes = require('./routes/institutionRegistrationRoutes');
 const passwordResetRoutes = require('./routes/passwordResetRoutes');
 const testEmailRoutes = require('./routes/testEmailRoutes');
 const setupSocketHandlers = require('./socket/socketHandlers');
@@ -97,6 +98,7 @@ app.use('/api/careers', careersRoutes);
 app.use('/api/job-postings', jobPostingRoutes);
 app.use('/api/super-admin', superAdminRoutes);
 app.use('/api/institution-admin', institutionAdminRoutes);
+app.use('/api/institution/register', institutionRegistrationRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

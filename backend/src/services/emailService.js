@@ -481,6 +481,627 @@ This is an automated message. Please do not reply to this email.
   }
 };
 
+/**
+ * Send Institution Email Verification Email
+ * @param {string} to - Recipient email
+ * @param {string} institutionName - Institution name
+ * @param {string} verificationLink - Verification link
+ * @returns {Promise<Object>} Email send result
+ */
+const sendInstitutionVerificationEmail = async (to, institutionName, verificationLink) => {
+  const client = getResendClient();
+  
+  if (!client) {
+    throw new Error('Email service is not configured. Please set RESEND_API_KEY in environment variables.');
+  }
+
+  const appName = process.env.APP_NAME || 'Inavora';
+  const fromEmail = process.env.RESEND_FROM_EMAIL || 'noreply@inavora.com';
+
+  const emailHtml = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Verify Your Institution Email</title>
+      <style>
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+          line-height: 1.6;
+          color: #333;
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 20px;
+          background-color: #f4f4f4;
+        }
+        .container {
+          background-color: #ffffff;
+          border-radius: 8px;
+          padding: 40px;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+          text-align: center;
+          margin-bottom: 30px;
+        }
+        .logo {
+          font-size: 28px;
+          font-weight: bold;
+          color: #3b82f6;
+          margin-bottom: 10px;
+        }
+        .button {
+          display: inline-block;
+          padding: 14px 28px;
+          background: linear-gradient(135deg, #3b82f6 0%, #14b8a6 100%);
+          color: #ffffff;
+          text-decoration: none;
+          border-radius: 6px;
+          font-weight: bold;
+          margin: 20px 0;
+        }
+        .info-box {
+          background-color: #f0f9ff;
+          border-left: 4px solid #3b82f6;
+          padding: 15px;
+          margin: 20px 0;
+        }
+        .footer {
+          margin-top: 40px;
+          padding-top: 20px;
+          border-top: 1px solid #e2e8f0;
+          text-align: center;
+          color: #94a3b8;
+          font-size: 14px;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <div class="logo">${appName}</div>
+          <h1>Verify Your Institution Email</h1>
+        </div>
+        
+        <div class="content">
+          <p>Hello,</p>
+          
+          <p>Thank you for registering <strong>${institutionName}</strong> with ${appName}.</p>
+          
+          <p>Please verify your institution email address by clicking the button below:</p>
+          
+          <div style="text-align: center;">
+            <a href="${verificationLink}" class="button">Verify Email Address</a>
+          </div>
+          
+          <div class="info-box">
+            <p><strong>Note:</strong> This verification link will expire in 24 hours.</p>
+            <p>If the button doesn't work, copy and paste this link into your browser:</p>
+            <p style="word-break: break-all; color: #3b82f6;">${verificationLink}</p>
+          </div>
+
+          <p>If you didn't register for ${appName}, please ignore this email.</p>
+        </div>
+
+        <div class="footer">
+          <p>This is an automated message. Please do not reply to this email.</p>
+          <p>&copy; ${new Date().getFullYear()} ${appName}. All rights reserved.</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  const emailText = `
+Verify Your Institution Email - ${appName}
+
+Hello,
+
+Thank you for registering ${institutionName} with ${appName}.
+
+Please verify your institution email address by visiting this link:
+${verificationLink}
+
+This verification link will expire in 24 hours.
+
+If you didn't register for ${appName}, please ignore this email.
+
+© ${new Date().getFullYear()} ${appName}. All rights reserved.
+  `;
+
+  try {
+    const result = await client.emails.send({
+      from: fromEmail,
+      to: [to],
+      subject: `Verify Your Institution Email - ${appName}`,
+      html: emailHtml,
+      text: emailText
+    });
+
+    Logger.info(`Institution verification email sent to ${to}`, { emailId: result.data?.id });
+    return result.data;
+  } catch (error) {
+    Logger.error('Failed to send institution verification email', error);
+    throw error;
+  }
+};
+
+/**
+ * Send Admin Email Verification Email
+ * @param {string} to - Recipient email
+ * @param {string} adminName - Admin name
+ * @param {string} verificationLink - Verification link
+ * @returns {Promise<Object>} Email send result
+ */
+const sendAdminVerificationEmail = async (to, adminName, verificationLink) => {
+  const client = getResendClient();
+  
+  if (!client) {
+    throw new Error('Email service is not configured. Please set RESEND_API_KEY in environment variables.');
+  }
+
+  const appName = process.env.APP_NAME || 'Inavora';
+  const fromEmail = process.env.RESEND_FROM_EMAIL || 'noreply@inavora.com';
+
+  const emailHtml = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Verify Your Admin Email</title>
+      <style>
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+          line-height: 1.6;
+          color: #333;
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 20px;
+          background-color: #f4f4f4;
+        }
+        .container {
+          background-color: #ffffff;
+          border-radius: 8px;
+          padding: 40px;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+          text-align: center;
+          margin-bottom: 30px;
+        }
+        .logo {
+          font-size: 28px;
+          font-weight: bold;
+          color: #3b82f6;
+          margin-bottom: 10px;
+        }
+        .button {
+          display: inline-block;
+          padding: 14px 28px;
+          background: linear-gradient(135deg, #3b82f6 0%, #14b8a6 100%);
+          color: #ffffff;
+          text-decoration: none;
+          border-radius: 6px;
+          font-weight: bold;
+          margin: 20px 0;
+        }
+        .info-box {
+          background-color: #f0f9ff;
+          border-left: 4px solid #3b82f6;
+          padding: 15px;
+          margin: 20px 0;
+        }
+        .footer {
+          margin-top: 40px;
+          padding-top: 20px;
+          border-top: 1px solid #e2e8f0;
+          text-align: center;
+          color: #94a3b8;
+          font-size: 14px;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <div class="logo">${appName}</div>
+          <h1>Verify Your Admin Email</h1>
+        </div>
+        
+        <div class="content">
+          <p>Hello ${adminName},</p>
+          
+          <p>Thank you for registering as an institution admin with ${appName}.</p>
+          
+          <p>Please verify your admin email address by clicking the button below:</p>
+          
+          <div style="text-align: center;">
+            <a href="${verificationLink}" class="button">Verify Email Address</a>
+          </div>
+          
+          <div class="info-box">
+            <p><strong>Note:</strong> This verification link will expire in 24 hours.</p>
+            <p>If the button doesn't work, copy and paste this link into your browser:</p>
+            <p style="word-break: break-all; color: #3b82f6;">${verificationLink}</p>
+          </div>
+
+          <p>If you didn't register for ${appName}, please ignore this email.</p>
+        </div>
+
+        <div class="footer">
+          <p>This is an automated message. Please do not reply to this email.</p>
+          <p>&copy; ${new Date().getFullYear()} ${appName}. All rights reserved.</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  const emailText = `
+Verify Your Admin Email - ${appName}
+
+Hello ${adminName},
+
+Thank you for registering as an institution admin with ${appName}.
+
+Please verify your admin email address by visiting this link:
+${verificationLink}
+
+This verification link will expire in 24 hours.
+
+If you didn't register for ${appName}, please ignore this email.
+
+© ${new Date().getFullYear()} ${appName}. All rights reserved.
+  `;
+
+  try {
+    const result = await client.emails.send({
+      from: fromEmail,
+      to: [to],
+      subject: `Verify Your Admin Email - ${appName}`,
+      html: emailHtml,
+      text: emailText
+    });
+
+    Logger.info(`Admin verification email sent to ${to}`, { emailId: result.data?.id });
+    return result.data;
+  } catch (error) {
+    Logger.error('Failed to send admin verification email', error);
+    throw error;
+  }
+};
+
+/**
+ * Send Institution Registration OTP Email
+ * @param {string} to - Recipient email
+ * @param {string} adminName - Admin name
+ * @param {string} otp - 6-digit OTP code
+ * @returns {Promise<Object>} Email send result
+ */
+const sendInstitutionRegistrationOTPEmail = async (to, adminName, otp) => {
+  const client = getResendClient();
+  
+  if (!client) {
+    throw new Error('Email service is not configured. Please set RESEND_API_KEY in environment variables.');
+  }
+
+  const appName = process.env.APP_NAME || 'Inavora';
+  const fromEmail = process.env.RESEND_FROM_EMAIL || 'noreply@inavora.com';
+
+  const emailHtml = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Verify Your Email - ${appName}</title>
+      <style>
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+          line-height: 1.6;
+          color: #333;
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 20px;
+          background-color: #f4f4f4;
+        }
+        .container {
+          background-color: #ffffff;
+          border-radius: 8px;
+          padding: 40px;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+          text-align: center;
+          margin-bottom: 30px;
+        }
+        .logo {
+          font-size: 28px;
+          font-weight: bold;
+          color: #3b82f6;
+          margin-bottom: 10px;
+        }
+        h1 {
+          color: #1e293b;
+          font-size: 24px;
+          margin: 0 0 10px 0;
+        }
+        .content {
+          color: #64748b;
+          font-size: 16px;
+          margin-bottom: 30px;
+        }
+        .otp-box {
+          background-color: #f1f5f9;
+          border-left: 4px solid #3b82f6;
+          padding: 20px;
+          margin: 20px 0;
+          border-radius: 4px;
+          text-align: center;
+        }
+        .otp-code {
+          font-size: 32px;
+          font-weight: bold;
+          color: #1e293b;
+          letter-spacing: 8px;
+          margin: 10px 0;
+        }
+        .warning {
+          background-color: #fef3c7;
+          border-left: 4px solid #f59e0b;
+          padding: 15px;
+          margin: 20px 0;
+          border-radius: 4px;
+        }
+        .warning p {
+          margin: 5px 0;
+          font-size: 14px;
+          color: #92400e;
+        }
+        .footer {
+          margin-top: 40px;
+          padding-top: 20px;
+          border-top: 1px solid #e2e8f0;
+          text-align: center;
+          color: #94a3b8;
+          font-size: 14px;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <div class="logo">${appName}</div>
+          <h1>Verify Your Email Address</h1>
+        </div>
+        
+        <div class="content">
+          <p>Hello ${adminName},</p>
+          
+          <p>Thank you for registering as an institution admin with ${appName}.</p>
+          
+          <p>Please use the OTP code below to verify your email address:</p>
+        </div>
+
+        <div class="otp-box">
+          <p><strong>Your OTP Code:</strong></p>
+          <div class="otp-code">${otp}</div>
+          <p style="margin-top: 10px; color: #64748b;">Enter this code on the registration page to continue.</p>
+        </div>
+
+        <div class="warning">
+          <p><strong>⚠️ Important:</strong></p>
+          <p>This OTP will expire in <strong>10 minutes</strong> for security reasons.</p>
+          <p>If you didn't register for ${appName}, please ignore this email.</p>
+          <p><strong>Never share this OTP with anyone.</strong></p>
+        </div>
+
+        <div class="footer">
+          <p>This is an automated message. Please do not reply to this email.</p>
+          <p>&copy; ${new Date().getFullYear()} ${appName}. All rights reserved.</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  const emailText = `
+Verify Your Email Address - ${appName}
+
+Hello ${adminName},
+
+Thank you for registering as an institution admin with ${appName}.
+
+Please use the OTP code below to verify your email address:
+
+Your OTP Code: ${otp}
+
+Enter this code on the registration page to continue.
+
+This OTP will expire in 10 minutes for security reasons.
+
+If you didn't register for ${appName}, please ignore this email.
+
+Never share this OTP with anyone.
+
+© ${new Date().getFullYear()} ${appName}. All rights reserved.
+  `;
+
+  try {
+    const result = await client.emails.send({
+      from: fromEmail,
+      to: [to],
+      subject: `Verify Your Email - ${appName}`,
+      html: emailHtml,
+      text: emailText
+    });
+
+    Logger.info(`Institution registration OTP email sent to ${to}`, { emailId: result.data?.id });
+    return result.data;
+  } catch (error) {
+    Logger.error('Failed to send institution registration OTP email', error);
+    throw error;
+  }
+};
+
+/**
+ * Send Institution Welcome Email
+ * @param {string} to - Recipient email
+ * @param {string} adminName - Admin name
+ * @param {string} institutionName - Institution name
+ * @returns {Promise<Object>} Email send result
+ */
+const sendInstitutionWelcomeEmail = async (to, adminName, institutionName) => {
+  const client = getResendClient();
+  
+  if (!client) {
+    throw new Error('Email service is not configured. Please set RESEND_API_KEY in environment variables.');
+  }
+
+  const appName = process.env.APP_NAME || 'Inavora';
+  const fromEmail = process.env.RESEND_FROM_EMAIL || 'noreply@inavora.com';
+  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+
+  const emailHtml = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Welcome to ${appName}</title>
+      <style>
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+          line-height: 1.6;
+          color: #333;
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 20px;
+          background-color: #f4f4f4;
+        }
+        .container {
+          background-color: #ffffff;
+          border-radius: 8px;
+          padding: 40px;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+          text-align: center;
+          margin-bottom: 30px;
+        }
+        .logo {
+          font-size: 28px;
+          font-weight: bold;
+          color: #3b82f6;
+          margin-bottom: 10px;
+        }
+        .button {
+          display: inline-block;
+          padding: 14px 28px;
+          background: linear-gradient(135deg, #3b82f6 0%, #14b8a6 100%);
+          color: #ffffff;
+          text-decoration: none;
+          border-radius: 6px;
+          font-weight: bold;
+          margin: 20px 0;
+        }
+        .success-box {
+          background-color: #f0fdf4;
+          border-left: 4px solid #22c55e;
+          padding: 15px;
+          margin: 20px 0;
+        }
+        .footer {
+          margin-top: 40px;
+          padding-top: 20px;
+          border-top: 1px solid #e2e8f0;
+          text-align: center;
+          color: #94a3b8;
+          font-size: 14px;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <div class="header">
+          <div class="logo">${appName}</div>
+          <h1>Welcome to ${appName}!</h1>
+        </div>
+        
+        <div class="content">
+          <p>Hello ${adminName},</p>
+          
+          <div class="success-box">
+            <p><strong>🎉 Congratulations!</strong></p>
+            <p>Your institution <strong>${institutionName}</strong> has been successfully registered with ${appName}.</p>
+          </div>
+
+          <p>You can now access your institution admin dashboard and start managing your account.</p>
+          
+          <div style="text-align: center;">
+            <a href="${frontendUrl}/institution-admin" class="button">Go to Dashboard</a>
+          </div>
+
+          <h3>Getting Started:</h3>
+          <ul>
+            <li>Add users to your institution</li>
+            <li>Customize your branding</li>
+            <li>Configure your settings</li>
+            <li>Start creating presentations</li>
+          </ul>
+
+          <p>If you have any questions, please don't hesitate to contact our support team.</p>
+        </div>
+
+        <div class="footer">
+          <p>This is an automated message. Please do not reply to this email.</p>
+          <p>&copy; ${new Date().getFullYear()} ${appName}. All rights reserved.</p>
+        </div>
+      </div>
+    </body>
+    </html>
+  `;
+
+  const emailText = `
+Welcome to ${appName}!
+
+Hello ${adminName},
+
+Congratulations! Your institution ${institutionName} has been successfully registered with ${appName}.
+
+You can now access your institution admin dashboard at:
+${frontendUrl}/institution-admin
+
+Getting Started:
+- Add users to your institution
+- Customize your branding
+- Configure your settings
+- Start creating presentations
+
+If you have any questions, please don't hesitate to contact our support team.
+
+© ${new Date().getFullYear()} ${appName}. All rights reserved.
+  `;
+
+  try {
+    const result = await client.emails.send({
+      from: fromEmail,
+      to: [to],
+      subject: `Welcome to ${appName}!`,
+      html: emailHtml,
+      text: emailText
+    });
+
+    Logger.info(`Welcome email sent to ${to}`, { emailId: result.data?.id });
+    return result.data;
+  } catch (error) {
+    Logger.error('Failed to send welcome email', error);
+    throw error;
+  }
+};
+
 // Initialize on module load
 // Note: This will be called when the module is first loaded
 // Make sure environment variables are loaded before this
@@ -493,6 +1114,10 @@ if (process.env.RESEND_API_KEY) {
 module.exports = {
   sendPasswordResetOTPEmail,
   sendPasswordResetSuccessEmail,
+  sendInstitutionVerificationEmail,
+  sendAdminVerificationEmail,
+  sendInstitutionRegistrationOTPEmail,
+  sendInstitutionWelcomeEmail,
   initializeResend,
   getResendClient
 };

@@ -21,11 +21,9 @@ const loginInstitutionAdmin = asyncHandler(async (req, res, next) => {
     throw new AppError('Email and password are required', 400, 'VALIDATION_ERROR');
   }
 
+  // Only allow login with admin email (the person managing the dashboard)
   const institution = await Institution.findOne({ 
-    $or: [
-      { email: email.toLowerCase() },
-      { adminEmail: email.toLowerCase() }
-    ],
+    adminEmail: email.toLowerCase(),
     isActive: true
   });
 
@@ -84,11 +82,9 @@ const checkInstitutionAdmin = asyncHandler(async (req, res, next) => {
     throw new AppError('Email is required', 400, 'VALIDATION_ERROR');
   }
 
+  // Check if email belongs to an institution admin (only admin email can login)
   const institution = await Institution.findOne({
-    $or: [
-      { email: email.toLowerCase() },
-      { adminEmail: email.toLowerCase() }
-    ],
+    adminEmail: email.toLowerCase(),
     isActive: true
   }).select('_id name email adminEmail').lean();
 
@@ -293,9 +289,12 @@ const addInstitutionUser = asyncHandler(async (req, res, next) => {
   const institutionId = req.institutionId;
   const { email, displayName } = req.body;
 
-  if (!email || !displayName) {
-    throw new AppError('Email and display name are required', 400, 'VALIDATION_ERROR');
+  if (!email) {
+    throw new AppError('Email is required', 400, 'VALIDATION_ERROR');
   }
+
+  // Generate displayName from email if not provided
+  const userDisplayName = displayName?.trim() || email.split('@')[0];
 
   const institution = await Institution.findById(institutionId);
   if (!institution) {
@@ -319,6 +318,10 @@ const addInstitutionUser = asyncHandler(async (req, res, next) => {
       user.isInstitutionUser = true;
       user.subscription.plan = 'institution';
       user.subscription.status = 'active';
+      // Set displayName if it's not already set
+      if (!user.displayName) {
+        user.displayName = userDisplayName;
+      }
       await user.save();
     } else {
       throw new AppError('User already exists in this institution', 400, 'DUPLICATE_ENTRY');
@@ -326,7 +329,7 @@ const addInstitutionUser = asyncHandler(async (req, res, next) => {
   } else {
     user = new User({
       email: email.toLowerCase(),
-      displayName: displayName.trim(),
+      displayName: userDisplayName,
       institutionId,
       isInstitutionUser: true,
       subscription: {
@@ -787,6 +790,473 @@ const exportData = asyncHandler(async (req, res, next) => {
   }
 });
 
+/**
+ * Bulk Import Users
+ * @route POST /api/institution-admin/users/bulk-import
+ * @access Private (Institution Admin)
+ */
+const bulkImportUsers = asyncHandler(async (req, res, next) => {
+  const institutionId = req.institutionId;
+  
+  if (!req.file) {
+    throw new AppError('CSV file is required', 400, 'VALIDATION_ERROR');
+  }
+
+  const institution = await Institution.findById(institutionId);
+  if (!institution) {
+    throw new AppError('Institution not found', 404, 'RESOURCE_NOT_FOUND');
+  }
+
+  // Parse CSV file
+  const csvContent = req.file.buffer.toString('utf-8');
+  const lines = csvContent.split('\n').filter(line => line.trim());
+  
+  if (lines.length < 2) {
+    throw new AppError('CSV file must contain at least a header and one data row', 400, 'VALIDATION_ERROR');
+  }
+
+  const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+  const emailIndex = headers.findIndex(h => h === 'email' || h === 'email address');
+  const nameIndex = headers.findIndex(h => h.includes('name') || h.includes('display'));
+
+  if (emailIndex === -1) {
+    throw new AppError('CSV must contain an "email" column', 400, 'VALIDATION_ERROR');
+  }
+
+  const currentUserCount = await User.countDocuments({ 
+    institutionId,
+    isInstitutionUser: true 
+  });
+
+  let added = 0;
+  let skipped = 0;
+  const errors = [];
+
+  for (let i = 1; i < lines.length; i++) {
+    const values = lines[i].split(',').map(v => v.trim());
+    const email = values[emailIndex];
+    const displayName = values[nameIndex] || email.split('@')[0];
+
+    if (!email || !email.includes('@')) {
+      skipped++;
+      errors.push(`Row ${i + 1}: Invalid email`);
+      continue;
+    }
+
+    if (currentUserCount + added >= institution.subscription.maxUsers) {
+      errors.push(`Row ${i + 1} and beyond: User limit reached`);
+      break;
+    }
+
+    try {
+      let user = await User.findOne({ email: email.toLowerCase() });
+
+      if (user && user.isInstitutionUser && user.institutionId?.toString() === institutionId.toString()) {
+        skipped++;
+        continue;
+      }
+
+      if (!user) {
+        user = new User({
+          email: email.toLowerCase(),
+          displayName,
+          institutionId,
+          isInstitutionUser: true,
+          subscription: {
+            plan: 'institution',
+            status: 'active'
+          }
+        });
+      } else {
+        user.institutionId = institutionId;
+        user.isInstitutionUser = true;
+        user.subscription.plan = 'institution';
+        user.subscription.status = 'active';
+        if (!user.displayName) {
+          user.displayName = displayName;
+        }
+      }
+
+      await user.save();
+      added++;
+
+      // Log audit
+      if (!institution.auditLogs) {
+        institution.auditLogs = [];
+      }
+      institution.auditLogs.push({
+        timestamp: new Date(),
+        action: 'user_added',
+        user: req.institutionAdmin?.email || 'System',
+        details: `User ${email} added via bulk import`,
+        ipAddress: req.ip || req.headers['x-forwarded-for'] || 'unknown'
+      });
+    } catch (error) {
+      skipped++;
+      errors.push(`Row ${i + 1}: ${error.message}`);
+    }
+  }
+
+  if (added > 0) {
+    await institution.save();
+  }
+
+  res.status(200).json({
+    success: true,
+    message: `Bulk import completed. ${added} users added, ${skipped} skipped.`,
+    data: {
+      added,
+      skipped,
+      errors: errors.length > 0 ? errors : undefined
+    }
+  });
+});
+
+/**
+ * Get Audit Logs
+ * @route GET /api/institution-admin/audit-logs
+ * @access Private (Institution Admin)
+ */
+const getAuditLogs = asyncHandler(async (req, res, next) => {
+  const { startDate, endDate } = req.query;
+  const institution = await Institution.findById(req.institutionId);
+
+  let logs = institution.auditLogs || [];
+
+  // Filter by date range if provided
+  if (startDate || endDate) {
+    logs = logs.filter(log => {
+      const logDate = new Date(log.timestamp);
+      if (startDate && logDate < new Date(startDate)) return false;
+      if (endDate && logDate > new Date(endDate)) return false;
+      return true;
+    });
+  }
+
+  // Sort by timestamp descending (most recent first)
+  logs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+  // Limit to last 100 logs for performance
+  logs = logs.slice(0, 100);
+
+  res.status(200).json({
+    success: true,
+    logs
+  });
+});
+
+/**
+ * Get API Keys
+ * @route GET /api/institution-admin/api-keys
+ * @access Private (Institution Admin)
+ */
+const getApiKeys = asyncHandler(async (req, res, next) => {
+  const institution = await Institution.findById(req.institutionId);
+  const apiKeys = institution.apiKeys || [];
+
+  res.status(200).json({
+    success: true,
+    keys: apiKeys
+  });
+});
+
+/**
+ * Create API Key
+ * @route POST /api/institution-admin/api-keys
+ * @access Private (Institution Admin)
+ */
+const createApiKey = asyncHandler(async (req, res, next) => {
+  const { name } = req.body;
+  const institution = await Institution.findById(req.institutionId);
+
+  if (!name) {
+    throw new AppError('API key name is required', 400, 'VALIDATION_ERROR');
+  }
+
+  // Generate API key (in production, use crypto.randomBytes)
+  const apiKey = `inst_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
+
+  const newApiKey = {
+    id: Date.now().toString(),
+    name,
+    key: apiKey,
+    active: true,
+    createdAt: new Date()
+  };
+
+  if (!institution.apiKeys) {
+    institution.apiKeys = [];
+  }
+  institution.apiKeys.push(newApiKey);
+  await institution.save();
+
+  res.status(201).json({
+    success: true,
+    key: newApiKey
+  });
+});
+
+/**
+ * Delete API Key
+ * @route DELETE /api/institution-admin/api-keys/:keyId
+ * @access Private (Institution Admin)
+ */
+const deleteApiKey = asyncHandler(async (req, res, next) => {
+  const { keyId } = req.params;
+  const institution = await Institution.findById(req.institutionId);
+
+  if (!institution.apiKeys) {
+    institution.apiKeys = [];
+  }
+
+  institution.apiKeys = institution.apiKeys.filter(key => key.id !== keyId);
+  await institution.save();
+
+  res.status(200).json({
+    success: true,
+    message: 'API key deleted successfully'
+  });
+});
+
+/**
+ * Get Webhooks
+ * @route GET /api/institution-admin/webhooks
+ * @access Private (Institution Admin)
+ */
+const getWebhooks = asyncHandler(async (req, res, next) => {
+  const institution = await Institution.findById(req.institutionId);
+  const webhooks = institution.webhooks || [];
+
+  res.status(200).json({
+    success: true,
+    webhooks
+  });
+});
+
+/**
+ * Create Webhook
+ * @route POST /api/institution-admin/webhooks
+ * @access Private (Institution Admin)
+ */
+const createWebhook = asyncHandler(async (req, res, next) => {
+  const { url, events, secret } = req.body;
+  const institution = await Institution.findById(req.institutionId);
+
+  if (!url) {
+    throw new AppError('Webhook URL is required', 400, 'VALIDATION_ERROR');
+  }
+
+  const newWebhook = {
+    id: Date.now().toString(),
+    url,
+    events: events || [],
+    secret: secret || '',
+    active: true,
+    createdAt: new Date()
+  };
+
+  if (!institution.webhooks) {
+    institution.webhooks = [];
+  }
+  institution.webhooks.push(newWebhook);
+  await institution.save();
+
+  res.status(201).json({
+    success: true,
+    webhook: newWebhook
+  });
+});
+
+/**
+ * Delete Webhook
+ * @route DELETE /api/institution-admin/webhooks/:webhookId
+ * @access Private (Institution Admin)
+ */
+const deleteWebhook = asyncHandler(async (req, res, next) => {
+  const { webhookId } = req.params;
+  const institution = await Institution.findById(req.institutionId);
+
+  if (!institution.webhooks) {
+    institution.webhooks = [];
+  }
+
+  institution.webhooks = institution.webhooks.filter(webhook => webhook.id !== webhookId);
+  await institution.save();
+
+  res.status(200).json({
+    success: true,
+    message: 'Webhook deleted successfully'
+  });
+});
+
+/**
+ * Get Custom Reports
+ * @route GET /api/institution-admin/custom-reports
+ * @access Private (Institution Admin)
+ */
+const getCustomReports = asyncHandler(async (req, res, next) => {
+  const institution = await Institution.findById(req.institutionId);
+  const reports = institution.customReports || [];
+
+  res.status(200).json({
+    success: true,
+    reports
+  });
+});
+
+/**
+ * Create Custom Report
+ * @route POST /api/institution-admin/custom-reports
+ * @access Private (Institution Admin)
+ */
+const createCustomReport = asyncHandler(async (req, res, next) => {
+  const reportConfig = req.body;
+  const institution = await Institution.findById(req.institutionId);
+
+  if (!reportConfig.name || !reportConfig.metrics || reportConfig.metrics.length === 0) {
+    throw new AppError('Report name and at least one metric are required', 400, 'VALIDATION_ERROR');
+  }
+
+  const newReport = {
+    id: Date.now().toString(),
+    ...reportConfig,
+    createdAt: new Date()
+  };
+
+  if (!institution.customReports) {
+    institution.customReports = [];
+  }
+  institution.customReports.push(newReport);
+  await institution.save();
+
+  res.status(201).json({
+    success: true,
+    report: newReport
+  });
+});
+
+/**
+ * Generate Custom Report
+ * @route POST /api/institution-admin/custom-reports/:reportId/generate
+ * @access Private (Institution Admin)
+ */
+const generateCustomReport = asyncHandler(async (req, res, next) => {
+  const { reportId } = req.params;
+  const institution = await Institution.findById(req.institutionId);
+
+  if (!institution.customReports) {
+    institution.customReports = [];
+  }
+
+  const report = institution.customReports.find(r => r.id === reportId);
+  if (!report) {
+    throw new AppError('Custom report not found', 404, 'NOT_FOUND');
+  }
+
+  // For now, return a simple PDF placeholder
+  // In production, generate actual PDF/Excel based on report config using libraries like pdfkit or jsPDF
+  const pdfPlaceholder = Buffer.from('PDF placeholder - Implement actual PDF generation');
+  
+  res.setHeader('Content-Type', 'application/pdf');
+  res.setHeader('Content-Disposition', `attachment; filename=custom-report-${report.name}-${new Date().toISOString().split('T')[0]}.pdf`);
+  res.send(pdfPlaceholder);
+});
+
+/**
+ * Delete Custom Report
+ * @route DELETE /api/institution-admin/custom-reports/:reportId
+ * @access Private (Institution Admin)
+ */
+const deleteCustomReport = asyncHandler(async (req, res, next) => {
+  const { reportId } = req.params;
+  const institution = await Institution.findById(req.institutionId);
+
+  if (!institution.customReports) {
+    institution.customReports = [];
+  }
+
+  institution.customReports = institution.customReports.filter(r => r.id !== reportId);
+  await institution.save();
+
+  res.status(200).json({
+    success: true,
+    message: 'Custom report deleted successfully'
+  });
+});
+
+/**
+ * Generate Report
+ * @route POST /api/institution-admin/reports/generate
+ * @access Private (Institution Admin)
+ */
+const generateReport = asyncHandler(async (req, res, next) => {
+  const { type, format, schedule, email, frequency } = req.body;
+  const institutionId = req.institutionId;
+
+  if (!type || !format) {
+    throw new AppError('Report type and format are required', 400, 'VALIDATION_ERROR');
+  }
+
+  // For scheduled reports, store the configuration
+  if (schedule && schedule !== 'none' && email) {
+    const institution = await Institution.findById(institutionId);
+    if (!institution.scheduledReports) {
+      institution.scheduledReports = [];
+    }
+    institution.scheduledReports.push({
+      type,
+      format,
+      schedule,
+      email,
+      frequency,
+      createdAt: new Date()
+    });
+    await institution.save();
+
+    return res.status(200).json({
+      success: true,
+      message: 'Report scheduled successfully'
+    });
+  }
+
+  // For immediate download, generate and return the file
+  // This is a placeholder - in production, generate actual PDF/Excel
+  const fileBuffer = Buffer.from(`Report: ${type} in ${format} format`);
+  
+  if (format === 'pdf') {
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename=report-${type}-${new Date().toISOString().split('T')[0]}.pdf`);
+  } else {
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', `attachment; filename=report-${type}-${new Date().toISOString().split('T')[0]}.xlsx`);
+  }
+  
+  res.send(fileBuffer);
+});
+
+/**
+ * Update Security Settings
+ * @route PUT /api/institution-admin/security-settings
+ * @access Private (Institution Admin)
+ */
+const updateSecuritySettings = asyncHandler(async (req, res, next) => {
+  const securitySettings = req.body;
+  const institution = await Institution.findById(req.institutionId);
+
+  if (!institution.securitySettings) {
+    institution.securitySettings = {};
+  }
+
+  Object.assign(institution.securitySettings, securitySettings);
+  await institution.save();
+
+  res.status(200).json({
+    success: true,
+    message: 'Security settings updated successfully',
+    securitySettings: institution.securitySettings
+  });
+});
+
 module.exports = {
   loginInstitutionAdmin,
   checkInstitutionAdmin,
@@ -795,10 +1265,24 @@ module.exports = {
   getInstitutionUsers,
   addInstitutionUser,
   removeInstitutionUser,
+  bulkImportUsers,
   getInstitutionPresentations,
   getAnalytics,
   updateBranding,
   updateSettings,
-  exportData
+  exportData,
+  generateReport,
+  getAuditLogs,
+  getApiKeys,
+  createApiKey,
+  deleteApiKey,
+  getWebhooks,
+  createWebhook,
+  deleteWebhook,
+  getCustomReports,
+  createCustomReport,
+  generateCustomReport,
+  deleteCustomReport,
+  updateSecuritySettings
 };
 

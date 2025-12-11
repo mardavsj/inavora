@@ -22,7 +22,16 @@ const errorHandler = (err, req, res, next) => {
   error.message = err.message;
   error.statusCode = err.statusCode || 500;
 
-  Logger.error(`Error ${error.statusCode}: ${error.message}`, err);
+  // Log 404s as warnings since they're often expected (deleted resources, etc.)
+  // Only log actual errors (5xx) or important 4xx errors at ERROR level
+  if (error.statusCode === 404 && error.code === 'RESOURCE_NOT_FOUND') {
+    Logger.warn(`Resource not found: ${error.message} - ${req.method} ${req.originalUrl}`);
+  } else if (error.statusCode >= 500) {
+    Logger.error(`Error ${error.statusCode}: ${error.message}`, err);
+  } else {
+    // For other 4xx errors, log as warning
+    Logger.warn(`Error ${error.statusCode}: ${error.message} - ${req.method} ${req.originalUrl}`);
+  }
 
   if (err.name === 'CastError') {
     const message = 'Resource not found';
