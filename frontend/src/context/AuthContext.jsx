@@ -110,6 +110,11 @@ export const AuthProvider = ({ children }) => {
       setError(null);
 
       const provider = new GoogleAuthProvider();
+      // Add custom parameters to improve popup handling
+      provider.setCustomParameters({
+        prompt: 'select_account'
+      });
+      
       const userCredential = await signInWithPopup(auth, provider);
 
       // Exchange Firebase token for JWT
