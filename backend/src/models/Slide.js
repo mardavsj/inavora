@@ -258,6 +258,10 @@ const slideSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  videoPublicId: {
+    type: String,
+    default: null
+  },
   // For instruction slide type
   instructionContent: {
     type: String,

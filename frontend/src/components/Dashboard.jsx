@@ -562,12 +562,14 @@ const Dashboard = () => {
               className="bg-[#1e293b] border border-white/10 rounded-2xl p-8 max-w-md w-full shadow-2xl"
             >
               <h3 className="text-xl font-bold text-white mb-4">{t('dashboard.delete_presentation')}</h3>
-              <p className="text-gray-400 mb-8 leading-relaxed">
-                {t('dashboard.delete_confirmation', { title: presentationToDelete?.title })}
-                <br />
-                <br />
-                {t('dashboard.delete_permanently')}
-              </p>
+              <p 
+                className="text-gray-400 mb-8 leading-relaxed"
+                dangerouslySetInnerHTML={{ 
+                  __html: t('dashboard.delete_confirmation', { title: presentationToDelete?.title || 'Untitled Presentation' })
+                    .replace(/<highlight>/g, '<span class="text-white font-semibold">')
+                    .replace(/<\/highlight>/g, '</span>')
+                }}
+              />
               <div className="flex gap-4 justify-end">
                 <button
                   onClick={cancelDelete}

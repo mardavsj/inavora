@@ -18,7 +18,6 @@ const connectDB = require('./config/database');
 const initializeFirebase = require('./config/firebase');
 const { errorHandler, notFound } = require('./middleware/errorHandler');
 const { sanitizeInput } = require('./middleware/sanitize');
-const { rateLimiters } = require('./middleware/rateLimiter');
 const { requestLogger } = require('./middleware/requestLogger');
 const healthRoutes = require('./routes/healthRoutes');
 const setupSwagger = require('./config/swagger');
@@ -115,7 +114,6 @@ app.use((req, res, next) => {
 });
 
 app.use(sanitizeInput);
-app.use(rateLimiters.general);
 
 app.set('io', io);
 
@@ -136,7 +134,7 @@ app.get('/', (req, res) => {
     });
 });
 
-app.use('/api/auth', rateLimiters.auth, authRoutes);
+app.use('/api/auth', authRoutes);
 app.use('/api/password-reset', passwordResetRoutes);
 // Test email routes (remove in production or add authentication)
 if (process.env.NODE_ENV !== 'production') {
@@ -144,7 +142,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 app.use('/api/payments', paymentRoutes);
 app.use('/api/presentations', presentationRoutes);
-app.use('/api/upload', rateLimiters.upload, uploadRoutes);
+app.use('/api/upload', uploadRoutes);
 app.use('/api/careers', careersRoutes);
 app.use('/api/job-postings', jobPostingRoutes);
 app.use('/api/super-admin', superAdminRoutes);

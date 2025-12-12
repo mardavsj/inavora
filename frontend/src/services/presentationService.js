@@ -146,14 +146,30 @@ export const hasDraftInLocalStorage = (presentationId) => {
   }
 };
 
-// Upload image to Cloudinary
-export const uploadImage = async (base64Image) => {
-  try {
-    const response = await api.post('/upload/image', { image: base64Image });
-    return response.data;
-  } catch (error) {
-    console.error('Upload image error:', error);
-    throw error;
+// Upload image to Cloudinary with retry logic for rate limiting
+export const uploadImage = async (base64Image, retries = 3) => {
+  const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+  
+  for (let attempt = 0; attempt < retries; attempt++) {
+    try {
+      const response = await api.post('/upload/image', { image: base64Image });
+      return response.data;
+    } catch (error) {
+      // If it's a 429 error and we have retries left, wait and retry
+      if (error.response?.status === 429 && attempt < retries - 1) {
+        const retryAfter = error.response?.data?.retryAfter 
+          ? parseInt(error.response.data.retryAfter) * 1000 
+          : Math.pow(2, attempt) * 1000; // Exponential backoff: 2s, 4s, 8s
+        
+        console.warn(`Upload rate limited. Retrying after ${retryAfter / 1000}s... (attempt ${attempt + 1}/${retries})`);
+        await delay(retryAfter);
+        continue;
+      }
+      
+      // For other errors or final attempt, throw the error
+      console.error('Upload image error:', error);
+      throw error;
+    }
   }
 };
 
@@ -165,6 +181,33 @@ export const deleteImage = async (publicId) => {
   } catch (error) {
     console.error('Delete image error:', error);
     throw error;
+  }
+};
+
+// Upload video to Cloudinary with retry logic for rate limiting
+export const uploadVideo = async (base64Video, retries = 3) => {
+  const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+  
+  for (let attempt = 0; attempt < retries; attempt++) {
+    try {
+      const response = await api.post('/upload/video', { video: base64Video });
+      return response.data;
+    } catch (error) {
+      // If it's a 429 error and we have retries left, wait and retry
+      if (error.response?.status === 429 && attempt < retries - 1) {
+        const retryAfter = error.response?.data?.retryAfter 
+          ? parseInt(error.response.data.retryAfter) * 1000 
+          : Math.pow(2, attempt) * 1000; // Exponential backoff: 2s, 4s, 8s
+        
+        console.warn(`Upload rate limited. Retrying after ${retryAfter / 1000}s... (attempt ${attempt + 1}/${retries})`);
+        await delay(retryAfter);
+        continue;
+      }
+      
+      // For other errors or final attempt, throw the error
+      console.error('Upload video error:', error);
+      throw error;
+    }
   }
 };
 

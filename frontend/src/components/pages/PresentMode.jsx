@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import toast from 'react-hot-toast';
@@ -48,6 +48,17 @@ const PresentMode = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasStarted, setHasStarted] = useState(false);
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const currentSlideIndexRef = useRef(0);
+  const slidesRef = useRef([]);
+  
+  // Keep refs in sync with state
+  useEffect(() => {
+    currentSlideIndexRef.current = currentSlideIndex;
+  }, [currentSlideIndex]);
+  
+  useEffect(() => {
+    slidesRef.current = slides;
+  }, [slides]);
   const [voteCounts, setVoteCounts] = useState({});
   const [showParticipantsDropdown, setShowParticipantsDropdown] = useState(false);
   const [showKickConfirmation, setShowKickConfirmation] = useState(false);
@@ -214,10 +225,55 @@ const PresentMode = () => {
     };
 
     const handleResponseUpdated = (data) => {
-      if (data.voteCounts !== undefined) setVoteCounts(data.voteCounts);
+      // Use refs to get the latest values without closure issues
+      const currentIndex = currentSlideIndexRef.current;
+      const currentSlides = slidesRef.current;
+      const currentSlide = currentSlides[currentIndex];
+      const currentSlideId = getSlideId(currentSlide);
+      
+      // Normalize slideId from response - handle both ObjectId and string formats
+      let responseSlideId = null;
+      if (data.slideId) {
+        responseSlideId = String(data.slideId).trim();
+      } else if (data.slide) {
+        responseSlideId = String(data.slide.id || data.slide._id || '').trim();
+      }
+      
+      const normalizedCurrentSlideId = currentSlideId ? String(currentSlideId).trim() : null;
+      
+      // Only update if this response is for the current slide, or if slideId is not provided (backward compatibility)
+      // Be more lenient - if we have a current slide but no response slideId, still process (backward compat)
+      // If we have both, they must match
+      if (responseSlideId && normalizedCurrentSlideId && responseSlideId !== normalizedCurrentSlideId) {
+        // Response is for a different slide, ignore it
+        return;
+      }
+      
+      // If we don't have a current slide ID, we can't verify, so skip
+      if (!normalizedCurrentSlideId) {
+        return;
+      }
+      
+      // Process the response update
+      if (data.voteCounts !== undefined) {
+        console.log('[handleResponseUpdated] Setting voteCounts:', data.voteCounts);
+        console.log('[handleResponseUpdated] voteCounts type:', typeof data.voteCounts);
+        console.log('[handleResponseUpdated] voteCounts keys:', Object.keys(data.voteCounts || {}));
+        console.log('[handleResponseUpdated] voteCounts values:', Object.values(data.voteCounts || {}));
+        // Create a new object to ensure React detects the change
+        setVoteCounts({ ...data.voteCounts });
+      } else {
+        console.log('[handleResponseUpdated] voteCounts is undefined in data');
+      }
       if (data.wordFrequencies !== undefined) setWordFrequencies(data.wordFrequencies);
-      if (data.totalResponses !== undefined) setTotalResponses(data.totalResponses);
-      if (data.scaleDistribution !== undefined) setScaleDistribution(data.scaleDistribution);
+      if (data.totalResponses !== undefined) {
+        console.log('[handleResponseUpdated] Setting totalResponses:', data.totalResponses);
+        setTotalResponses(data.totalResponses);
+      }
+      if (data.scaleDistribution !== undefined) {
+        console.log('[handleResponseUpdated] Setting scaleDistribution:', data.scaleDistribution);
+        setScaleDistribution(data.scaleDistribution);
+      }
       if (data.scaleAverage !== undefined) setScaleAverage(data.scaleAverage);
       if (data.scaleStatementAverages !== undefined) setScaleStatementAverages(data.scaleStatementAverages);
       if (data.scaleStatements !== undefined) setScaleStatements(data.scaleStatements);
@@ -240,23 +296,29 @@ const PresentMode = () => {
         }));
       }
       if (data.qnaState && data.slideId) {
-        const currentSlide = slides[currentSlideIndex];
-        const slideId = getSlideId(currentSlide);
-        if (slideId && slideId === data.slideId.toString()) {
+        if (currentSlideId && currentSlideId === data.slideId.toString()) {
           updateQnaState(data.qnaState);
         }
       }
-      if (data.gridResults) setGridResults(data.gridResults);
-      if (data.pinResults) setPinResults(data.pinResults);
+      if (data.gridResults !== undefined) {
+        setGridResults(Array.isArray(data.gridResults) ? data.gridResults : []);
+      } else if (data.slide?.type !== '2x2_grid') {
+        setGridResults([]);
+      }
+      if (data.pinResults !== undefined) {
+        setPinResults(Array.isArray(data.pinResults) ? data.pinResults : []);
+      } else if (data.slide?.type !== 'pin_on_image') {
+        setPinResults([]);
+      }
       if (data.slide) {
         const incomingSlideId = data.slide.id?.toString() ?? data.slide._id?.toString() ?? null;
         setSlides((prevSlides) =>
-          prevSlides.map((slideItem, index) => {
+          prevSlides.map((slideItem) => {
             const existingId = getSlideId(slideItem);
-            if (incomingSlideId) {
-              return existingId === incomingSlideId ? { ...slideItem, ...data.slide } : slideItem;
+            if (incomingSlideId && existingId === incomingSlideId) {
+              return { ...slideItem, ...data.slide };
             }
-            return index === currentSlideIndex ? { ...slideItem, ...data.slide } : slideItem;
+            return slideItem;
           }),
         );
       }
@@ -304,15 +366,37 @@ const PresentMode = () => {
       }
       if (data.slide) {
         const incomingSlideId = data.slide.id?.toString() ?? data.slide._id?.toString() ?? null;
-        setSlides((prevSlides) =>
-          prevSlides.map((slideItem, index) => {
+        
+        // Update the slide in the slides array and find its index
+        setSlides((prevSlides) => {
+          const updatedSlides = prevSlides.map((slideItem) => {
             const existingId = getSlideId(slideItem);
-            if (incomingSlideId) {
-              return existingId === incomingSlideId ? { ...slideItem, ...data.slide } : slideItem;
+            if (incomingSlideId && existingId === incomingSlideId) {
+              return { ...slideItem, ...data.slide };
             }
-            return index === currentSlideIndex ? { ...slideItem, ...data.slide } : slideItem;
-          }),
-        );
+            return slideItem;
+          });
+          
+          // Update currentSlideIndex if provided, otherwise find it by slide ID
+          if (data.slideIndex !== undefined) {
+            if (data.slideIndex !== currentSlideIndex) {
+              setCurrentSlideIndex(data.slideIndex);
+            }
+          } else if (incomingSlideId) {
+            const slideIndex = updatedSlides.findIndex((slideItem) => {
+              const existingId = getSlideId(slideItem);
+              return existingId === incomingSlideId;
+            });
+            if (slideIndex !== -1 && slideIndex !== currentSlideIndex) {
+              setCurrentSlideIndex(slideIndex);
+            }
+          }
+          
+          return updatedSlides;
+        });
+      } else if (data.slideIndex !== undefined && data.slideIndex !== currentSlideIndex) {
+        // Update index even if slide data is not provided
+        setCurrentSlideIndex(data.slideIndex);
       }
       if (data.slide?.type === 'qna') {
         if (data.qnaState) {
@@ -332,6 +416,16 @@ const PresentMode = () => {
         }
       } else {
         setGuessDistribution({});
+      }
+      if (data.gridResults !== undefined) {
+        setGridResults(Array.isArray(data.gridResults) ? data.gridResults : []);
+      } else if (data.slide?.type !== '2x2_grid') {
+        setGridResults([]);
+      }
+      if (data.pinResults !== undefined) {
+        setPinResults(Array.isArray(data.pinResults) ? data.pinResults : []);
+      } else if (data.slide?.type !== 'pin_on_image') {
+        setPinResults([]);
       }
       mergeOpenEndedState({
         payload: data,
@@ -807,10 +901,15 @@ const PresentMode = () => {
           />
         );
       case 'pick_answer':
+        console.log('[renderSlideContent] Pick Answer - slide:', slide);
+        console.log('[renderSlideContent] Pick Answer - voteCounts:', voteCounts);
+        console.log('[renderSlideContent] Pick Answer - totalResponses:', totalResponses);
+        console.log('[renderSlideContent] Pick Answer - options:', slide.options);
         return (
           <PickAnswerPresenterView
             slide={slide}
-            responses={openEndedResponses}
+            voteCounts={voteCounts}
+            totalResponses={totalResponses}
             sendSocketMessage={(message) => socket.emit('presentation-message', message)}
           />
         );
@@ -1012,10 +1111,7 @@ const PresentMode = () => {
       <main className="flex-1 overflow-y-auto bg-[#1A1A1A]">
         <div className="mx-auto w-full max-w-6xl min-h-full px-4 sm:px-6 py-6 sm:py-10 flex">
           <div className="w-full">
-            <SlideCanvas 
-              slide={slides[currentSlideIndex]} 
-              presentation={presentation}
-            />
+            {renderSlideContent()}
           </div>
         </div>
       </main>

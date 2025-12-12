@@ -21,6 +21,11 @@ const SlideCanvas = ({ slide, presentation, isPresenter = false, onSettingsChang
     return (match && match[2].length === 11) ? match[2] : '';
   };
 
+  // Check if URL is a valid video URL (YouTube or Vimeo)
+  const isValidVideoUrl = (url) => {
+    return url && (url.includes('youtube.com') || url.includes('youtu.be') || url.includes('vimeo.com'));
+  };
+
   // Update local state when slide prop changes
   useEffect(() => {
     if (slide?.question !== undefined) {
@@ -728,14 +733,27 @@ const SlideCanvas = ({ slide, presentation, isPresenter = false, onSettingsChang
               </h2>
               {slide?.videoUrl ? (
                 <div className="rounded-xl overflow-hidden border border-[#2F2F2F] bg-[#232323] aspect-video">
-                  <iframe
-                    src={`https://www.youtube.com/embed/${getYoutubeVideoId(slide.videoUrl)}`}
-                    title="Video content"
-                    className="w-full h-full"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
+                  {isValidVideoUrl(slide.videoUrl) ? (
+                    // YouTube/Vimeo URL - use iframe
+                    <iframe
+                      src={`https://www.youtube.com/embed/${getYoutubeVideoId(slide.videoUrl)}`}
+                      title="Video content"
+                      className="w-full h-full"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  ) : (
+                    // Uploaded video - use video tag
+                    <video
+                      src={slide.videoUrl}
+                      controls
+                      className="w-full h-full"
+                      style={{ objectFit: 'contain' }}
+                    >
+                      {t('slide_editors.video.video_not_supported')}
+                    </video>
+                  )}
                 </div>
               ) : (
                 <div className="rounded-xl border-2 border-dashed border-[#3A3A3A] bg-[#232323] py-12 sm:py-16 text-center">

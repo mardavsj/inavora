@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const paymentController = require('../controllers/paymentController');
-const { verifyToken } = require('../middleware/auth');
-const { rateLimiters } = require('../middleware/rateLimiter'); 
+const { verifyToken } = require('../middleware/auth'); 
 
 router.post('/webhook', 
     express.raw({ type: 'application/json' }), 
@@ -22,9 +21,6 @@ router.post('/update-expired', paymentController.updateExpired);
 
 // Apply authentication - userId will be available after this
 router.use(verifyToken);
-
-// Apply user-based rate limiting for authenticated payment routes
-router.use(rateLimiters.payment);
 
 /**
  * @swagger

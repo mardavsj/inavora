@@ -27,4 +27,18 @@ router.delete('/image', uploadController.deleteImage);
  */
 router.get('/images', uploadController.getUserImages);
 
+/**
+ * @route   POST /api/upload/video
+ * @desc    Upload video to Cloudinary
+ * @access  Private
+ */
+router.post('/video', uploadController.uploadVideo);
+
+/**
+ * @route   DELETE /api/upload/video
+ * @desc    Delete video from Cloudinary
+ * @access  Private
+ */
+router.delete('/video', uploadController.deleteVideo);
+
 module.exports = router;

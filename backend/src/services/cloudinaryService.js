@@ -74,8 +74,52 @@ async function uploadDocument(base64Document, folder = 'inavora/documents') {
   }
 }
 
+/**
+ * Upload video to Cloudinary
+ * @param {string} base64Video - Base64 encoded video string
+ * @param {string} folder - Cloudinary folder name (default: 'inavora/videos')
+ * @returns {Promise<{url: string, publicId: string}>}
+ */
+async function uploadVideo(base64Video, folder = 'inavora/videos') {
+  try {
+    const result = await cloudinary.uploader.upload(base64Video, {
+      folder: folder,
+      resource_type: 'video',
+      allowed_formats: ['mp4', 'mov', 'avi', 'wmv', 'flv', 'webm'],
+      transformation: [
+        { quality: 'auto:good' }, // Auto optimize quality
+        { fetch_format: 'auto' } // Auto format
+      ]
+    });
+
+    return {
+      url: result.secure_url,
+      publicId: result.public_id
+    };
+  } catch (error) {
+    Logger.error('Cloudinary video upload error', error);
+    throw new Error('Failed to upload video to Cloudinary');
+  }
+}
+
+/**
+ * Delete video from Cloudinary
+ * @param {string} publicId - Cloudinary public ID
+ * @returns {Promise<void>}
+ */
+async function deleteVideo(publicId) {
+  try {
+    await cloudinary.uploader.destroy(publicId, { resource_type: 'video' });
+  } catch (error) {
+    Logger.error('Cloudinary video delete error', error);
+    throw new Error('Failed to delete video from Cloudinary');
+  }
+}
+
 module.exports = {
   uploadImage,
   deleteImage,
-  uploadDocument
+  uploadDocument,
+  uploadVideo,
+  deleteVideo
 };

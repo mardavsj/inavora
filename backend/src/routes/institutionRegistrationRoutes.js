@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const institutionRegistrationController = require('../controllers/institutionRegistrationController');
-const { rateLimiters } = require('../middleware/rateLimiter');
 
 /**
  * @route   POST /api/institution/register/start
@@ -26,7 +25,6 @@ router.get('/plans', institutionRegistrationController.getPlans);
  * @access  Public
  */
 router.post('/select-plan', 
-  rateLimiters.auth,
   institutionRegistrationController.selectPlan
 );
 
@@ -36,7 +34,6 @@ router.post('/select-plan',
  * @access  Public
  */
 router.post('/send-verification', 
-  rateLimiters.auth,
   institutionRegistrationController.sendEmailVerification
 );
 
@@ -46,7 +43,6 @@ router.post('/send-verification',
  * @access  Public
  */
 router.post('/verify-email', 
-  rateLimiters.auth,
   institutionRegistrationController.verifyEmail
 );
 
@@ -56,7 +52,6 @@ router.post('/verify-email',
  * @access  Public
  */
 router.post('/resend-verification', 
-  rateLimiters.auth,
   institutionRegistrationController.resendVerificationEmail
 );
 
@@ -66,7 +61,6 @@ router.post('/resend-verification',
  * @access  Public
  */
 router.post('/validate-password', 
-  rateLimiters.auth,
   institutionRegistrationController.validatePassword
 );
 
@@ -85,7 +79,6 @@ router.post('/create-payment',
  * @access  Public
  */
 router.post('/complete', 
-  rateLimiters.auth,
   institutionRegistrationController.completeRegistration
 );
 

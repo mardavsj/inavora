@@ -278,7 +278,7 @@ const setupSocketHandlers = (io, socket) => {
         io.to(`presentation-${presentationId}`).emit('presentation-live', participantPayload);
 
         io.to(`presentation-${presentationId}`).emit('response-updated', {
-          slideId: currentSlide._id,
+          slideId: currentSlide._id.toString(),
           ...results
         });
 
@@ -336,6 +336,7 @@ const setupSocketHandlers = (io, socket) => {
 
         const payload = {
           slide: buildSlidePayload(currentSlide),
+          slideIndex: slideIndex,
           ...buildResultsPayload(currentSlide, responses)
         };
 
@@ -583,8 +584,9 @@ const setupSocketHandlers = (io, socket) => {
       const responses = await Response.find({ slideId });
 
       const results = buildResultsPayload(slide, responses);
+      
       io.to(`presentation-${presentationId}`).emit('response-updated', {
-        slideId,
+        slideId: slide._id.toString(),
         ...results
       });
 
@@ -652,7 +654,7 @@ const setupSocketHandlers = (io, socket) => {
       const responses = await Response.find({ slideId: slide._id });
       const results = buildResultsPayload(slide, responses);
       io.to(`presentation-${presentationId}`).emit('response-updated', {
-        slideId: slide._id,
+        slideId: slide._id.toString(),
         ...results
       });
 
@@ -686,7 +688,7 @@ const setupSocketHandlers = (io, socket) => {
       const responses = await Response.find({ slideId: slide._id });
       const results = buildResultsPayload(slide, responses);
       io.to(`presentation-${presentationId}`).emit('response-updated', {
-        slideId: slide._id,
+        slideId: slide._id.toString(),
         ...results
       });
     } catch (error) {
@@ -737,7 +739,7 @@ const setupSocketHandlers = (io, socket) => {
       const responses = [];
       const results = buildResultsPayload(slide, responses);
       io.to(`presentation-${presentationId}`).emit('response-updated', {
-        slideId: slide._id,
+        slideId: slide._id.toString(),
         ...results
       });
     } catch (error) {
@@ -816,7 +818,7 @@ const setupSocketHandlers = (io, socket) => {
       const responses = await Response.find({ slideId: slide._id });
       const results = buildResultsPayload(slide, responses);
       io.to(`presentation-${presentationId}`).emit('response-updated', {
-        slideId: slide._id,
+        slideId: slide._id.toString(),
         slide: buildSlidePayload(slide),
         ...results
       });
@@ -852,7 +854,7 @@ const setupSocketHandlers = (io, socket) => {
       const responses = [];
       const results = buildResultsPayload(slide, responses);
       io.to(`presentation-${presentationId}`).emit('response-updated', {
-        slideId: slide._id,
+        slideId: slide._id.toString(),
         slide: buildSlidePayload(slide),
         ...results
       });

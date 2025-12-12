@@ -181,6 +181,7 @@ const getPresentationById = asyncHandler(async (req, res, next) => {
         imageUrl: slide.imageUrl,
         imagePublicId: slide.imagePublicId,
         videoUrl: slide.videoUrl,
+        videoPublicId: slide.videoPublicId,
         instructionContent: slide.instructionContent,
         createdAt: slide.createdAt,
         updatedAt: slide.updatedAt

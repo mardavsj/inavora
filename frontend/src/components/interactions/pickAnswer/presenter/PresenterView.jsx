@@ -5,27 +5,54 @@ import PickAnswerPresenterResults from './PresenterResults';
 const PickAnswerPresenterView = ({
   slide,
   responses = [],
+  voteCounts: externalVoteCounts,
+  totalResponses: externalTotalResponses,
   sendSocketMessage
 }) => {
   const { t } = useTranslation();
   
-  // Count votes for each option - normalize keys to strings
-  const voteCounts = {};
-  if (slide.options) {
-    slide.options.forEach(option => {
-      const key = typeof option === 'string' ? option : (option?.text || String(option));
-      voteCounts[key] = 0;
-    });
-  }
-
-  responses.forEach(response => {
-    const answerKey = typeof response.answer === 'string' ? response.answer : (response.answer?.text || String(response.answer));
-    if (voteCounts.hasOwnProperty(answerKey)) {
-      voteCounts[answerKey]++;
-    }
+  // Use external voteCounts if provided, otherwise compute from responses
+  console.log('[PickAnswerPresenterView] Props:', {
+    externalVoteCounts,
+    externalTotalResponses,
+    responsesLength: responses.length,
+    slideOptions: slide.options
   });
+  
+  let voteCounts = externalVoteCounts || {};
+  let totalResponses = externalTotalResponses;
+  
+  if (!externalVoteCounts && responses.length > 0) {
+    // Count votes for each option - normalize keys to strings
+    voteCounts = {};
+    if (slide.options) {
+      slide.options.forEach(option => {
+        const key = typeof option === 'string' ? option : (option?.text || String(option));
+        voteCounts[key] = 0;
+      });
+    }
 
-  const totalResponses = responses.length;
+    responses.forEach(response => {
+      const answerKey = typeof response.answer === 'string' ? response.answer : (response.answer?.text || String(response.answer));
+      if (voteCounts.hasOwnProperty(answerKey)) {
+        voteCounts[answerKey]++;
+      }
+    });
+
+    totalResponses = responses.length;
+  } else if (externalVoteCounts) {
+    // Use external voteCounts, compute totalResponses if not provided
+    totalResponses = externalTotalResponses || Object.values(voteCounts).reduce((sum, count) => sum + count, 0);
+  } else {
+    // Initialize empty voteCounts
+    if (slide.options) {
+      slide.options.forEach(option => {
+        const key = typeof option === 'string' ? option : (option?.text || String(option));
+        voteCounts[key] = 0;
+      });
+    }
+    totalResponses = totalResponses || 0;
+  }
 
   return (
     <div className="space-y-6 sm:space-y-8">
@@ -51,6 +78,11 @@ const PickAnswerPresenterView = ({
       </div>
 
       <div>
+        {console.log('[PickAnswerPresenterView] Passing to PresenterResults:', {
+          options: slide.options,
+          voteCounts,
+          totalResponses
+        })}
         <PickAnswerPresenterResults 
           options={slide.options || []} 
           voteCounts={voteCounts} 

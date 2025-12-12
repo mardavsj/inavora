@@ -35,6 +35,11 @@ export const translateError = (error, t, defaultKey = 'common.something_went_wro
     'failed to fetch': 'common.network_error',
     'request failed': 'common.request_failed',
     
+    // Rate limiting errors
+    'too many requests': 'common.rate_limit_error',
+    'upload limit exceeded': 'common.upload_limit_error',
+    'rate limit': 'common.rate_limit_error',
+    
     // Generic errors
     'something went wrong': 'common.something_went_wrong',
     'an error occurred': 'common.something_went_wrong',

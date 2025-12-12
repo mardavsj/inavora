@@ -115,6 +115,7 @@ module.exports.createSlide = asyncHandler(async (req, res, next) => {
       imageUrl,
       imagePublicId,
       videoUrl,
+      videoPublicId,
       instructionContent,
       miroUrl,
       powerpointUrl,
@@ -207,6 +208,7 @@ module.exports.createSlide = asyncHandler(async (req, res, next) => {
       imageUrl: type === 'image' ? (imageUrl || '') : undefined,
       imagePublicId: type === 'image' ? imagePublicId : undefined,
       videoUrl: type === 'video' ? (videoUrl || '') : undefined,
+      videoPublicId: type === 'video' ? videoPublicId : undefined,
       instructionContent: type === 'instruction' ? (instructionContent || '') : undefined,
       options: (type === 'multiple_choice' || type === 'pick_answer') ? options : undefined,
       openEndedSettings: (type === 'open_ended' || type === 'type_answer') ? openEndedSettings : undefined,
@@ -274,6 +276,7 @@ module.exports.createSlide = asyncHandler(async (req, res, next) => {
         imageUrl: slide.imageUrl,
         imagePublicId: slide.imagePublicId,
         videoUrl: slide.videoUrl,
+        videoPublicId: slide.videoPublicId,
         instructionContent: slide.instructionContent,
         miroUrl: slide.miroUrl,
         powerpointUrl: slide.powerpointUrl,
@@ -326,6 +329,7 @@ module.exports.updateSlide = asyncHandler(async (req, res, next) => {
       imageUrl,
       imagePublicId,
       videoUrl,
+      videoPublicId,
       instructionContent,
       miroUrl,
       powerpointUrl,
@@ -458,6 +462,9 @@ module.exports.updateSlide = asyncHandler(async (req, res, next) => {
     if (videoUrl !== undefined && slide.type === 'video') {
       slide.videoUrl = videoUrl;
     }
+    if (videoPublicId !== undefined && slide.type === 'video') {
+      slide.videoPublicId = videoPublicId;
+    }
     if (instructionContent !== undefined && slide.type === 'instruction') {
       slide.instructionContent = instructionContent;
     }
@@ -537,6 +544,7 @@ module.exports.updateSlide = asyncHandler(async (req, res, next) => {
         imageUrl: slide.imageUrl,
         imagePublicId: slide.imagePublicId,
         videoUrl: slide.videoUrl,
+        videoPublicId: slide.videoPublicId,
         instructionContent: slide.instructionContent,
         miroUrl: slide.miroUrl,
         powerpointUrl: slide.powerpointUrl,

@@ -18,6 +18,7 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import ParticipantQnaView from '../interactions/qna/ParticipantView';
 import MCQParticipantInput from '../interactions/mcq/ParticipantInput';
+import PickAnswerParticipantInput from '../interactions/pickAnswer/participant/ParticipantInput';
 import ParticipantGuessView from '../interactions/guessNumber/ParticipantView';
 import TwoByTwoGridParticipantInput from '../interactions/twoByTwoGrid/ParticipantInput';
 import PinOnImageParticipantInput from '../interactions/pinOnImage/ParticipantInput';
@@ -55,6 +56,15 @@ const JoinPresentation = () => {
     currentSlideRef.current = currentSlide;
   }, [currentSlide]);
   const [voteCounts, setVoteCounts] = useState({});
+  const [totalResponses, setTotalResponses] = useState(0);
+  const [scaleDistribution, setScaleDistribution] = useState({});
+  const [scaleAverage, setScaleAverage] = useState(0);
+  const [wordFrequencies, setWordFrequencies] = useState({});
+  const [rankingResults, setRankingResults] = useState([]);
+  const [hundredPointsResults, setHundredPointsResults] = useState([]);
+  const [gridResults, setGridResults] = useState([]);
+  const [pinResults, setPinResults] = useState([]);
+  const [guessDistribution, setGuessDistribution] = useState({});
 
   const getSlideIdentifier = (slide) => {
     if (!slide) return null;
@@ -87,13 +97,34 @@ const JoinPresentation = () => {
   const [showKickedModal, setShowKickedModal] = useState(false);
   const [kickMessage, setKickMessage] = useState('');
 
+  const [socketConnected, setSocketConnected] = useState(false);
+
   useEffect(() => {
     // Connect to Socket.IO
     const newSocket = io(getSocketUrl());
     setSocket(newSocket);
 
+    // Wait for socket to connect
+    newSocket.on('connect', () => {
+      console.log('Socket connected');
+      setSocketConnected(true);
+    });
+
+    newSocket.on('disconnect', () => {
+      console.log('Socket disconnected');
+      setSocketConnected(false);
+    });
+
+    newSocket.on('connect_error', (error) => {
+      console.error('Socket connection error:', error);
+      setSocketConnected(false);
+    });
+
     return () => {
       if (newSocket) {
+        newSocket.off('connect');
+        newSocket.off('disconnect');
+        newSocket.off('connect_error');
         newSocket.disconnect();
       }
     };
@@ -101,21 +132,31 @@ const JoinPresentation = () => {
 
   // Auto-populate name for logged-in users and auto-join if already logged in
   useEffect(() => {
-    if (currentUser && currentUser.displayName && socket && !hasJoined) {
+    if (currentUser && currentUser.displayName && socket && socketConnected && !hasJoined && !isAutoJoining) {
       setIsAutoJoining(true);
       setJoinError(null); // Reset any previous errors
       setParticipantName(currentUser.displayName);
-      // Auto-join after a short delay to allow socket connection
-      const timer = setTimeout(() => {
-        socket.emit('join-presentation', {
-          accessCode: code,
-          participantName: currentUser.displayName,
-          participantId
-        });
-      }, 500);
-      return () => clearTimeout(timer);
+      
+      // Set a timeout to reset isAutoJoining if no response is received
+      const timeoutTimer = setTimeout(() => {
+        if (!hasJoined) {
+          console.warn('Join presentation timeout - no response received');
+          setIsAutoJoining(false);
+          setJoinError('Connection timeout. Please try again.');
+        }
+      }, 10000); // 10 second timeout
+
+      // Auto-join after socket is connected
+      console.log('Auto-joining presentation with code:', code);
+      socket.emit('join-presentation', {
+        accessCode: code,
+        participantName: currentUser.displayName,
+        participantId
+      });
+
+      return () => clearTimeout(timeoutTimer);
     }
-  }, [currentUser, socket, code, participantId, hasJoined]);
+  }, [currentUser, socket, socketConnected, code, participantId, hasJoined, isAutoJoining]);
 
   const handleJoin = () => {
     // Reset any previous errors
@@ -131,6 +172,12 @@ const JoinPresentation = () => {
       return;
     }
 
+    if (!socketConnected) {
+      setJoinError('Waiting for connection. Please try again in a moment.');
+      return;
+    }
+
+    console.log('Manually joining presentation with code:', code);
     socket.emit('join-presentation', {
       accessCode: code,
       participantName: participantName.trim(),
@@ -143,9 +190,24 @@ const JoinPresentation = () => {
 
     const handlePresentationJoin = (data, toastMessage = 'Joined presentation!') => {
       console.log('Presentation live payload:', data);
+      if (!data || !data.presentation) {
+        console.error('Invalid presentation data received');
+        setIsAutoJoining(false);
+        setJoinError('Invalid presentation data. Please try again.');
+        return;
+      }
       setPresentation(data.presentation);
       setCurrentSlide(data.slide);
       setVoteCounts(data.voteCounts || {});
+      setTotalResponses(data.totalResponses || 0);
+      setScaleDistribution(data.scaleDistribution || {});
+      setScaleAverage(data.scaleAverage || 0);
+      setWordFrequencies(data.wordFrequencies || {});
+      setRankingResults(data.rankingResults || []);
+      setHundredPointsResults(data.hundredPointsResults || []);
+      setGridResults(data.gridResults || []);
+      setPinResults(data.pinResults || []);
+      setGuessDistribution(data.guessNumberState?.distribution || {});
       setHasJoined(true);
       setIsAutoJoining(false);
       setJoinError(null); // Clear any previous errors
@@ -186,14 +248,24 @@ const JoinPresentation = () => {
     });
 
     socket.on('presentation-not-live', (data) => {
+      setIsAutoJoining(false);
       setIsWaiting(true);
-      setWaitingMessage(data.message);
-      toast(data.message);
+      setWaitingMessage(data.message || 'Presentation is not live yet. Waiting for presenter...');
+      toast(data.message || 'Presentation is not live yet. Waiting for presenter...');
     });
 
     socket.on('slide-changed', (data) => {
       setCurrentSlide(data.slide);
       setVoteCounts(data.voteCounts || {});
+      setTotalResponses(data.totalResponses || 0);
+      setScaleDistribution(data.scaleDistribution || {});
+      setScaleAverage(data.scaleAverage || 0);
+      setWordFrequencies(data.wordFrequencies || {});
+      setRankingResults(data.rankingResults || []);
+      setHundredPointsResults(data.hundredPointsResults || []);
+      setGridResults(data.gridResults || []);
+      setPinResults(data.pinResults || []);
+      setGuessDistribution(data.guessNumberState?.distribution || {});
       setSelectedAnswer(null);
       setTextAnswer('');
       setOpenEndedAnswer('');
@@ -209,18 +281,47 @@ const JoinPresentation = () => {
     });
 
     socket.on('response-updated', (data) => {
+      // Only update if this is for the current slide
+      if (!isCurrentSlide(data.slideId)) {
+        return;
+      }
+      
       // Update vote counts or word frequencies when responses change
-      if (data.voteCounts) {
-        setVoteCounts(data.voteCounts);
+      if (data.voteCounts !== undefined) {
+        setVoteCounts({ ...data.voteCounts });
+      }
+      if (data.totalResponses !== undefined) {
+        setTotalResponses(data.totalResponses);
+      }
+      if (data.scaleDistribution !== undefined) {
+        setScaleDistribution(data.scaleDistribution);
+      }
+      if (data.scaleAverage !== undefined) {
+        setScaleAverage(data.scaleAverage);
+      }
+      if (data.wordFrequencies !== undefined) {
+        setWordFrequencies(data.wordFrequencies);
+      }
+      if (data.rankingResults !== undefined) {
+        setRankingResults(Array.isArray(data.rankingResults) ? data.rankingResults : []);
+      }
+      if (data.hundredPointsResults !== undefined) {
+        setHundredPointsResults(Array.isArray(data.hundredPointsResults) ? data.hundredPointsResults : []);
+      }
+      if (data.gridResults !== undefined) {
+        setGridResults(Array.isArray(data.gridResults) ? data.gridResults : []);
+      }
+      if (data.pinResults !== undefined) {
+        setPinResults(Array.isArray(data.pinResults) ? data.pinResults : []);
+      }
+      if (data.guessNumberState?.distribution !== undefined) {
+        setGuessDistribution(data.guessNumberState.distribution);
       }
       mergeOpenEndedState({
         payload: data,
         setResponses: setOpenEndedResponses,
         setSettings: setOpenEndedSettings
       });
-      if (data.totalResponses !== undefined) {
-        // You might want to use this for displaying total responses
-      }
     });
 
     socket.on('response-submitted', (data) => {
@@ -328,8 +429,10 @@ const JoinPresentation = () => {
     };
 
     socket.on('error', (data) => {
+      console.error('Socket error:', data);
       setIsAutoJoining(false);
-      setJoinError(data.message);
+      setJoinError(data.message || 'An error occurred. Please try again.');
+      setIsWaiting(false);
     });
 
     socket.on('kicked-by-presenter', handleKickedByPresenter);
@@ -518,6 +621,19 @@ const JoinPresentation = () => {
             onSelect={setSelectedAnswer}
             hasSubmitted={hasSubmitted}
             voteCounts={voteCounts}
+            totalResponses={totalResponses}
+            onSubmit={handleSubmitResponse}
+          />
+        );
+      case 'pick_answer':
+        return (
+          <PickAnswerParticipantInput
+            slide={currentSlide}
+            selectedAnswer={selectedAnswer}
+            onSelect={setSelectedAnswer}
+            hasSubmitted={hasSubmitted}
+            voteCounts={voteCounts}
+            totalResponses={totalResponses}
             onSubmit={handleSubmitResponse}
           />
         );
@@ -767,8 +883,8 @@ const JoinPresentation = () => {
     );
   }
   
-  // If user is logged in but not auto-joining (fallback)
-  if (currentUser && !isAutoJoining) {
+  // If user is logged in but socket is not connected yet (waiting for connection)
+  if (currentUser && currentUser.displayName && socket && !socketConnected && !hasJoined && !isAutoJoining) {
     return (
       <div className="min-h-screen bg-[#0f172a] text-white flex items-center justify-center p-4 relative overflow-hidden">
         <div className="fixed inset-0 z-0 pointer-events-none">
