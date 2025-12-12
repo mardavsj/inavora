@@ -8,6 +8,7 @@ import toast from 'react-hot-toast';
 import { translateError } from '../../utils/errorTranslator';
 import api from '../../config/api';
 import { io } from 'socket.io-client';
+import { getSocketUrl } from '../../utils/config';
 
 const Careers = () => {
     const navigate = useNavigate();
@@ -66,7 +67,7 @@ const Careers = () => {
         fetchJobPostings();
 
         // Set up Socket.IO for real-time updates
-        const socket = io(import.meta.env.VITE_SOCKET_URL || 'http://localhost:4001');
+        const socket = io(getSocketUrl());
         
         socket.on('job-posting-created', () => {
             fetchJobPostings();

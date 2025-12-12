@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import toast from 'react-hot-toast';
+import { getSocketUrl } from '../../utils/config';
 import { X, ChevronLeft, ChevronRight, Users, ArrowLeft, Ban } from 'lucide-react';
 import * as presentationService from '../../services/presentationService';
 import MCQPresenterResults from '../interactions/mcq/PresenterResults';
@@ -134,7 +135,7 @@ const PresentMode = () => {
   });
 
   useEffect(() => {
-    const newSocket = io(import.meta.env.VITE_SOCKET_URL || 'http://localhost:4000');
+    const newSocket = io(getSocketUrl());
     setSocket(newSocket);
 
     return () => {

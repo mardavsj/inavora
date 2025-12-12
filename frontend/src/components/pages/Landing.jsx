@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { io } from 'socket.io-client';
 import { useTranslation } from 'react-i18next';
+import { getSocketUrl } from '../../utils/config';
 import {
   BarChart2,
   Bot,
@@ -60,7 +61,7 @@ export default function Landing() {
 
   // Setup socket connection for real-time platform user count
   useEffect(() => {
-    const newSocket = io(import.meta.env.VITE_SOCKET_URL || 'http://localhost:4000');
+    const newSocket = io(getSocketUrl());
 
     // Join the landing page room and request initial count
     newSocket.emit('get-platform-users');

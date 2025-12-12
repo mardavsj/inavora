@@ -52,6 +52,7 @@ import { useTranslation } from 'react-i18next';
 import { translateError } from '../../utils/errorTranslator';
 import api from '../../config/api';
 import { io } from 'socket.io-client';
+import { getSocketUrl } from '../../utils/config';
 import { JoinPresentationDialog } from '../common/JoinPresentationDialog';
 import LanguageSelector from '../common/LanguageSelector/LanguageSelector';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area } from 'recharts';
@@ -206,7 +207,7 @@ const InstitutionAdmin = () => {
     useEffect(() => {
         if (!isAuthenticated) return;
 
-        const socket = io(import.meta.env.VITE_SOCKET_URL || 'http://localhost:4001');
+        const socket = io(getSocketUrl());
         
         socket.on('presentation-started', () => {
             fetchPresentations();

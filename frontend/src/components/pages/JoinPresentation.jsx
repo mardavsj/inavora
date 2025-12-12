@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import { Loader2 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from 'react-i18next';
+import { getSocketUrl } from '../../utils/config';
 import RankingParticipantInput from '../interactions/ranking/ParticipantInput';
 import HundredPointsParticipantInput from '../interactions/hundredPoints/ParticipantInput';
 import WordCloudParticipantInput from '../interactions/wordCloud/ParticipantInput';
@@ -88,7 +89,7 @@ const JoinPresentation = () => {
 
   useEffect(() => {
     // Connect to Socket.IO
-    const newSocket = io(import.meta.env.VITE_SOCKET_URL || 'http://localhost:4000');
+    const newSocket = io(getSocketUrl());
     setSocket(newSocket);
 
     return () => {

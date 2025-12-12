@@ -6,6 +6,8 @@ import toast from 'react-hot-toast';
 import api from '../../config/api';
 import { useTranslation } from 'react-i18next';
 import { translateError } from '../../utils/errorTranslator';
+import { getSocketUrl } from '../../utils/config';
+import { io } from 'socket.io-client';
 
 // Icons
 import { 
@@ -64,7 +66,7 @@ const SuperAdmin = () => {
   useEffect(() => {
     if (!isAuthenticated) return;
 
-    const socket = io(import.meta.env.VITE_SOCKET_URL || 'http://localhost:4001');
+    const socket = io(getSocketUrl());
         
     socket.on('new-application', (data) => {
       toast.success(t('toasts.super_admin.new_application', { candidateName: data.candidateName, position: data.position }));

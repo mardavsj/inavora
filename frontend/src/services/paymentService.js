@@ -1,36 +1,5 @@
 import axios from 'axios';
-
-// Get API URL from environment variable, with proper fallback
-const getApiUrl = () => {
-    const envUrl = import.meta.env.VITE_API_URL;
-    
-    // Debug: Log raw env value
-    if (import.meta.env.DEV) {
-        console.log('Raw VITE_API_URL from env:', envUrl);
-    }
-    
-    // If env variable is not set, empty, or invalid, use fallback
-    if (!envUrl || typeof envUrl !== 'string' || envUrl.trim() === '' || !envUrl.startsWith('http')) {
-        const fallback = 'http://localhost:4001';
-        
-        if (import.meta.env.DEV) {
-            console.warn('VITE_API_URL not set or invalid, using fallback:', fallback);
-            console.warn('Please add VITE_API_URL=http://localhost:4001 to your frontend/.env file');
-        }
-        return fallback;
-    }
-    
-    // Remove quotes if present (sometimes env files have quotes)
-    let cleanUrl = envUrl.trim().replace(/^["']|["']$/g, '');
-    
-    // Remove trailing slash if present
-    cleanUrl = cleanUrl.replace(/\/$/, '');
-    
-    if (import.meta.env.DEV) {
-        console.log('Using API URL:', cleanUrl);
-    }
-    return cleanUrl;
-};
+import { getApiUrl } from '../utils/config';
 
 const API_URL = getApiUrl();
 
