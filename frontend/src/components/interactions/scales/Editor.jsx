@@ -10,7 +10,8 @@ const ScalesEditor = ({ slide, onUpdate }) => {
   const { t } = useTranslation();
   const initialStatements = useMemo(() => {
     if (Array.isArray(slide?.statements) && slide.statements.length > 0) {
-      return [...slide.statements];
+      // Normalize statements: extract text if it's an object, otherwise use as string
+      return slide.statements.map(stmt => typeof stmt === 'string' ? stmt : (stmt?.text || ''));
     }
     return [''];
   }, [slide?.statements]);
@@ -133,7 +134,7 @@ const ScalesEditor = ({ slide, onUpdate }) => {
                 value={statement}
                 onChange={(event) => handleStatementChange(index, event.target.value)}
                 className="flex-1 px-3 py-2 border border-[#2A2A2A] rounded-lg text-sm bg-[#232323] text-[#E0E0E0] placeholder-[#8A8A8A] focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent outline-none"
-                placeholder={`${t('slide_editors.scales.statement_placeholder')} ${index + 1}`}
+                placeholder={t('slide_editors.scales.statement_with_number', { number: index + 1 })}
               />
               {statements.length > MIN_STATEMENTS && (
                 <button

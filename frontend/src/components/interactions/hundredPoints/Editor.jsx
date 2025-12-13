@@ -128,7 +128,7 @@ const HundredPointsEditor = ({ slide, onUpdate }) => {
                 value={item.label}
                 onChange={(event) => handleItemChange(index, event.target.value)}
                 className="flex-1 px-3 py-2 border border-[#2A2A2A] rounded-lg text-sm bg-[#232323] text-[#E0E0E0] placeholder-[#8A8A8A] focus:ring-2 focus:ring-[#4CAF50] focus-border-transparent outline-none"
-                placeholder={`${t('slide_editors.hundred_points.item_placeholder')} ${index + 1}`}
+                placeholder={t('slide_editors.hundred_points.item_with_number', { number: index + 1 })}
               />
               {items.length > MIN_ITEMS && (
                 <button

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Send } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const colorPalette = ['#4F46E5', '#F97316', '#1D4ED8', '#10B981', '#EC4899', '#6366F1', '#0EA5E9'];
 
@@ -12,11 +13,14 @@ const ScalesParticipantInput = ({
   scaleStatementAverages = {},
   totalResponses = 0
 }) => {
+  const { t } = useTranslation();
   const minValue = typeof slide?.minValue === 'number' ? slide.minValue : 1;
   const maxValue = typeof slide?.maxValue === 'number' ? slide.maxValue : 5;
-  const statements = useMemo(() => (
-    Array.isArray(slide?.statements) ? [...slide.statements] : []
-  ), [slide?.statements]);
+  const statements = useMemo(() => {
+    if (!Array.isArray(slide?.statements)) return [];
+    // Normalize statements: extract text if it's an object, otherwise use as string
+    return slide.statements.map(stmt => typeof stmt === 'string' ? stmt : (stmt?.text || ''));
+  }, [slide?.statements]);
 
   const isMultiStatement = statements.length > 0;
   const defaultValue = minValue;
@@ -85,11 +89,17 @@ const ScalesParticipantInput = ({
       <div key={`slider-${index}`} className="space-y-3">
         <div className="space-y-1">
           <p className="text-sm sm:text-base font-medium text-[#E0E0E0]">
-            {isMultiStatement ? `${index + 1}. ${label || `Statement ${index + 1}`}` : label || slide?.question}
+            {isMultiStatement 
+              ? `${index + 1}. ${label || t('slide_editors.scales.statement_with_number', { number: index + 1 })}` 
+              : label || slide?.question}
           </p>
           <div className="flex items-center gap-2 text-xs text-[#6C6C6C]">
             <span>{slide?.minLabel || `${minValue}`}</span>
-            <span className="ml-auto text-[#4CAF50]">{touched[index] ? `Selected: ${value}` : 'Select a value'}</span>
+            <span className="ml-auto text-[#4CAF50]">
+              {touched[index] 
+                ? t('slide_editors.scales.selected_value', { value }) 
+                : t('slide_editors.scales.select_value')}
+            </span>
           </div>
         </div>
 
@@ -102,7 +112,9 @@ const ScalesParticipantInput = ({
           onChange={(event) => handleSliderChange(index, event.target.value)}
           className="h-2 w-full cursor-pointer appearance-none rounded-full bg-[#2A2A2A]"
           style={{ background: `linear-gradient(90deg, ${color} ${percentage}%, #2A2A2A ${percentage}%)` }}
-          aria-label={isMultiStatement ? `Rate statement ${index + 1}: ${label}` : `Rate: ${label || slide?.question}`}
+          aria-label={isMultiStatement 
+            ? t('slide_editors.scales.rate_statement', { number: index + 1, label }) 
+            : t('slide_editors.scales.rate_label', { label: label || slide?.question })}
           aria-valuemin={minValue}
           aria-valuemax={maxValue}
           aria-valuenow={value}
@@ -114,7 +126,7 @@ const ScalesParticipantInput = ({
               key={`tick-${index}-${tick}`}
               type="button"
               onClick={() => handleSliderChange(index, tick)}
-              aria-label={`Select value ${tick}`}
+              aria-label={t('slide_editors.scales.select_value_aria', { value: tick })}
               className={`rounded px-1 text-[11px] transition ${
                 tick === value ? 'text-[#4CAF50] font-semibold' : 'text-[#6C6C6C] hover:text-[#B0B0B0]'
               }`}
@@ -150,18 +162,18 @@ const ScalesParticipantInput = ({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h3 className="text-lg sm:text-xl font-semibold text-[#E0E0E0]">Response submitted</h3>
-          <p className="mt-2 text-sm text-[#B0B0B0]">Thanks for sharing your rating. Viewing live results...</p>
+          <h3 className="text-lg sm:text-xl font-semibold text-[#E0E0E0]">{t('slide_editors.scales.response_submitted')}</h3>
+          <p className="mt-2 text-sm text-[#B0B0B0]">{t('slide_editors.scales.thanks_rating')}</p>
         </div>
 
         {/* Live Results */}
         {totalResponses > 0 && (
           <div className="space-y-6 rounded-2xl sm:rounded-3xl border border-[#2A2A2A] bg-[#1F1F1F] p-6 sm:p-8 shadow-xl">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl sm:text-2xl font-semibold text-[#E0E0E0]">Live Results</h3>
+              <h3 className="text-xl sm:text-2xl font-semibold text-[#E0E0E0]">{t('slide_editors.scales.live_results')}</h3>
               <div className="flex items-center gap-2 text-sm text-[#9E9E9E]">
                 <div className="w-2 h-2 rounded-full bg-[#4CAF50] animate-pulse"></div>
-                <span>{totalResponses} {totalResponses === 1 ? 'response' : 'responses'}</span>
+                <span>{t('slide_editors.scales.response_count', { count: totalResponses, plural: totalResponses === 1 ? '' : 's' })}</span>
               </div>
             </div>
 
@@ -172,7 +184,7 @@ const ScalesParticipantInput = ({
                   const maxCount = Math.max(...Object.values(scaleDistribution || {}), 1);
                   
                   return (
-                    <div key={`statement-${index}`} className="space-y-3" role="group" aria-label={`Statement ${index + 1}: ${statement}, Average: ${avg.toFixed(1)}`}>
+                    <div key={`statement-${index}`} className="space-y-3" role="group" aria-label={t('slide_editors.scales.statement_average', { number: index + 1, statement, average: avg.toFixed(1) })}>
                       <div className="flex items-center justify-between">
                         <p className="text-base sm:text-lg font-medium text-[#E0E0E0]">
                           {index + 1}. {statement}
@@ -181,7 +193,7 @@ const ScalesParticipantInput = ({
                           <div className="text-lg sm:text-xl font-bold text-[#4CAF50]">
                             {avg.toFixed(1)}
                           </div>
-                          <div className="text-xs text-[#6C6C6C]">Average</div>
+                          <div className="text-xs text-[#6C6C6C]">{t('slide_editors.scales.average')}</div>
                         </div>
                       </div>
                       
@@ -192,7 +204,7 @@ const ScalesParticipantInput = ({
                           const percentage = maxCount > 0 ? (count / maxCount) * 100 : 0;
                           
                           return (
-                            <div key={`dist-${index}-${val}`} className="flex items-center gap-3" role="group" aria-label={`Value ${val}: ${count} responses`}>
+                            <div key={`dist-${index}-${val}`} className="flex items-center gap-3" role="group" aria-label={t('slide_editors.scales.value_responses', { value: val, count })}>
                               <div className="w-8 sm:w-12 text-sm font-medium text-[#E0E0E0]">{val}</div>
                               <div className="flex-1 h-6 sm:h-8 bg-[#2A2A2A] rounded-lg overflow-hidden border border-[#2F2F2F]">
                                 <div
@@ -218,7 +230,7 @@ const ScalesParticipantInput = ({
                   <div className="text-4xl sm:text-5xl font-bold text-[#4CAF50] mb-2">
                     {scaleAverage.toFixed(1)}
                   </div>
-                  <div className="text-sm sm:text-base text-[#6C6C6C]">Average Rating</div>
+                  <div className="text-sm sm:text-base text-[#6C6C6C]">{t('slide_editors.scales.average_rating')}</div>
                 </div>
                 
                 {/* Distribution bars */}
@@ -229,7 +241,7 @@ const ScalesParticipantInput = ({
                     const percentage = maxCount > 0 ? (count / maxCount) * 100 : 0;
                     
                     return (
-                      <div key={`dist-single-${val}`} className="flex items-center gap-3" role="group" aria-label={`Value ${val}: ${count} responses`}>
+                      <div key={`dist-single-${val}`} className="flex items-center gap-3" role="group" aria-label={t('slide_editors.scales.value_responses', { value: val, count })}>
                         <div className="w-8 sm:w-12 text-sm font-medium text-[#E0E0E0]">{val}</div>
                         <div className="flex-1 h-8 sm:h-10 bg-[#2A2A2A] rounded-lg overflow-hidden border border-[#2F2F2F]">
                           <div
@@ -277,12 +289,12 @@ const ScalesParticipantInput = ({
           {isSubmitting ? (
             <>
               <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-b-transparent" />
-              Submitting...
+              {t('slide_editors.scales.submitting')}
             </>
           ) : (
             <>
               <Send className="h-5 w-5" />
-              Submit
+              {t('slide_editors.scales.submit_button')}
             </>
           )}
         </button>

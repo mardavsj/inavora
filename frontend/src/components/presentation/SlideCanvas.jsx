@@ -279,10 +279,10 @@ const SlideCanvas = ({ slide, presentation, isPresenter = false, onSettingsChang
           <div className="w-full max-w-3xl mx-auto">
             <div className="rounded-2xl sm:rounded-3xl border border-[#2F2F2F] bg-[#1F1F1F] shadow-[0_12px_40px_rgba(0,0,0,0.45)] px-4 sm:px-6 lg:px-10 py-6 sm:py-8 lg:py-12 text-center">
               <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-[#E0E0E0] mb-6 sm:mb-8 lg:mb-10">
-                {question || t('slide_editors.pick_answer.default_title')}
+                {question || t('slide_editors.word_cloud.default_title')}
               </h2>
               <div className="h-32 sm:h-48 lg:h-56 flex items-center justify-center rounded-xl sm:rounded-2xl border border-dashed border-[#3A3A3A] bg-[#252525]">
-                <p className="text-xs sm:text-sm text-[#9E9E9E] px-4">Word cloud responses will appear live during the session.</p>
+                <p className="text-xs sm:text-sm text-[#9E9E9E] px-4">{t('slide_editors.word_cloud.preview_message')}</p>
               </div>
             </div>
           </div>
@@ -293,11 +293,11 @@ const SlideCanvas = ({ slide, presentation, isPresenter = false, onSettingsChang
           <div className="w-full max-w-3xl mx-auto">
             <div className="rounded-2xl sm:rounded-3xl border border-[#2F2F2F] bg-[#1F1F1F] shadow-[0_12px_40px_rgba(0,0,0,0.45)] px-4 sm:px-6 lg:px-10 py-6 sm:py-8 lg:py-12 text-center">
               <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-[#E0E0E0] mb-6 sm:mb-8 lg:mb-10">
-                {question || t('slide_editors.pick_answer.default_title')}
+                {question || t('slide_editors.open_ended.default_title')}
               </h2>
               <div className="h-32 sm:h-48 lg:h-56 flex flex-col items-center justify-center gap-2 rounded-xl sm:rounded-2xl border border-dashed border-[#3A3A3A] bg-[#252525] px-4">
-                <p className="text-xs sm:text-sm text-[#9E9E9E]">Participants responses will start populating here.</p>
-                <p className="text-xs text-[#7E7E7E]">Encourage everyone to share detailed thoughts.</p>
+                <p className="text-xs sm:text-sm text-[#9E9E9E]">{t('slide_editors.open_ended.preview_message')}</p>
+                <p className="text-xs text-[#7E7E7E]">{t('slide_editors.open_ended.preview_encourage')}</p>
               </div>
             </div>
           </div>
@@ -314,7 +314,7 @@ const SlideCanvas = ({ slide, presentation, isPresenter = false, onSettingsChang
               <div className="rounded-2xl sm:rounded-3xl border border-[#2F2F2F] bg-[#1F1F1F] shadow-[0_12px_40px_rgba(0,0,0,0.45)]">
                 <div className="border-b border-[#2A2A2A] px-4 sm:px-6 lg:px-10 pt-6 sm:pt-8 lg:pt-10 pb-4 sm:pb-6">
                   <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-[#E0E0E0] text-center">
-                    {question || t('slide_editors.pick_answer.default_title')}
+                    {question || t('slide_editors.scales.default_title')}
                   </h2>
                 </div>
 
@@ -325,7 +325,7 @@ const SlideCanvas = ({ slide, presentation, isPresenter = false, onSettingsChang
                     </div>
                   ) : (
                     statements.map((statement, index) => {
-                      const statementText = typeof statement === 'string' ? statement : (statement?.text || `Statement ${index + 1}`);
+                      const statementText = typeof statement === 'string' ? statement : (statement?.text || t('slide_editors.scales.statement_with_number', { number: index + 1 }));
                       return (
                       <div key={index} className="space-y-2 sm:space-y-3">
                         <div className="flex items-center gap-2 sm:gap-3">
@@ -424,7 +424,7 @@ const SlideCanvas = ({ slide, presentation, isPresenter = false, onSettingsChang
                   ) : (
                     <div className="space-y-3">
                       {hundredPointsItems.map((item, index) => {
-                        const itemLabel = typeof item === 'string' ? item : (item?.label || `Item ${index + 1}`);
+                        const itemLabel = typeof item === 'string' ? item : (item?.label || t('slide_editors.hundred_points.item_with_number', { number: index + 1 }));
                         return (
                         <div key={item.id || index} className="flex items-center gap-4 rounded-2xl border border-[#2F2F2F] bg-[#262626] px-4 sm:px-6 py-3 sm:py-4">
                           <div className="flex-1">

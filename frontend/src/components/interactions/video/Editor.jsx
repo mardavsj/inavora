@@ -231,10 +231,16 @@ const VideoEditor = ({ slide, onUpdate }) => {
                     value={videoUrl}
                     onChange={(e) => handleVideoUrlChange(e.target.value)}
                     className="w-full pl-10 pr-3 py-2 border border-[#2A2A2A] rounded-lg text-sm bg-[#1F1F1F] text-[#E0E0E0] placeholder-[#8A8A8A] focus:ring-2 focus:ring-[#4CAF50] focus:border-transparent outline-none"
-                    placeholder={t('slide_editors.video.url_placeholder')}
+                    placeholder={t('slide_editors.video.url_placeholder', { 
+                      youtube: t('slide_editors.video.youtube_label'),
+                      video: t('slide_editors.video.video_label')
+                    })}
                   />
                 </div>
-                <p className="text-xs text-[#7E7E7E] mt-2 text-center">{t('slide_editors.video.url_hint')}</p>
+                <p className="text-xs text-[#7E7E7E] mt-2 text-center">{t('slide_editors.video.url_hint', { 
+                  youtube: t('slide_editors.video.youtube_label'),
+                  video: t('slide_editors.video.video_label')
+                })}</p>
               </div>
             )}
 

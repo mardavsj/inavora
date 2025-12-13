@@ -933,7 +933,7 @@ export default function Landing() {
                   ))}
                 </ul>
                 <button
-                  onClick={() => navigate('/register')}
+                  onClick={() => navigate(plan.name === t('landing.pricing_institution') ? '/institution/register' : '/register')}
                   className={`w-full py-3 rounded-xl font-bold text-sm transition-all ${plan.highlight
                     ? `bg-gradient-to-r ${plan.color} text-white shadow-lg hover:shadow-teal-500/25`
                     : 'bg-white/10 text-white hover:bg-white/20'

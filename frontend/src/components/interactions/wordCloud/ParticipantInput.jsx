@@ -1,5 +1,6 @@
 import { Send, TrendingUp } from 'lucide-react';
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const MAX_WORD_LENGTH = 20;
 
@@ -14,6 +15,7 @@ const WordCloudParticipantInput = ({
   wordFrequencies = {},
   totalResponses = 0,
 }) => {
+  const { t } = useTranslation();
   if (!slide) return null;
 
   const handleInputChange = (value) => {
@@ -45,10 +47,14 @@ const WordCloudParticipantInput = ({
         {typeof slide.maxWordsPerParticipant === 'number' && !hasSubmitted && (
           <div className="text-center text-[#B0B0B0] mt-3 sm:mt-4 text-xs sm:text-sm space-y-1">
             <p>
-              Enter up to {slide.maxWordsPerParticipant} word{slide.maxWordsPerParticipant > 1 ? 's' : ''}. One word per submission, {MAX_WORD_LENGTH}-character limit.
+              {t('slide_editors.word_cloud.enter_words_instruction', { 
+                count: slide.maxWordsPerParticipant, 
+                plural: slide.maxWordsPerParticipant > 1 ? 's' : '',
+                limit: MAX_WORD_LENGTH
+              })}
             </p>
             <p className="font-medium text-[#4CAF50]">
-              Remaining submissions: {remainingSubmissions}
+              {t('slide_editors.word_cloud.remaining_submissions', { count: remainingSubmissions })}
             </p>
           </div>
         )}
@@ -60,24 +66,32 @@ const WordCloudParticipantInput = ({
             type="text"
             value={textAnswer}
             onChange={(e) => handleInputChange(e.target.value)}
-            placeholder="Type your word(s)"
+            placeholder={t('slide_editors.word_cloud.word_input_placeholder')}
             maxLength={MAX_WORD_LENGTH}
             disabled={hasSubmitted}
-            aria-label="Enter word for word cloud"
+            aria-label={t('slide_editors.word_cloud.word_input_aria_label')}
             aria-describedby="word-cloud-hint"
             className="w-full px-4 py-3 bg-[#2A2A2A] border border-[#2F2F2F] text-[#E0E0E0] rounded-lg focus:ring-2 focus:ring-[#4CAF50] focus:border-[#4CAF50] outline-none placeholder-[#6C6C6C] transition-all"
           />
           <p id="word-cloud-hint" className="sr-only">
-            Enter a word up to {MAX_WORD_LENGTH} characters. {remainingSubmissions > 0 ? `You have ${remainingSubmissions} remaining submission${remainingSubmissions > 1 ? 's' : ''}.` : 'No remaining submissions.'}
+            {t('slide_editors.word_cloud.word_input_hint', { 
+              limit: MAX_WORD_LENGTH,
+              remaining: remainingSubmissions > 0 
+                ? t('slide_editors.word_cloud.remaining_submissions_hint', { 
+                    count: remainingSubmissions, 
+                    plural: remainingSubmissions > 1 ? 's' : '' 
+                  })
+                : t('slide_editors.word_cloud.no_remaining_submissions')
+            })}
           </p>
           <button
             onClick={onSubmit}
             disabled={!textAnswer.trim() || hasSubmitted}
-            aria-label="Submit word"
+            aria-label={t('slide_editors.word_cloud.submit_word_aria_label')}
             className="w-full py-3 sm:py-4 bg-gradient-to-r from-[#388E3C] to-[#2E7D32] hover:from-[#4CAF50] hover:to-[#388E3C] disabled:from-[#1F1F1F] disabled:to-[#1F1F1F] disabled:text-[#6C6C6C] text-white rounded-xl text-lg sm:text-xl font-semibold transition-all active:scale-95 disabled:active:scale-100 flex items-center justify-center gap-2 shadow-lg shadow-[#4CAF50]/20 disabled:shadow-none"
           >
             <Send className="h-5 w-5" />
-            Submit
+            {t('slide_editors.word_cloud.submit_button')}
           </button>
         </div>
       ) : (
@@ -87,7 +101,7 @@ const WordCloudParticipantInput = ({
             <div className="inline-flex items-center gap-3 px-6 py-3 rounded-xl">
               <div className="w-2 h-2 rounded-full bg-[#4CAF50] animate-pulse"></div>
               <p className="text-base sm:text-lg text-[#4CAF50] font-semibold">
-                ✓ Your word{submissionCount > 1 ? 's' : ''} submitted! Viewing live word cloud...
+                {t('slide_editors.word_cloud.word_submitted', { plural: submissionCount > 1 ? 's' : '' })}
               </p>
             </div>
           </div>
@@ -98,12 +112,15 @@ const WordCloudParticipantInput = ({
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-xl sm:text-2xl font-semibold text-[#E0E0E0] flex items-center gap-2">
                   <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6 text-[#4CAF50]" />
-                  Live Word Cloud
+                  {t('slide_editors.word_cloud.live_word_cloud')}
                 </h3>
                 {totalResponses > 0 && (
                   <div className="flex items-center gap-2 text-sm text-[#9E9E9E]">
                     <div className="w-2 h-2 rounded-full bg-[#4CAF50] animate-pulse"></div>
-                    <span>{totalResponses} {totalResponses === 1 ? 'response' : 'responses'}</span>
+                    <span>{t('slide_editors.word_cloud.response_count', { 
+                      count: totalResponses, 
+                      plural: totalResponses === 1 ? '' : 's' 
+                    })}</span>
                   </div>
                 )}
               </div>
@@ -134,7 +151,7 @@ const WordCloudParticipantInput = ({
 
               {sortedWords.length === 0 && (
                 <div className="text-center py-12 text-[#6C6C6C]">
-                  <p>No words submitted yet. Waiting for responses...</p>
+                  <p>{t('slide_editors.word_cloud.no_words_yet')}</p>
                 </div>
               )}
             </div>

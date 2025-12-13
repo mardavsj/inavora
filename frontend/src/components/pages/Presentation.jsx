@@ -670,7 +670,7 @@ export default function Presentation() {
     const newSlide = {
       id: tempId,
       type: slideType,
-      question: slideType === 'instruction' ? 'Instructions' : '',
+      question: slideType === 'instruction' ? t('slide_editors.instruction.instructions_title') : '',
       order: slides.length,
       // Initialize fields based on slide type
       ...(slideType === 'multiple_choice' && {
@@ -685,8 +685,8 @@ export default function Presentation() {
       ...(slideType === 'scales' && {
         minValue: 1,
         maxValue: 5,
-        minLabel: 'Low',
-        maxLabel: 'High',
+        minLabel: t('slide_editors.scales.default_min_label'),
+        maxLabel: t('slide_editors.scales.default_max_label'),
         statements: [{ id: uuidv4(), text: '' }]
       }),
       ...(slideType === 'ranking' && {
@@ -703,8 +703,8 @@ export default function Presentation() {
       }),
       ...(slideType === 'hundred_points' && {
         hundredPointsItems: [
-          { id: uuidv4(), text: '' },
-          { id: uuidv4(), text: '' }
+          { id: uuidv4(), label: '' },
+          { id: uuidv4(), label: '' }
         ]
       }),
       ...(slideType === '2x2_grid' && {
@@ -722,8 +722,8 @@ export default function Presentation() {
       ...(slideType === 'quiz' && {
         quizSettings: {
           options: [
-            { id: uuidv4(), text: 'Option 1' },
-            { id: uuidv4(), text: 'Option 2' }
+            { id: uuidv4(), text: t('slide_editors.quiz.option_placeholder', { number: 1 }) },
+            { id: uuidv4(), text: t('slide_editors.quiz.option_placeholder', { number: 2 }) }
           ],
           correctOptionId: '',
           timeLimit: 30,
@@ -761,7 +761,7 @@ export default function Presentation() {
       }),
       // Instruction slide specific content
       ...(slideType === 'instruction' && {
-        question: 'Instructions',
+        question: t('slide_editors.instruction.instructions_title'),
         content: {
           website: 'www.inavora.com',
           description: 'Join via website or scan QR code'
