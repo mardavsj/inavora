@@ -104,6 +104,13 @@ router.post('/users/verify-payment', verifyInstitutionAdmin, institutionAdminCon
 router.get('/presentations', verifyInstitutionAdmin, institutionAdminController.getInstitutionPresentations);
 
 /**
+ * @route   GET /api/institution-admin/my-account
+ * @desc    Get admin's user account information
+ * @access  Private (Institution Admin)
+ */
+router.get('/my-account', verifyInstitutionAdmin, institutionAdminController.getAdminUserAccount);
+
+/**
  * @route   GET /api/institution-admin/analytics
  * @desc    Get analytics data
  * @access  Private (Institution Admin)

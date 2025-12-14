@@ -72,6 +72,8 @@ const InstitutionAdmin = () => {
     const [presentationsLoading, setPresentationsLoading] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [presentationStatus, setPresentationStatus] = useState('all');
+    const [showMyPresentations, setShowMyPresentations] = useState(false);
+    const [adminUserId, setAdminUserId] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPage, setUsersPage] = useState(1);
     const [pagination, setPagination] = useState({});
@@ -227,6 +229,9 @@ const InstitutionAdmin = () => {
     useEffect(() => {
         if (!isAuthenticated) return;
         
+        // Fetch admin user account when authenticated
+        fetchAdminUserAccount();
+        
         if (activeTab === 'dashboard') {
             fetchStats();
         } else if (activeTab === 'users') {
@@ -324,17 +329,40 @@ const InstitutionAdmin = () => {
         }
     };
 
+    const fetchAdminUserAccount = async () => {
+        try {
+            const response = await api.get('/institution-admin/my-account');
+            if (response.data.success) {
+                if (response.data.data.hasUserAccount && response.data.data.userId) {
+                    setAdminUserId(response.data.data.userId);
+                } else {
+                    // Admin doesn't have a user account yet
+                    setAdminUserId(null);
+                }
+            }
+        } catch (error) {
+            console.error('Error fetching admin user account:', error);
+            setAdminUserId(null);
+            // Not critical, just log the error
+        }
+    };
+
     const fetchPresentations = async () => {
         setPresentationsLoading(true);
         try {
-            const response = await api.get('/institution-admin/presentations', {
-                params: {
-                    page: currentPage,
-                    limit: 20,
-                    search: searchQuery,
-                    status: presentationStatus
-                }
-            });
+            const params = {
+                page: currentPage,
+                limit: 20,
+                search: searchQuery,
+                status: presentationStatus
+            };
+            
+            // If "My Presentations" is enabled and we have admin userId, filter by it
+            if (showMyPresentations && adminUserId) {
+                params.userId = adminUserId;
+            }
+            
+            const response = await api.get('/institution-admin/presentations', { params });
             if (response.data.success) {
                 setPresentations(response.data.data.presentations);
                 setPagination(response.data.data.pagination);
@@ -404,6 +432,15 @@ const InstitutionAdmin = () => {
             generateActivityFeed();
         }
     }, [stats?.totalUsers, stats?.recentPresentations, stats?.livePresentations, users.length]);
+
+    // Refetch presentations when filter changes
+    useEffect(() => {
+        if (isAuthenticated && activeTab === 'presentations') {
+            setCurrentPage(1); // Reset to first page when filter changes
+            fetchPresentations();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [showMyPresentations, adminUserId, searchQuery, presentationStatus, activeTab, isAuthenticated]);
 
     // Helper function to extract emails from text (supports newlines, commas, spaces)
     const extractEmails = (text) => {
@@ -1194,7 +1231,14 @@ const InstitutionAdmin = () => {
                             <span className="hidden sm:inline">{t('institution_admin.logout')}</span>
                         </button>
                         <button
-                            onClick={() => navigate(-1)}
+                            onClick={() => {
+                                // Use browser back, but fallback to home if no history
+                                if (window.history.length > 1) {
+                                    window.history.back();
+                                } else {
+                                    navigate('/');
+                                }
+                            }}
                             className="flex items-center border border-white/30 px-3 py-1 rounded-lg gap-2 text-xs sm:text-sm font-medium text-gray-300 hover:text-white transition-colors"
                         >
                             <ArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -1648,10 +1692,30 @@ const InstitutionAdmin = () => {
                                 }}
                                 className="px-4 py-2 sm:py-3 bg-black/30 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all text-sm sm:text-base"
                             >
-                                <option value="all">{t('institution_admin.all_presentations')}</option>
+                                <option value="all">{t('institution_admin.all') || 'All'}</option>
                                 <option value="live">{t('institution_admin.presentation_status_live')}</option>
                                 <option value="ended">{t('institution_admin.presentation_status_ended')}</option>
                             </select>
+                            <button
+                                onClick={() => {
+                                    if (!adminUserId) {
+                                        toast.error(t('institution_admin.no_user_account') || 'You need a user account to view your presentations. Please create a presentation first.');
+                                        return;
+                                    }
+                                    setShowMyPresentations(!showMyPresentations);
+                                    setCurrentPage(1);
+                                }}
+                                disabled={!adminUserId}
+                                className={`px-4 py-2 sm:py-3 border rounded-lg transition-all text-sm sm:text-base flex items-center gap-2 ${
+                                    showMyPresentations
+                                        ? 'bg-teal-500/20 border-teal-500 text-teal-400'
+                                        : 'bg-black/30 border-white/10 text-white hover:bg-white/10'
+                                } ${!adminUserId ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                title={!adminUserId ? 'Create a presentation first to enable this filter' : ''}
+                            >
+                                <UserCheck className="w-4 h-4" />
+                                {showMyPresentations ? (t('institution_admin.my_presentations') || 'My Presentations') : (t('institution_admin.all_presentations') || 'All Presentations')}
+                            </button>
                         </div>
 
                         {/* Presentations List */}
@@ -1692,14 +1756,13 @@ const InstitutionAdmin = () => {
                                                     </div>
                                                 </div>
                                                 <div className="flex items-center gap-2 sm:gap-3">
-                                                    <a
-                                                        href={`/presentation/${presentation.id}`}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
+                                                    <button
+                                                        onClick={() => navigate(`/presentation/${presentation.id}`)}
                                                         className="p-2 hover:bg-teal-500/20 text-teal-400 rounded-lg transition-colors"
+                                                        title="View Presentation"
                                                     >
                                                         <Eye className="w-4 h-4 sm:w-5 sm:h-5" />
-                                                    </a>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>

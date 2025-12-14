@@ -1,6 +1,7 @@
 const Presentation = require('../models/Presentation');
 const Slide = require('../models/Slide');
 const Response = require('../models/Response');
+const User = require('../models/User');
 const XLSX = require('xlsx');
 const leaderboardService = require('../services/leaderboardService');
 const quizScoringService = require('../services/quizScoringService');
@@ -118,6 +119,8 @@ const getUserPresentations = asyncHandler(async (req, res, next) => {
 const getPresentationById = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
   const userId = req.userId;
+  const isInstitutionAdmin = req.institutionAdmin;
+  const institutionId = req.institution?.id || req.institution?._id;
 
   // First check if presentation exists at all
   const presentationExists = await Presentation.findById(id).lean();
@@ -126,11 +129,61 @@ const getPresentationById = asyncHandler(async (req, res, next) => {
     throw new AppError('Presentation not found', 404, 'RESOURCE_NOT_FOUND');
   }
 
-  // Then check if it belongs to the user
-  const presentation = await Presentation.findOne({ _id: id, userId }).lean();
+  // Check if it belongs to the user (this will work for both regular users and admin's own presentations)
+  let presentation = await Presentation.findOne({ _id: id, userId }).lean();
+
+  // If not found and user is an institution admin, check if presentation belongs to any institution user
+  if (!presentation && isInstitutionAdmin && institutionId) {
+    const mongoose = require('mongoose');
+    const institutionObjectId = mongoose.Types.ObjectId.isValid(institutionId) ? new mongoose.Types.ObjectId(institutionId) : institutionId;
+    
+    // Get all users in this institution (must have both institutionId matching AND isInstitutionUser flag)
+    const institutionUsers = await User.find({ 
+      institutionId: institutionObjectId,
+      isInstitutionUser: true 
+    }).select('_id institutionId').lean();
+    
+    // Also check if admin user exists and belongs to this institution
+    const adminEmail = req.institution?.adminEmail;
+    let adminUser = null;
+    if (adminEmail) {
+      adminUser = await User.findOne({ 
+        email: adminEmail.toLowerCase(),
+        institutionId: institutionObjectId
+      }).select('_id institutionId').lean();
+      
+      // Add admin user to list if it belongs to this institution
+      if (adminUser && adminUser.institutionId && adminUser.institutionId.toString() === institutionId.toString()) {
+        const adminInList = institutionUsers.find(u => u._id.toString() === adminUser._id.toString());
+        if (!adminInList) {
+          institutionUsers.push(adminUser);
+        }
+      }
+    }
+    
+    // Build list of all valid institution user IDs
+    const institutionUserIds = institutionUsers
+      .filter(user => user.institutionId && user.institutionId.toString() === institutionId.toString())
+      .map(u => u._id.toString());
+    
+    // Also check if the presentation's creator user belongs to this institution
+    // (even if they're not in the isInstitutionUser list, if they have the same institutionId)
+    const presentationCreator = await User.findById(presentationExists.userId).select('institutionId').lean();
+    
+    // Check if presentation belongs to any institution user OR if creator has matching institutionId
+    const presentationUserIdStr = presentationExists.userId.toString();
+    const belongsToInstitutionUser = institutionUserIds.includes(presentationUserIdStr);
+    const creatorBelongsToInstitution = presentationCreator && 
+      presentationCreator.institutionId && 
+      presentationCreator.institutionId.toString() === institutionId.toString();
+    
+    if (belongsToInstitutionUser || creatorBelongsToInstitution) {
+      presentation = presentationExists;
+    }
+  }
 
   if (!presentation) {
-    // Presentation exists but doesn't belong to this user
+    // Presentation exists but doesn't belong to this user or their institution
     throw new AppError('Presentation not found or access denied', 404, 'RESOURCE_NOT_FOUND');
   }
 

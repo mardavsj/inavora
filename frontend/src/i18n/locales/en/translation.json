@@ -1144,7 +1144,10 @@
     "presentations_title": "Presentations",
     "presentations_description": "View all presentations by institution users",
     "search_presentations_placeholder": "Search presentations...",
+    "all": "All",
     "all_presentations": "All Presentations",
+    "my_presentations": "My Presentations",
+    "no_user_account": "You need a user account to view your presentations. Please create a presentation first.",
     "presentation_status_live": "Live",
     "presentation_status_ended": "Ended",
     "loading_presentations": "Loading presentations...",
@@ -1462,6 +1465,7 @@
   "toasts": {
     "presentation": {
       "failed_to_load": "Failed to load presentation",
+      "not_found": "Presentation not found or access denied",
       "created": "Presentation created",
       "failed_to_create": "Failed to create presentation",
       "saved": "Presentation saved",

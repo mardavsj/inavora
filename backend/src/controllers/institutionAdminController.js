@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const XLSX = require('xlsx');
 const crypto = require('crypto');
+const mongoose = require('mongoose');
 const Razorpay = require('razorpay');
 const Institution = require('../models/Institution');
 const User = require('../models/User');
@@ -466,17 +467,96 @@ const removeInstitutionUser = asyncHandler(async (req, res, next) => {
  */
 const getInstitutionPresentations = asyncHandler(async (req, res, next) => {
   const institutionId = req.institutionId;
-  const { page = 1, limit = 20, search = '', status = 'all' } = req.query;
+  const { page = 1, limit = 20, search = '', status = 'all', userId } = req.query;
 
+  // Get all users that are properly linked to this institution
+  // Must have both institutionId matching AND isInstitutionUser flag set
   const institutionUsers = await User.find({ 
-    institutionId,
+    institutionId: mongoose.Types.ObjectId.isValid(institutionId) ? new mongoose.Types.ObjectId(institutionId) : institutionId,
     isInstitutionUser: true 
-  }).select('_id email displayName').lean();
+  }).select('_id email displayName institutionId').lean();
 
-  const userIds = institutionUsers.map(user => user._id);
-  const userMap = new Map(institutionUsers.map(user => [user._id.toString(), user]));
+  // Also get admin user account if it exists and verify it belongs to this institution
+  const adminEmail = req.institutionAdmin?.email || req.institution?.adminEmail;
+  let adminUser = null;
+  if (adminEmail) {
+    adminUser = await User.findOne({ 
+      email: adminEmail.toLowerCase(),
+      institutionId: mongoose.Types.ObjectId.isValid(institutionId) ? new mongoose.Types.ObjectId(institutionId) : institutionId
+    }).select('_id email displayName institutionId isInstitutionUser').lean();
+    
+    // Only add admin user if it actually belongs to this institution
+    // Must have matching institutionId (already filtered in query above)
+    if (adminUser && adminUser.institutionId && adminUser.institutionId.toString() === institutionId.toString()) {
+      const adminInList = institutionUsers.find(u => u._id.toString() === adminUser._id.toString());
+      if (!adminInList) {
+        institutionUsers.push({
+          _id: adminUser._id,
+          email: adminUser.email,
+          displayName: adminUser.displayName,
+          institutionId: adminUser.institutionId
+        });
+      }
+    }
+  }
 
-  const query = { userId: { $in: userIds } };
+  // Only include userIds from users that are confirmed to belong to this institution
+  const userIds = institutionUsers
+    .filter(user => user.institutionId && user.institutionId.toString() === institutionId.toString())
+    .map(user => user._id);
+  
+  const userMap = new Map(institutionUsers
+    .filter(user => user.institutionId && user.institutionId.toString() === institutionId.toString())
+    .map(user => [user._id.toString(), user]));
+
+  // If userId is provided, filter by that specific user (for "My Presentations")
+  // Otherwise, show all institution users' presentations
+  let query;
+  if (userId) {
+    // Verify the userId belongs to this institution
+    // Only allow if the user is in the verified institutionUsers list with matching institutionId
+    const targetUser = institutionUsers.find(u => 
+      u._id.toString() === userId.toString() && 
+      u.institutionId && 
+      u.institutionId.toString() === institutionId.toString()
+    );
+    
+    if (!targetUser) {
+      // User not found or doesn't belong to this institution, return empty result
+      return res.status(200).json({
+        success: true,
+        data: {
+          presentations: [],
+          pagination: {
+            page: parseInt(page),
+            limit: parseInt(limit),
+            total: 0,
+            pages: 0
+          }
+        }
+      });
+    }
+    // Convert userId string to ObjectId for MongoDB query
+    query = { userId: mongoose.Types.ObjectId.isValid(userId) ? new mongoose.Types.ObjectId(userId) : userId };
+  } else {
+    // Only query presentations from users that are confirmed to belong to this institution
+    if (userIds.length === 0) {
+      // No valid institution users, return empty result
+      return res.status(200).json({
+        success: true,
+        data: {
+          presentations: [],
+          pagination: {
+            page: parseInt(page),
+            limit: parseInt(limit),
+            total: 0,
+            pages: 0
+          }
+        }
+      });
+    }
+    query = { userId: { $in: userIds } };
+  }
 
   if (search) {
     query.title = { $regex: search, $options: 'i' };
@@ -542,6 +622,62 @@ const getInstitutionPresentations = asyncHandler(async (req, res, next) => {
         total,
         pages: Math.ceil(total / parseInt(limit))
       }
+    }
+  });
+});
+
+/**
+ * Get Admin User Account
+ * @route GET /api/institution-admin/my-account
+ * @access Private (Institution Admin)
+ */
+const getAdminUserAccount = asyncHandler(async (req, res, next) => {
+  const institutionId = req.institutionId;
+  const adminEmail = req.institutionAdmin?.email || req.institution?.adminEmail;
+
+  if (!adminEmail) {
+    throw new AppError('Admin email not found', 404, 'RESOURCE_NOT_FOUND');
+  }
+
+  // First, try to find user by email and institutionId
+  let user = await User.findOne({ 
+    email: adminEmail.toLowerCase(),
+    institutionId 
+  }).select('_id email displayName').lean();
+
+  // If not found, try to find by email only (user might exist but not be linked to institution yet)
+  if (!user) {
+    user = await User.findOne({ 
+      email: adminEmail.toLowerCase()
+    }).select('_id email displayName institutionId').lean();
+    
+    // If user exists but doesn't belong to this institution, still return it
+    // (they might be the admin but the account wasn't properly linked)
+    if (user && user.institutionId && user.institutionId.toString() !== institutionId.toString()) {
+      // User belongs to different institution, don't return it
+      user = null;
+    }
+  }
+
+  if (!user) {
+    // Admin might not have a user account yet, return null
+    return res.status(200).json({
+      success: true,
+      data: {
+        userId: null,
+        email: adminEmail,
+        hasUserAccount: false
+      }
+    });
+  }
+
+  res.status(200).json({
+    success: true,
+    data: {
+      userId: user._id,
+      email: user.email,
+      displayName: user.displayName,
+      hasUserAccount: true
     }
   });
 });
@@ -1751,6 +1887,7 @@ module.exports = {
   removeInstitutionUser,
   bulkImportUsers,
   getInstitutionPresentations,
+  getAdminUserAccount,
   getAnalytics,
   updateBranding,
   updateSettings,
