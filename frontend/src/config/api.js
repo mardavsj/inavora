@@ -52,10 +52,10 @@ api.interceptors.response.use(
       const isInstitutionAdminRoute = error.config?.url?.includes('/institution-admin');
       
       if (isSuperAdminRoute) {
-        // Remove super admin token and redirect to super admin page
+        // Remove super admin token and redirect to super admin login
         sessionStorage.removeItem('superAdminToken');
-        if (window.location.pathname === '/super-admin') {
-          window.location.reload();
+        if (window.location.pathname.startsWith('/super-admin') && window.location.pathname !== '/super-admin/login') {
+          window.location.href = '/super-admin/login';
         }
       } else if (isInstitutionAdminRoute) {
         // Remove institution admin token and redirect to institution admin page

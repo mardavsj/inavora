@@ -23,7 +23,19 @@ const Careers = lazy(() => import('./components/pages/Careers'));
 const Contact = lazy(() => import('./components/pages/Contact'));
 const PrivacyPolicy = lazy(() => import('./components/pages/PrivacyPolicy'));
 const TermsOfService = lazy(() => import('./components/pages/TermsOfService'));
-const SuperAdmin = lazy(() => import('./components/pages/SuperAdmin'));
+const SuperAdminLayout = lazy(() => import('./components/SuperAdmin/SuperAdminLayout'));
+const SuperAdminLogin = lazy(() => import('./components/SuperAdmin/pages/SuperAdminLogin'));
+const DashboardPage = lazy(() => import('./components/SuperAdmin/pages/DashboardPage'));
+const UsersPage = lazy(() => import('./components/SuperAdmin/pages/UsersPage'));
+const InstitutionsPage = lazy(() => import('./components/SuperAdmin/pages/InstitutionsPage'));
+const PaymentsPage = lazy(() => import('./components/SuperAdmin/pages/PaymentsPage'));
+const AnalyticsPage = lazy(() => import('./components/SuperAdmin/pages/AnalyticsPage'));
+const PresentationsPage = lazy(() => import('./components/SuperAdmin/pages/PresentationsPage'));
+const SystemPage = lazy(() => import('./components/SuperAdmin/pages/SystemPage'));
+const ActivityPage = lazy(() => import('./components/SuperAdmin/pages/ActivityPage'));
+const SettingsPage = lazy(() => import('./components/SuperAdmin/pages/SettingsPage'));
+const JobsPage = lazy(() => import('./components/SuperAdmin/pages/JobsPage'));
+const ApplicationsPage = lazy(() => import('./components/SuperAdmin/pages/ApplicationsPage'));
 const InstitutionAdmin = lazy(() => import('./components/InstitutionAdmin/InstitutionAdmin'));
 const InstitutionRegister = lazy(() => import('./components/pages/InstitutionRegister'));
 
@@ -104,7 +116,7 @@ function PageTitleUpdater() {
       title = t('page_titles.privacy_policy');
     } else if (path === '/terms-of-service') {
       title = t('page_titles.terms_of_service');
-    } else if (path === '/super-admin') {
+    } else if (path.startsWith('/super-admin')) {
       title = t('page_titles.super_admin');
     } else if (path === '/institution-admin') {
       title = t('page_titles.institution_admin');
@@ -141,7 +153,24 @@ function App() {
               <Route path="/contact" element={<Contact />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/terms-of-service" element={<TermsOfService />} />
-              <Route path="/super-admin" element={<SuperAdmin />} />
+              
+              {/* Super Admin Routes */}
+              <Route path="/super-admin/login" element={<SuperAdminLogin />} />
+              <Route path="/super-admin" element={<SuperAdminLayout />}>
+                <Route index element={<DashboardPage />} />
+                <Route path="dashboard" element={<DashboardPage />} />
+                <Route path="users" element={<UsersPage />} />
+                <Route path="institutions" element={<InstitutionsPage />} />
+                <Route path="payments" element={<PaymentsPage />} />
+                <Route path="analytics" element={<AnalyticsPage />} />
+                <Route path="presentations" element={<PresentationsPage />} />
+                <Route path="system" element={<SystemPage />} />
+                <Route path="activity" element={<ActivityPage />} />
+                <Route path="settings" element={<SettingsPage />} />
+                <Route path="jobs" element={<JobsPage />} />
+                <Route path="applications" element={<ApplicationsPage />} />
+              </Route>
+              
               <Route path="/institution-admin" element={<InstitutionAdmin />} />
               <Route path="/institution/register" element={<InstitutionRegister />} />
               <Route path="/institution/register/verify" element={<InstitutionRegister />} />

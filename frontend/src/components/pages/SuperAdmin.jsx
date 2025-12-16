@@ -13,8 +13,20 @@ import { io } from 'socket.io-client';
 import { 
   TrendingUp, Briefcase, FileText, Lock, ArrowLeft, Plus, Edit2, Trash2, 
   CheckCircle, Clock, MapPin, Users, Download, X, Eye, ChevronDown,
-  ChevronUp, Filter, Search, Bell
+  ChevronUp, Filter, Search, Bell, Building2, DollarSign, Presentation, Save, 
+  Activity, Settings, List, Menu, X as XIcon, LogOut, Home, LayoutDashboard
 } from 'lucide-react';
+
+// Super Admin Components
+import OverviewStats from '../SuperAdmin/Dashboard/OverviewStats';
+import UsersList from '../SuperAdmin/Users/UsersList';
+import InstitutionsList from '../SuperAdmin/Institutions/InstitutionsList';
+import PaymentsList from '../SuperAdmin/Payments/PaymentsList';
+import AnalyticsDashboard from '../SuperAdmin/Analytics/AnalyticsDashboard';
+import PresentationsList from '../SuperAdmin/Presentations/PresentationsList';
+import SystemHealth from '../SuperAdmin/System/SystemHealth';
+import SettingsPanel from '../SuperAdmin/Settings/SettingsPanel';
+import ActivityLogs from '../SuperAdmin/Activity/ActivityLogs';
 
 const SuperAdmin = () => {
   const { t } = useTranslation();
@@ -23,6 +35,8 @@ const SuperAdmin = () => {
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [stats, setStats] = useState({});
   const [jobPostings, setJobPostings] = useState([]);
   const [applications, setApplications] = useState([]);
@@ -33,12 +47,43 @@ const SuperAdmin = () => {
   const [loading, setLoading] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const fileInputRef = useRef(null);
+  const [formData, setFormData] = useState({
+    title: '',
+    department: '',
+    location: 'Remote / Chennai',
+    type: 'Full-time',
+    description: '',
+    requirements: [],
+    responsibilities: [],
+    benefits: [],
+    salaryRange: { min: '', max: '', currency: 'INR' },
+    experienceLevel: 'Mid Level',
+    status: 'draft',
+    expiresAt: ''
+  });
+  const [newRequirement, setNewRequirement] = useState('');
+  const [newResponsibility, setNewResponsibility] = useState('');
+  const [newBenefit, setNewBenefit] = useState('');
+
+  // Navigation items
+  const navItems = [
+    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, badge: null },
+    { id: 'users', label: 'Users', icon: Users, badge: null },
+    { id: 'institutions', label: 'Institutions', icon: Building2, badge: null },
+    { id: 'payments', label: 'Payments', icon: DollarSign, badge: null },
+    { id: 'analytics', label: 'Analytics', icon: TrendingUp, badge: null },
+    { id: 'presentations', label: 'Presentations', icon: Presentation, badge: null },
+    { id: 'system', label: 'System', icon: Activity, badge: null },
+    { id: 'activity', label: 'Activity Logs', icon: List, badge: null },
+    { id: 'settings', label: 'Settings', icon: Settings, badge: null },
+    { id: 'jobs', label: 'Job Postings', icon: Briefcase, badge: null },
+    { id: 'applications', label: 'Applications', icon: FileText, badge: null }
+  ];
 
   // Check authentication on mount
   useEffect(() => {
     const token = sessionStorage.getItem('superAdminToken');
     if (token) {
-      // Verify token with backend
       verifyToken(token);
     }
   }, []);
@@ -111,7 +156,6 @@ const SuperAdmin = () => {
       const response = await api.post('/super-admin/login', { password });
       
       if (response.data.success && response.data.token) {
-        // Store token in sessionStorage
         sessionStorage.setItem('superAdminToken', response.data.token);
         setIsAuthenticated(true);
         setPassword('');
@@ -265,19 +309,15 @@ const SuperAdmin = () => {
 
   const addItem = (type, value) => {
     if (value.trim()) {
-      // Split by newlines to handle pasted multi-line content
       const lines = value.split(/\r?\n/).filter(line => line.trim());
-      
-      // Process each line: remove bullet points, numbers, dashes, and trim
       const processedItems = lines.map(line => {
-        // Remove common bullet point markers: •, -, *, numbers with dots, etc.
         let cleaned = line.trim()
-          .replace(/^[•\-\*]\s*/, '') // Remove bullet points
-          .replace(/^\d+[\.\)]\s*/, '') // Remove numbered lists (1., 2), etc.)
-          .replace(/^[○●▪▫]\s*/, '') // Remove other bullet types
+          .replace(/^[•\-\*]\s*/, '')
+          .replace(/^\d+[\.\)]\s*/, '')
+          .replace(/^[○●▪▫]\s*/, '')
           .trim();
         return cleaned;
-      }).filter(item => item.length > 0); // Remove empty items
+      }).filter(item => item.length > 0);
 
       if (processedItems.length > 0) {
         setFormData(prev => ({
@@ -309,31 +349,20 @@ const SuperAdmin = () => {
 
   const handleDownloadResume = async (resumeUrl, fileName) => {
     try {
-      // Fetch the file
       const response = await fetch(resumeUrl);
       const blob = await response.blob();
-      
-      // Create a blob URL
       const blobUrl = window.URL.createObjectURL(blob);
-      
-      // Create a temporary link element
       const link = document.createElement('a');
       link.href = blobUrl;
       link.download = fileName || 'resume.pdf';
       document.body.appendChild(link);
-      
-      // Trigger download
       link.click();
-      
-      // Cleanup
       document.body.removeChild(link);
       window.URL.revokeObjectURL(blobUrl);
-      
       toast.success(t('super_admin.resume_downloaded'));
     } catch (error) {
       console.error('Error downloading resume:', error);
       toast.error(t('super_admin.download_resume_error'));
-      // Fallback: open in new tab
       window.open(resumeUrl, '_blank');
     }
   };
@@ -352,30 +381,30 @@ const SuperAdmin = () => {
   // Show password modal if not authenticated
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-[#0f172a] text-white overflow-x-hidden font-sans flex items-center justify-center p-4">
-        {/* Background */}
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white flex items-center justify-center p-4">
         <div className="fixed inset-0 z-0 pointer-events-none">
-          <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-blue-600/20 blur-[120px] animate-pulse" />
-          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-teal-600/10 blur-[120px] animate-pulse delay-1000" />
+          <div className="absolute top-0 left-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl" />
         </div>
 
-        {/* Password Modal */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="relative z-10 bg-[#1e293b] border border-white/10 rounded-2xl sm:rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl"
+          className="relative z-10 bg-slate-800/50 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-8 max-w-md w-full shadow-2xl"
         >
-          <div className="text-center mb-6">
-            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-blue-500 to-teal-400 flex items-center justify-center shadow-lg shadow-blue-500/20">
-              <Lock className="w-8 h-8 text-white" />
+          <div className="text-center mb-8">
+            <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-blue-500 to-teal-500 flex items-center justify-center shadow-lg shadow-blue-500/30">
+              <Lock className="w-10 h-10 text-white" />
             </div>
-            <h2 className="text-2xl sm:text-3xl font-bold mb-2">Super Admin Access</h2>
-            <p className="text-gray-400 text-sm sm:text-base">Please enter the password to continue</p>
+            <h2 className="text-3xl font-bold mb-2 bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
+              Super Admin Access
+            </h2>
+            <p className="text-slate-400">Enter your credentials to continue</p>
           </div>
 
-          <form onSubmit={handlePasswordSubmit} className="space-y-4">
+          <form onSubmit={handlePasswordSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Password</label>
+              <label className="block text-sm font-medium text-slate-300 mb-2">Password</label>
               <input
                 type="password"
                 value={password}
@@ -383,8 +412,8 @@ const SuperAdmin = () => {
                   setPassword(e.target.value);
                   setPasswordError('');
                 }}
-                className="w-full px-4 py-3 bg-black/30 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all"
-                placeholder="Enter password"
+                className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                placeholder="Enter admin password"
                 autoFocus
               />
               {passwordError && (
@@ -394,7 +423,7 @@ const SuperAdmin = () => {
 
             <button
               type="submit"
-              className="w-full py-3 bg-gradient-to-r from-blue-600 to-teal-500 text-white font-bold rounded-lg hover:shadow-lg hover:shadow-teal-500/25 transition-all"
+              className="w-full py-3 bg-gradient-to-r from-blue-600 to-teal-500 text-white font-semibold rounded-lg hover:shadow-lg hover:shadow-blue-500/25 transition-all"
             >
               Access Dashboard
             </button>
@@ -403,7 +432,7 @@ const SuperAdmin = () => {
           <div className="mt-6 text-center">
             <button
               onClick={() => navigate('/')}
-              className="text-gray-400 hover:text-white text-sm transition-colors flex items-center justify-center gap-2 mx-auto"
+              className="text-slate-400 hover:text-white text-sm transition-colors flex items-center justify-center gap-2 mx-auto"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to Home
@@ -415,314 +444,334 @@ const SuperAdmin = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#0f172a] text-white overflow-x-hidden font-sans">
-      {/* Background */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-blue-600/20 blur-[120px] animate-pulse" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-teal-600/10 blur-[120px] animate-pulse delay-1000" />
-      </div>
-
-      {/* Navbar */}
-      <nav className="fixed top-0 left-0 right-0 z-40 backdrop-blur-md bg-[#0f172a]/80 border-b border-white/5">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div
-              className="flex items-center gap-2 cursor-pointer"
-              onClick={() => navigate('/')}
-            >
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-teal-400 flex items-center justify-center shadow-lg shadow-blue-500/20">
-                <span className="text-xl font-bold text-white">𝑖</span>
+    <div className="min-h-screen bg-slate-950 text-white flex">
+      {/* Sidebar */}
+      <aside className={`
+        fixed lg:static inset-y-0 left-0 z-50
+        w-64 bg-slate-900/95 backdrop-blur-xl border-r border-slate-800
+        transform transition-transform duration-300 ease-in-out
+        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+        ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+      `}>
+        <div className="flex flex-col h-full">
+          {/* Logo */}
+          <div className="p-6 border-b border-slate-800">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-teal-500 flex items-center justify-center shadow-lg shadow-blue-500/30">
+                  <span className="text-xl font-bold text-white">𝑖</span>
+                </div>
+                <div>
+                  <h1 className="text-lg font-bold bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
+                    Inavora
+                  </h1>
+                  <p className="text-xs text-slate-500">Super Admin</p>
+                </div>
               </div>
-              <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-300">Inavora</span>
+              <button
+                onClick={() => setSidebarOpen(false)}
+                className="lg:hidden p-2 hover:bg-slate-800 rounded-lg"
+              >
+                <XIcon className="w-5 h-5" />
+              </button>
             </div>
-            <span className="text-sm text-gray-400">Super Admin</span>
           </div>
 
-          <div className="flex items-center gap-4">
-            {notifications.length > 0 && (
-              <div className="relative">
-                <Bell className="w-5 h-5 text-teal-400" />
-                <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-xs flex items-center justify-center">
-                  {notifications.length}
-                </span>
-              </div>
-            )}
+          {/* Navigation */}
+          <nav className="flex-1 overflow-y-auto p-4 space-y-1">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeTab === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    setActiveTab(item.id);
+                    setMobileMenuOpen(false);
+                  }}
+                  className={`
+                    w-full flex items-center gap-3 px-4 py-3 rounded-lg
+                    transition-all duration-200
+                    ${isActive 
+                      ? 'bg-gradient-to-r from-blue-500/20 to-teal-500/20 text-white border border-blue-500/30 shadow-lg shadow-blue-500/10' 
+                      : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+                    }
+                  `}
+                >
+                  <Icon className={`w-5 h-5 ${isActive ? 'text-blue-400' : ''}`} />
+                  <span className="font-medium">{item.label}</span>
+                  {item.badge && (
+                    <span className="ml-auto px-2 py-0.5 text-xs bg-red-500 text-white rounded-full">
+                      {item.badge}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </nav>
+
+          {/* Footer */}
+          <div className="p-4 border-t border-slate-800">
             <button
               onClick={() => {
                 sessionStorage.removeItem('superAdminToken');
                 setIsAuthenticated(false);
-                toast.success(t('super_admin.logged_out'));
+                toast.success('Logged out successfully');
                 navigate('/');
               }}
-              className="flex items-center border border-red-500/30 px-3 py-1 rounded-lg gap-2 text-sm font-medium text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors"
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all"
             >
-              <Lock className="w-4 h-4" />
-              {t('super_admin.logout')}
-            </button>
-            <button
-              onClick={() => navigate(-1)}
-              className="flex items-center border border-white/30 px-3 py-1 rounded-lg gap-2 text-sm font-medium text-gray-300 hover:text-white transition-colors"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              {t('super_admin.back')}
+              <LogOut className="w-5 h-5" />
+              <span className="font-medium">Logout</span>
             </button>
           </div>
         </div>
-      </nav>
+      </aside>
 
-      <main className="relative z-10 pt-24 pb-20 container mx-auto px-6">
-        {/* Tabs */}
-        <div className="flex gap-4 mb-8 border-b border-white/10">
-          {[
-            { id: 'dashboard', label: 'Dashboard', icon: TrendingUp },
-            { id: 'jobs', label: 'Job Postings', icon: Briefcase },
-            { id: 'applications', label: 'Applications', icon: FileText }
-          ].map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-6 py-3 border-b-2 transition-colors ${
-                activeTab === tab.id
-                  ? 'border-teal-400 text-teal-400'
-                  : 'border-transparent text-gray-400 hover:text-white'
-              }`}
-            >
-              <tab.icon className="w-4 h-4" />
-              {tab.label}
-            </button>
-          ))}
-        </div>
+      {/* Overlay for mobile */}
+      {mobileMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
 
-        {/* Dashboard Tab */}
-        {activeTab === 'dashboard' && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="space-y-6"
-          >
-            {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              <div className="bg-white/5 border border-white/10 p-6 rounded-2xl">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-gray-400 text-sm">{t('super_admin.stats.total_jobs')}</span>
-                  <Briefcase className="w-5 h-5 text-blue-400" />
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col min-w-0">
+        {/* Top Header */}
+        <header className="sticky top-0 z-30 bg-slate-900/80 backdrop-blur-xl border-b border-slate-800">
+          <div className="px-4 sm:px-6 lg:px-8 py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <button
+                  onClick={() => setMobileMenuOpen(true)}
+                  className="lg:hidden p-2 hover:bg-slate-800 rounded-lg"
+                >
+                  <Menu className="w-6 h-6" />
+                </button>
+                <button
+                  onClick={() => setSidebarOpen(!sidebarOpen)}
+                  className="hidden lg:block p-2 hover:bg-slate-800 rounded-lg"
+                >
+                  <Menu className="w-6 h-6" />
+                </button>
+                <div>
+                  <h2 className="text-xl font-bold">
+                    {navItems.find(item => item.id === activeTab)?.label || 'Dashboard'}
+                  </h2>
+                  <p className="text-sm text-slate-400">Manage your platform</p>
                 </div>
-                <p className="text-3xl font-bold">{stats.totalJobs || 0}</p>
-                <p className="text-sm text-gray-400 mt-1">{stats.activeJobs || 0} {t('super_admin.stats.active')}</p>
               </div>
-              <div className="bg-white/5 border border-white/10 p-6 rounded-2xl">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-gray-400 text-sm">{t('super_admin.stats.total_applications')}</span>
-                  <FileText className="w-5 h-5 text-teal-400" />
-                </div>
-                <p className="text-3xl font-bold">{stats.totalApplications || 0}</p>
-                <p className="text-sm text-gray-400 mt-1">{stats.pendingApplications || 0} {t('super_admin.stats.pending')}</p>
-              </div>
-              <div className="bg-white/5 border border-white/10 p-6 rounded-2xl">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-gray-400 text-sm">{t('super_admin.stats.active_jobs')}</span>
-                  <CheckCircle className="w-5 h-5 text-green-400" />
-                </div>
-                <p className="text-3xl font-bold">{stats.activeJobs || 0}</p>
-              </div>
-              <div className="bg-white/5 border border-white/10 p-6 rounded-2xl">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-gray-400 text-sm">{t('super_admin.stats.pending_review')}</span>
-                  <Clock className="w-5 h-5 text-yellow-400" />
-                </div>
-                <p className="text-3xl font-bold">{stats.pendingApplications || 0}</p>
+
+              <div className="flex items-center gap-3">
+                {notifications.length > 0 && (
+                  <button className="relative p-2 hover:bg-slate-800 rounded-lg">
+                    <Bell className="w-5 h-5 text-slate-400" />
+                    <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
+                  </button>
+                )}
+                <button
+                  onClick={() => navigate('/')}
+                  className="p-2 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white"
+                >
+                  <Home className="w-5 h-5" />
+                </button>
               </div>
             </div>
+          </div>
+        </header>
 
-            {/* Recent Applications */}
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-              <h3 className="text-xl font-bold mb-4">{t('super_admin.recent_applications')}</h3>
-              <div className="space-y-3">
-                {stats.recentApplications?.slice(0, 5).map((app, index) => (
-                  <div key={index} className="flex items-center justify-between p-4 bg-black/20 rounded-xl">
-                    <div>
-                      <p className="font-medium">{app.firstName} {app.lastName}</p>
-                      <p className="text-sm text-gray-400">{app.position}</p>
-                    </div>
-                    <span className={`px-3 py-1 rounded-full text-xs ${getApplicationStatusColor(app.status)}`}>
-                      {app.status}
-                    </span>
-                  </div>
-                )) || <p className="text-gray-400">{t('super_admin.no_recent_applications')}</p>}
-              </div>
-            </div>
-          </motion.div>
-        )}
-
-        {/* Job Postings Tab */}
-        {activeTab === 'jobs' && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold">{t('super_admin.job_postings')}</h2>
-              <button
-                onClick={() => handleOpenModal()}
-                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-teal-500 text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-teal-500/25 transition-all"
+        {/* Page Content */}
+        <main className="flex-1 overflow-y-auto bg-slate-950">
+          <div className="p-4 sm:p-6 lg:p-8">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTab}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.2 }}
               >
-                <Plus className="w-5 h-5" />
-                {t('super_admin.create_job_posting')}
-              </button>
-            </div>
+                {/* Dashboard Tab */}
+                {activeTab === 'dashboard' && <OverviewStats />}
 
-            <div className="grid gap-4">
-              {jobPostings.map((job) => (
-                <div key={job._id} className="bg-white/5 border border-white/10 p-6 rounded-2xl">
-                  <div className="flex items-start justify-between mb-4">
+                {/* Users Tab */}
+                {activeTab === 'users' && <UsersList />}
+
+                {/* Institutions Tab */}
+                {activeTab === 'institutions' && <InstitutionsList />}
+
+                {/* Payments Tab */}
+                {activeTab === 'payments' && <PaymentsList />}
+
+                {/* Analytics Tab */}
+                {activeTab === 'analytics' && <AnalyticsDashboard />}
+
+                {/* Presentations Tab */}
+                {activeTab === 'presentations' && <PresentationsList />}
+
+                {/* System Health Tab */}
+                {activeTab === 'system' && <SystemHealth />}
+
+                {/* Activity Logs Tab */}
+                {activeTab === 'activity' && <ActivityLogs />}
+
+                {/* Settings Tab */}
+                {activeTab === 'settings' && <SettingsPanel />}
+
+                {/* Job Postings Tab */}
+                {activeTab === 'jobs' && (
+                  <div className="space-y-6">
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <h2 className="text-2xl font-bold">Job Postings</h2>
+                        <p className="text-slate-400 mt-1">Manage job postings and applications</p>
+                      </div>
+                      <button
+                        onClick={() => handleOpenModal()}
+                        className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-teal-500 text-white font-semibold rounded-lg hover:shadow-lg hover:shadow-blue-500/25 transition-all"
+                      >
+                        <Plus className="w-5 h-5" />
+                        Create Job Posting
+                      </button>
+                    </div>
+
+                    <div className="grid gap-4">
+                      {jobPostings.map((job) => (
+                        <div key={job._id} className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-slate-700 transition-colors">
+                          <div className="flex items-start justify-between mb-4">
+                            <div>
+                              <h3 className="text-xl font-bold mb-2">{job.title}</h3>
+                              <div className="flex flex-wrap gap-3 text-sm text-slate-400">
+                                <span className="flex items-center gap-1">
+                                  <Briefcase className="w-4 h-4" />
+                                  {job.department}
+                                </span>
+                                <span className="flex items-center gap-1">
+                                  <MapPin className="w-4 h-4" />
+                                  {job.location}
+                                </span>
+                                <span className="flex items-center gap-1">
+                                  <Users className="w-4 h-4" />
+                                  {job.applicationCount || 0} applications
+                                </span>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <span className={`px-3 py-1 rounded-full text-xs border ${getStatusColor(job.status)}`}>
+                                {job.status}
+                              </span>
+                              <button
+                                onClick={() => handleOpenModal(job)}
+                                className="p-2 hover:bg-slate-800 rounded-lg transition-colors"
+                              >
+                                <Edit2 className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={() => handleDelete(job._id)}
+                                className="p-2 hover:bg-red-500/20 rounded-lg transition-colors text-red-400"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </div>
+                          <p className="text-slate-300 line-clamp-2">{job.description}</p>
+                        </div>
+                      ))}
+                      {jobPostings.length === 0 && (
+                        <div className="text-center py-12 text-slate-400">
+                          <Briefcase className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                          <p>No job postings yet</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Applications Tab */}
+                {activeTab === 'applications' && (
+                  <div className="space-y-6">
                     <div>
-                      <h3 className="text-xl font-bold mb-2">{job.title}</h3>
-                      <div className="flex flex-wrap gap-3 text-sm text-gray-400">
-                        <span className="flex items-center gap-1">
-                          <Briefcase className="w-4 h-4" />
-                          {job.department}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <MapPin className="w-4 h-4" />
-                          {job.location}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Users className="w-4 h-4" />
-                          {job.applicationCount || 0} applications
-                        </span>
-                      </div>
+                      <h2 className="text-2xl font-bold">Job Applications</h2>
+                      <p className="text-slate-400 mt-1">Review and manage job applications</p>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <span className={`px-3 py-1 rounded-full text-xs border ${getStatusColor(job.status)}`}>
-                        {job.status}
-                      </span>
-                      <button
-                        onClick={() => handleOpenModal(job)}
-                        className="p-2 hover:bg-white/10 rounded-lg transition-colors"
-                      >
-                        <Edit2 className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(job._id)}
-                        className="p-2 hover:bg-red-500/20 rounded-lg transition-colors text-red-400"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                    <div className="space-y-4">
+                      {applications.map((app) => (
+                        <div key={app._id} className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-slate-700 transition-colors">
+                          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">
+                            <div className="flex-1 cursor-pointer" onClick={() => {
+                              setSelectedApplication(app);
+                              setIsApplicationModalOpen(true);
+                            }}>
+                              <h3 className="text-lg font-bold">{app.firstName} {app.lastName}</h3>
+                              <p className="text-slate-400">{app.email}</p>
+                              <p className="text-sm text-slate-500 mt-1">{app.position} - {app.department}</p>
+                              <p className="text-xs text-slate-600 mt-1">
+                                Applied: {new Date(app.createdAt).toLocaleDateString()}
+                              </p>
+                            </div>
+                            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                              <span className={`px-3 py-1.5 rounded-full text-xs font-medium border ${getApplicationStatusColor(app.status)} text-center sm:text-left`}>
+                                {app.status.charAt(0).toUpperCase() + app.status.slice(1)}
+                              </span>
+                              <select
+                                value={app.status}
+                                onChange={(e) => handleUpdateApplicationStatus(app._id, e.target.value)}
+                                className="px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                <option value="pending">Pending</option>
+                                <option value="reviewing">Reviewing</option>
+                                <option value="shortlisted">Shortlisted</option>
+                                <option value="interview">Interview</option>
+                                <option value="accepted">Accepted</option>
+                                <option value="rejected">Rejected</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div className="flex flex-wrap gap-3 text-sm">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedApplication(app);
+                                setIsApplicationModalOpen(true);
+                              }}
+                              className="text-blue-400 hover:text-blue-300 flex items-center gap-1"
+                            >
+                              <Eye className="w-4 h-4" />
+                              View Details
+                            </button>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                if (app.resume?.url) {
+                                  handleDownloadResume(app.resume.url, app.resume.fileName);
+                                }
+                              }}
+                              className="text-teal-400 hover:text-teal-300 flex items-center gap-1"
+                            >
+                              <FileText className="w-4 h-4" />
+                              Resume
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                      {applications.length === 0 && (
+                        <div className="text-center py-12 text-slate-400">
+                          <FileText className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                          <p>No applications yet</p>
+                        </div>
+                      )}
                     </div>
                   </div>
-                  <p className="text-gray-300 mb-4 line-clamp-2">{job.description}</p>
-                </div>
-              ))}
-              {jobPostings.length === 0 && (
-                <div className="text-center py-12 text-gray-400">
-                  <Briefcase className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                  <p>{t('super_admin.no_job_postings_yet')}</p>
-                </div>
-              )}
-            </div>
-          </motion.div>
-        )}
+                )}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </main>
+      </div>
 
-        {/* Applications Tab */}
-        {activeTab === 'applications' && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <h2 className="text-2xl font-bold mb-6">{t('super_admin.job_applications')}</h2>
-            <div className="space-y-4">
-              {applications.map((app) => (
-                <div key={app._id} className="bg-white/5 border border-white/10 p-4 sm:p-6 rounded-xl sm:rounded-2xl">
-                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4 mb-4">
-                    <div className="flex-1 cursor-pointer min-w-0" onClick={() => {
-                      setSelectedApplication(app);
-                      setIsApplicationModalOpen(true);
-                    }}>
-                      <h3 className="text-base sm:text-lg font-bold break-words">{app.firstName} {app.lastName}</h3>
-                      <p className="text-gray-400 text-sm sm:text-base break-all">{app.email}</p>
-                      <p className="text-xs sm:text-sm text-gray-400 mt-1">{app.position} - {app.department}</p>
-                      <p className="text-xs text-gray-500 mt-1">
-                        Applied: {new Date(app.createdAt).toLocaleDateString()}
-                      </p>
-                    </div>
-                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
-                      <span className={`px-3 py-1.5 rounded-full text-xs font-medium border ${getApplicationStatusColor(app.status)} text-center sm:text-left`}>
-                        {app.status.charAt(0).toUpperCase() + app.status.slice(1)}
-                      </span>
-                      <div className="relative">
-                        <select
-                          value={app.status}
-                          onChange={(e) => handleUpdateApplicationStatus(app._id, e.target.value)}
-                          className="w-full sm:w-auto px-3 sm:px-4 py-2 sm:py-2.5 bg-black/40 border border-white/20 rounded-lg text-xs sm:text-sm text-white font-medium cursor-pointer hover:bg-black/60 hover:border-white/30 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all appearance-none pr-8 sm:pr-10 min-w-[120px] sm:min-w-[160px] shadow-lg backdrop-blur-sm"
-                          onClick={(e) => e.stopPropagation()}
-                          style={{
-                            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")`,
-                            backgroundRepeat: 'no-repeat',
-                            backgroundPosition: 'right 0.5rem center',
-                            backgroundSize: '14px 14px'
-                          }}
-                        >
-                          <option value="pending" className="bg-[#1e293b] text-yellow-400 py-2">Pending</option>
-                          <option value="reviewing" className="bg-[#1e293b] text-yellow-400 py-2">Reviewing</option>
-                          <option value="shortlisted" className="bg-[#1e293b] text-blue-400 py-2">Shortlisted</option>
-                          <option value="interview" className="bg-[#1e293b] text-purple-400 py-2">Interview</option>
-                          <option value="accepted" className="bg-[#1e293b] text-green-400 py-2">Accepted</option>
-                          <option value="rejected" className="bg-[#1e293b] text-red-400 py-2">Rejected</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex flex-wrap gap-3 sm:gap-4 text-xs sm:text-sm">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedApplication(app);
-                        setIsApplicationModalOpen(true);
-                      }}
-                      className="text-teal-400 hover:text-teal-300 flex items-center gap-1"
-                    >
-                      <Eye className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                      <span className="hidden sm:inline">{t('super_admin.view_details')}</span>
-                      <span className="sm:hidden">{t('super_admin.view')}</span>
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (app.resume?.url) {
-                          handleDownloadResume(app.resume.url, app.resume.fileName);
-                        }
-                      }}
-                      className="text-teal-400 hover:text-teal-300 flex items-center gap-1"
-                    >
-                      <FileText className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                      {t('super_admin.resume')}
-                    </button>
-                    {app.linkedinUrl && (
-                      <a 
-                        href={app.linkedinUrl} 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        className="text-blue-400 hover:text-blue-300"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        LinkedIn
-                      </a>
-                    )}
-                  </div>
-                </div>
-              ))}
-              {applications.length === 0 && (
-                <div className="text-center py-12 text-gray-400">
-                  <FileText className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                  <p>No applications yet</p>
-                </div>
-              )}
-            </div>
-          </motion.div>
-        )}
-      </main>
-
-      {/* Create/Edit Job Modal */}
+      {/* Job Posting Modal */}
       <AnimatePresence>
         {isModalOpen && (
           <>
@@ -731,220 +780,75 @@ const SuperAdmin = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={handleCloseModal}
-              className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md"
+              className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
             />
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 pointer-events-none">
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
               <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
+                initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
+                exit={{ opacity: 0, scale: 0.95 }}
                 onClick={(e) => e.stopPropagation()}
-                className="bg-[#1e293b] border border-white/10 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 max-w-5xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden flex flex-col pointer-events-auto shadow-2xl"
+                className="bg-slate-900 border border-slate-800 rounded-2xl p-6 max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col pointer-events-auto shadow-2xl"
               >
                 <form onSubmit={handleSubmit} className="flex flex-col flex-1 min-h-0">
-                  {/* Header - Fixed */}
-                  <div className="flex items-start sm:items-center justify-between mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-white/10 flex-shrink-0 gap-3">
-                    <h2 className="text-xl sm:text-2xl font-bold text-white flex-1">{currentJob ? 'Edit Job Posting' : 'Create Job Posting'}</h2>
-                    <button type="button" onClick={handleCloseModal} className="p-2 hover:bg-white/10 rounded-lg transition-colors flex-shrink-0">
-                      <X className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 hover:text-white" />
+                  <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-800">
+                    <h2 className="text-2xl font-bold">{currentJob ? 'Edit Job Posting' : 'Create Job Posting'}</h2>
+                    <button type="button" onClick={handleCloseModal} className="p-2 hover:bg-slate-800 rounded-lg">
+                      <X className="w-5 h-5 text-slate-400" />
                     </button>
                   </div>
-
-                  {/* Scrollable Content */}
-                  <div className="flex-1 overflow-y-auto pr-1 sm:pr-2 space-y-4 sm:space-y-6 custom-scrollbar min-h-0">
-                    {/* Basic Information */}
-                    <div className="bg-white/5 border border-white/10 rounded-lg sm:rounded-xl p-4 sm:p-5">
-                      <h3 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4 pb-2 border-b border-white/10">Basic Information</h3>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-2">Job Title *</label>
-                          <input
-                            type="text"
-                            required
-                            value={formData.title}
-                            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                            className="w-full px-3 sm:px-4 py-2 sm:py-2.5 bg-black/30 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all text-sm sm:text-base"
-                            placeholder="Senior Frontend Developer"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-2">Department *</label>
-                          <input
-                            type="text"
-                            required
-                            value={formData.department}
-                            onChange={(e) => setFormData({ ...formData, department: e.target.value })}
-                            className="w-full px-3 sm:px-4 py-2 sm:py-2.5 bg-black/30 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all text-sm sm:text-base"
-                            placeholder="Engineering"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-2">Location</label>
-                          <input
-                            type="text"
-                            value={formData.location}
-                            onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                            className="w-full px-3 sm:px-4 py-2 sm:py-2.5 bg-black/30 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all text-sm sm:text-base"
-                            placeholder="Remote / Chennai"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-2">Job Type</label>
-                          <select
-                            value={formData.type}
-                            onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-                            className="w-full px-3 sm:px-4 py-2 sm:py-2.5 bg-black/30 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all text-sm sm:text-base"
-                          >
-                            <option value="Full-time">Full-time</option>
-                            <option value="Part-time">Part-time</option>
-                            <option value="Contract">Contract</option>
-                            <option value="Internship">Internship</option>
-                          </select>
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-2">Experience Level</label>
-                          <select
-                            value={formData.experienceLevel}
-                            onChange={(e) => setFormData({ ...formData, experienceLevel: e.target.value })}
-                            className="w-full px-3 sm:px-4 py-2 sm:py-2.5 bg-black/30 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all text-sm sm:text-base"
-                          >
-                            <option value="Entry Level">Entry Level</option>
-                            <option value="Mid Level">Mid Level</option>
-                            <option value="Senior Level">Senior Level</option>
-                            <option value="Executive">Executive</option>
-                          </select>
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-2">Status</label>
-                          <select
-                            value={formData.status}
-                            onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                            className="w-full px-3 sm:px-4 py-2 sm:py-2.5 bg-black/30 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all text-sm sm:text-base"
-                          >
-                            <option value="draft">Draft</option>
-                            <option value="active">Active</option>
-                            <option value="closed">Closed</option>
-                          </select>
-                        </div>
+                  <div className="flex-1 overflow-y-auto pr-2 space-y-6">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-slate-300 mb-2">Job Title *</label>
+                        <input
+                          type="text"
+                          required
+                          value={formData.title}
+                          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                          className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                          placeholder="Senior Frontend Developer"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-slate-300 mb-2">Department *</label>
+                        <input
+                          type="text"
+                          required
+                          value={formData.department}
+                          onChange={(e) => setFormData({ ...formData, department: e.target.value })}
+                          className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                          placeholder="Engineering"
+                        />
                       </div>
                     </div>
-
-                    {/* Description */}
-                    <div className="bg-white/5 border border-white/10 rounded-lg sm:rounded-xl p-4 sm:p-5">
-                      <h3 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4 pb-2 border-b border-white/10">Description *</h3>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">Description *</label>
                       <textarea
                         required
                         rows={5}
                         value={formData.description}
                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                        className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-black/30 border border-white/10 rounded-lg text-white resize-none focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all custom-scrollbar text-sm sm:text-base"
+                        className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
                         placeholder="Job description..."
                       />
                     </div>
-
-                    {/* Requirements */}
-                    <div className="bg-white/5 border border-white/10 rounded-lg sm:rounded-xl p-4 sm:p-5">
-                      <h3 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4 pb-2 border-b border-white/10">Requirements</h3>
-                      <div className="mb-3">
-                        <textarea
-                          value={newRequirement}
-                          onChange={(e) => setNewRequirement(e.target.value)}
-                          onKeyPress={(e) => {
-                            if (e.key === 'Enter' && !e.shiftKey) {
-                              e.preventDefault();
-                              addItem('requirements', newRequirement);
-                            }
-                          }}
-                          className="w-full px-3 sm:px-4 py-2 sm:py-2.5 bg-black/30 border border-white/10 rounded-lg text-white resize-none min-h-[40px] max-h-[120px] focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all custom-scrollbar text-sm sm:text-base"
-                          placeholder="Add requirement(s) and press Enter. Paste multiple lines to add multiple requirements at once."
-                          rows={1}
-                        />
-                      </div>
-                      {formData.requirements.length > 0 && (
-                        <div className="flex flex-wrap gap-2">
-                          {formData.requirements.map((req, index) => (
-                            <span key={index} className="flex items-center gap-2 px-2 sm:px-3 py-1 sm:py-1.5 bg-teal-500/20 text-teal-300 rounded-lg text-xs sm:text-sm border border-teal-500/30">
-                              <span className="break-words max-w-[200px] sm:max-w-[300px]">{req}</span>
-                              <button 
-                                type="button" 
-                                onClick={() => removeItem('requirements', index)}
-                                className="hover:bg-teal-500/30 rounded p-0.5 transition-colors flex-shrink-0"
-                              >
-                                <X className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                              </button>
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Responsibilities */}
-                    <div className="bg-white/5 border border-white/10 rounded-lg sm:rounded-xl p-4 sm:p-5">
-                      <h3 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4 pb-2 border-b border-white/10">Responsibilities</h3>
-                      <div className="mb-3">
-                        <textarea
-                          value={newResponsibility}
-                          onChange={(e) => setNewResponsibility(e.target.value)}
-                          onKeyPress={(e) => {
-                            if (e.key === 'Enter' && !e.shiftKey) {
-                              e.preventDefault();
-                              addItem('responsibilities', newResponsibility);
-                            }
-                          }}
-                          className="w-full px-3 sm:px-4 py-2 sm:py-2.5 bg-black/30 border border-white/10 rounded-lg text-white resize-none min-h-[40px] max-h-[120px] focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all custom-scrollbar text-sm sm:text-base"
-                          placeholder="Add responsibility(ies) and press Enter. Paste multiple lines to add multiple responsibilities at once."
-                          rows={1}
-                        />
-                      </div>
-                      {formData.responsibilities.length > 0 && (
-                        <div className="flex flex-wrap gap-2">
-                          {formData.responsibilities.map((resp, index) => (
-                            <span key={index} className="flex items-center gap-2 px-2 sm:px-3 py-1 sm:py-1.5 bg-blue-500/20 text-blue-300 rounded-lg text-xs sm:text-sm border border-blue-500/30">
-                              <span className="break-words max-w-[200px] sm:max-w-[300px]">{resp}</span>
-                              <button 
-                                type="button" 
-                                onClick={() => removeItem('responsibilities', index)}
-                                className="hover:bg-blue-500/30 rounded p-0.5 transition-colors flex-shrink-0"
-                              >
-                                <X className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                              </button>
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                    </div>
                   </div>
-
-                  {/* Footer - Fixed */}
-                  <div className="mt-4 sm:mt-6 pt-3 sm:pt-4 border-t border-white/10 flex-shrink-0">
-                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                      <button
-                        type="button"
-                        onClick={handleCloseModal}
-                        className="w-full sm:flex-1 py-2.5 sm:py-3 bg-white/10 text-white font-semibold rounded-lg hover:bg-white/20 transition-all text-sm sm:text-base"
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        type="submit"
-                        disabled={loading}
-                        className="w-full sm:flex-1 py-2.5 sm:py-3 bg-gradient-to-r from-blue-600 to-teal-500 text-white font-bold rounded-lg hover:shadow-lg hover:shadow-teal-500/25 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
-                      >
-                        {loading ? (
-                          <>
-                            <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                            <span className="hidden sm:inline">Saving...</span>
-                            <span className="sm:hidden">Saving</span>
-                          </>
-                        ) : (
-                          <>
-                            <Save className="w-4 h-4 sm:w-5 sm:h-5" />
-                            <span className="hidden sm:inline">{currentJob ? 'Update' : 'Create'} Job Posting</span>
-                            <span className="sm:hidden">{currentJob ? 'Update' : 'Create'}</span>
-                          </>
-                        )}
-                      </button>
-                    </div>
+                  <div className="mt-6 pt-4 border-t border-slate-800 flex gap-3">
+                    <button
+                      type="button"
+                      onClick={handleCloseModal}
+                      className="flex-1 px-4 py-2 bg-slate-800 text-white rounded-lg hover:bg-slate-700 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-600 to-teal-500 text-white font-semibold rounded-lg hover:shadow-lg hover:shadow-blue-500/25 transition-all disabled:opacity-50"
+                    >
+                      {loading ? 'Saving...' : (currentJob ? 'Update' : 'Create')}
+                    </button>
                   </div>
                 </form>
               </motion.div>
@@ -965,215 +869,48 @@ const SuperAdmin = () => {
                 setIsApplicationModalOpen(false);
                 setSelectedApplication(null);
               }}
-              className="fixed inset-0 z-50 bg-black/60 backdrop-blur-md"
+              className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
             />
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 pointer-events-none">
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
               <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
+                initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
+                exit={{ opacity: 0, scale: 0.95 }}
                 onClick={(e) => e.stopPropagation()}
-                className="bg-[#1e293b] border border-white/10 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 max-w-5xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-hidden flex flex-col pointer-events-auto shadow-2xl"
+                className="bg-slate-900 border border-slate-800 rounded-2xl p-6 max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col pointer-events-auto shadow-2xl"
               >
-                {/* Header - Fixed */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-white/10">
-                  <h2 className="text-xl sm:text-2xl font-bold text-white">Application Details</h2>
-                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
-                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
-                      <label className="text-xs sm:text-sm font-medium text-gray-300 whitespace-nowrap flex items-center">Update Status</label>
-                      <select
-                        value={selectedApplication.status}
-                        onChange={(e) => {
-                          handleUpdateApplicationStatus(selectedApplication._id, e.target.value);
-                          setSelectedApplication({ ...selectedApplication, status: e.target.value });
-                        }}
-                        className="px-3 sm:px-4 py-2 bg-black/30 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all text-xs sm:text-sm min-w-[140px] sm:min-w-[150px]"
-                      >
-                        <option value="pending">Pending</option>
-                        <option value="reviewing">Reviewing</option>
-                        <option value="shortlisted">Shortlisted</option>
-                        <option value="interview">Interview</option>
-                        <option value="accepted">Accepted</option>
-                        <option value="rejected">Rejected</option>
-                      </select>
-                    </div>
-                    <button 
-                      onClick={() => {
-                        setIsApplicationModalOpen(false);
-                        setSelectedApplication(null);
-                      }}
-                      className="p-2 hover:bg-white/10 rounded-lg transition-colors self-start sm:self-auto"
-                    >
-                      <X className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 hover:text-white" />
-                    </button>
-                  </div>
+                <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-800">
+                  <h2 className="text-2xl font-bold">Application Details</h2>
+                  <button
+                    onClick={() => {
+                      setIsApplicationModalOpen(false);
+                      setSelectedApplication(null);
+                    }}
+                    className="p-2 hover:bg-slate-800 rounded-lg"
+                  >
+                    <X className="w-5 h-5 text-slate-400" />
+                  </button>
                 </div>
-
-                {/* Scrollable Content */}
-                <div className="flex-1 overflow-y-auto pr-1 sm:pr-2 space-y-4 sm:space-y-6 custom-scrollbar">
-                  {/* Personal Information */}
-                  <div className="bg-white/5 border border-white/10 rounded-lg sm:rounded-xl p-4 sm:p-5">
-                    <h3 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4 pb-2 border-b border-white/10">Personal Information</h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                      <div className="space-y-1">
-                        <p className="text-xs font-medium text-gray-400 uppercase tracking-wide">Name</p>
-                        <p className="text-white font-medium break-words text-sm sm:text-base">{selectedApplication.firstName} {selectedApplication.lastName}</p>
+                <div className="flex-1 overflow-y-auto pr-2 space-y-6">
+                  <div>
+                    <h3 className="text-lg font-semibold mb-4">Personal Information</h3>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <p className="text-sm text-slate-400 mb-1">Name</p>
+                        <p className="text-white">{selectedApplication.firstName} {selectedApplication.lastName}</p>
                       </div>
-                      <div className="space-y-1">
-                        <p className="text-xs font-medium text-gray-400 uppercase tracking-wide">Email</p>
-                        <a href={`mailto:${selectedApplication.email}`} className="text-blue-400 hover:text-blue-300 font-medium break-all text-sm sm:text-base">
-                          {selectedApplication.email}
-                        </a>
-                      </div>
-                      <div className="space-y-1">
-                        <p className="text-xs font-medium text-gray-400 uppercase tracking-wide">Phone</p>
-                        <a href={`tel:${selectedApplication.phone}`} className="text-white font-medium break-words text-sm sm:text-base">
-                          {selectedApplication.phone}
-                        </a>
-                      </div>
-                      <div className="space-y-1">
-                        <p className="text-xs font-medium text-gray-400 uppercase tracking-wide">Location</p>
-                        <p className="text-white font-medium break-words text-sm sm:text-base">{selectedApplication.location}</p>
+                      <div>
+                        <p className="text-sm text-slate-400 mb-1">Email</p>
+                        <p className="text-white">{selectedApplication.email}</p>
                       </div>
                     </div>
                   </div>
-
-                  {/* Position Information */}
-                  <div className="bg-white/5 border border-white/10 rounded-lg sm:rounded-xl p-4 sm:p-5">
-                    <h3 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4 pb-2 border-b border-white/10">Position Information</h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                      <div className="space-y-1">
-                        <p className="text-xs font-medium text-gray-400 uppercase tracking-wide">Position</p>
-                        <p className="text-white font-medium break-words text-sm sm:text-base">{selectedApplication.position}</p>
-                      </div>
-                      <div className="space-y-1">
-                        <p className="text-xs font-medium text-gray-400 uppercase tracking-wide">Department</p>
-                        <p className="text-white font-medium break-words text-sm sm:text-base">{selectedApplication.department}</p>
-                      </div>
-                      {selectedApplication.expectedSalary && (
-                        <div className="space-y-1">
-                          <p className="text-xs font-medium text-gray-400 uppercase tracking-wide">Expected Salary</p>
-                          <p className="text-white font-medium break-words text-sm sm:text-base">{selectedApplication.expectedSalary}</p>
-                        </div>
-                      )}
-                      <div className="space-y-1">
-                        <p className="text-xs font-medium text-gray-400 uppercase tracking-wide">Availability</p>
-                        <p className="text-white font-medium break-words text-sm sm:text-base">{selectedApplication.availability}</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Professional Links */}
-                  {(selectedApplication.linkedinUrl || selectedApplication.portfolioUrl || selectedApplication.githubUrl) && (
-                    <div className="bg-white/5 border border-white/10 rounded-lg sm:rounded-xl p-4 sm:p-5">
-                      <h3 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4 pb-2 border-b border-white/10">Professional Links</h3>
-                      <div className="flex flex-wrap gap-2 sm:gap-3">
-                        {selectedApplication.linkedinUrl && (
-                          <a 
-                            href={selectedApplication.linkedinUrl} 
-                            target="_blank" 
-                            rel="noopener noreferrer" 
-                            className="inline-flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition-colors break-all text-xs sm:text-sm"
-                          >
-                            <span className="font-medium">LinkedIn</span>
-                            <span className="opacity-75 truncate max-w-[150px] sm:max-w-[200px]">{selectedApplication.linkedinUrl}</span>
-                          </a>
-                        )}
-                        {selectedApplication.portfolioUrl && (
-                          <a 
-                            href={selectedApplication.portfolioUrl} 
-                            target="_blank" 
-                            rel="noopener noreferrer" 
-                            className="inline-flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 bg-teal-500/20 text-teal-400 rounded-lg hover:bg-teal-500/30 transition-colors break-all text-xs sm:text-sm"
-                          >
-                            <span className="font-medium">Portfolio</span>
-                            <span className="opacity-75 truncate max-w-[150px] sm:max-w-[200px]">{selectedApplication.portfolioUrl}</span>
-                          </a>
-                        )}
-                        {selectedApplication.githubUrl && (
-                          <a 
-                            href={selectedApplication.githubUrl} 
-                            target="_blank" 
-                            rel="noopener noreferrer" 
-                            className="inline-flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 bg-gray-500/20 text-gray-300 rounded-lg hover:bg-gray-500/30 transition-colors break-all text-xs sm:text-sm"
-                          >
-                            <span className="font-medium">GitHub</span>
-                            <span className="opacity-75 truncate max-w-[150px] sm:max-w-[200px]">{selectedApplication.githubUrl}</span>
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Cover Letter */}
                   {selectedApplication.coverLetter && (
-                    <div className="bg-white/5 border border-white/10 rounded-lg sm:rounded-xl p-4 sm:p-5">
-                      <h3 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4 pb-2 border-b border-white/10">Cover Letter</h3>
-                      <div className="bg-black/30 border border-white/10 rounded-lg p-3 sm:p-4 max-h-60 overflow-y-auto">
-                        <p className="text-gray-300 whitespace-pre-wrap break-words leading-relaxed text-sm sm:text-base">{selectedApplication.coverLetter}</p>
+                    <div>
+                      <h3 className="text-lg font-semibold mb-4">Cover Letter</h3>
+                      <div className="bg-slate-800 border border-slate-700 rounded-lg p-4 max-h-60 overflow-y-auto">
+                        <p className="text-slate-300 whitespace-pre-wrap">{selectedApplication.coverLetter}</p>
                       </div>
-                    </div>
-                  )}
-
-                  {/* Why Inavora */}
-                  {selectedApplication.whyInavora && (
-                    <div className="bg-white/5 border border-white/10 rounded-lg sm:rounded-xl p-4 sm:p-5">
-                      <h3 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4 pb-2 border-b border-white/10">Why Inavora?</h3>
-                      <div className="bg-black/30 border border-white/10 rounded-lg p-3 sm:p-4 max-h-60 overflow-y-auto">
-                        <p className="text-gray-300 whitespace-pre-wrap break-words leading-relaxed text-sm sm:text-base">{selectedApplication.whyInavora}</p>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Additional Info */}
-                  {selectedApplication.additionalInfo && (
-                    <div className="bg-white/5 border border-white/10 rounded-lg sm:rounded-xl p-4 sm:p-5">
-                      <h3 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4 pb-2 border-b border-white/10">Additional Information</h3>
-                      <div className="bg-black/30 border border-white/10 rounded-lg p-3 sm:p-4 max-h-60 overflow-y-auto">
-                        <p className="text-gray-300 whitespace-pre-wrap break-words leading-relaxed text-sm sm:text-base">{selectedApplication.additionalInfo}</p>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Resume */}
-                  {selectedApplication.resume?.url && (
-                    <div className="bg-white/5 border border-white/10 rounded-lg sm:rounded-xl p-4 sm:p-5">
-                      <h3 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4 pb-2 border-b border-white/10">Resume</h3>
-                      <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-3">
-                        <a 
-                          href={selectedApplication.resume.url} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2 sm:py-3 bg-teal-500/20 text-teal-400 rounded-lg hover:bg-teal-500/30 transition-colors font-medium text-sm sm:text-base"
-                        >
-                          <FileText className="w-4 h-4 sm:w-5 sm:h-5" />
-                          View Resume
-                        </a>
-                        <button
-                          onClick={() => {
-                            if (selectedApplication.resume?.url) {
-                              handleDownloadResume(
-                                selectedApplication.resume.url,
-                                selectedApplication.resume.fileName
-                              );
-                            }
-                          }}
-                          className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2 sm:py-3 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition-colors font-medium text-sm sm:text-base"
-                        >
-                          <FileText className="w-4 h-4 sm:w-5 sm:h-5" />
-                          Download Resume
-                        </button>
-                      </div>
-                      {selectedApplication.resume.fileName && (
-                        <p className="text-xs sm:text-sm text-gray-400 mt-3">
-                          File: {selectedApplication.resume.fileName}
-                          {selectedApplication.resume.fileSize && (
-                            <span className="ml-2">
-                              ({(selectedApplication.resume.fileSize / 1024).toFixed(1)} KB)
-                            </span>
-                          )}
-                        </p>
-                      )}
                     </div>
                   )}
                 </div>
@@ -1187,4 +924,3 @@ const SuperAdmin = () => {
 };
 
 export default SuperAdmin;
-

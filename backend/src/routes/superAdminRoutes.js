@@ -17,5 +17,48 @@ router.post('/login', superAdminController.loginSuperAdmin);
  */
 router.get('/verify', verifySuperAdmin, superAdminController.verifyToken);
 
+/**
+ * Dashboard Routes
+ */
+router.get('/dashboard/stats', verifySuperAdmin, superAdminController.getDashboardStats);
+
+/**
+ * Users Routes
+ */
+router.get('/users', verifySuperAdmin, superAdminController.getUsers);
+router.get('/users/:id', verifySuperAdmin, superAdminController.getUserById);
+router.put('/users/:id/plan', verifySuperAdmin, superAdminController.updateUserPlan);
+router.put('/users/:id/status', verifySuperAdmin, superAdminController.updateUserStatus);
+
+/**
+ * Institutions Routes
+ */
+router.get('/institutions', verifySuperAdmin, superAdminController.getInstitutions);
+router.get('/institutions/:id', verifySuperAdmin, superAdminController.getInstitutionById);
+router.put('/institutions/:id/plan', verifySuperAdmin, superAdminController.updateInstitutionPlan);
+
+/**
+ * Payments Routes
+ */
+router.get('/payments', verifySuperAdmin, superAdminController.getPayments);
+router.get('/payments/stats', verifySuperAdmin, superAdminController.getPaymentStats);
+
+/**
+ * Presentations Routes
+ */
+router.get('/presentations', verifySuperAdmin, superAdminController.getPresentations);
+
+/**
+ * Analytics Routes
+ */
+router.get('/analytics/growth', verifySuperAdmin, superAdminController.getGrowthTrends);
+
+/**
+ * System Routes
+ */
+const systemController = require('../controllers/systemController');
+router.get('/system/health', verifySuperAdmin, systemController.getSystemHealth);
+router.get('/system/performance', verifySuperAdmin, systemController.getPerformanceMetrics);
+
 module.exports = router;
 
