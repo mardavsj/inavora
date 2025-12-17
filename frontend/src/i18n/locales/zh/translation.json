@@ -667,6 +667,9 @@
     "delete_confirmation": "您确定要删除<highlight>{{title}}</highlight>吗？此操作无法撤销，并将永久删除所有幻灯片和回复。",
     "cancel": "取消",
     "delete": "删除",
+    "free_plan_limit_title": "免费计划限制已达到",
+    "free_plan_limit_ok": "确定",
+    "free_plan_limit_upgrade": "升级计划",
     "sign_out": "退出",
     "plan": "计划",
     "share_feedback": "分享反馈",
@@ -881,6 +884,40 @@
     "privacy_policy": "隐私政策",
     "terms_of_service": "服务条款"
   },
+  "privacy": {
+    "title": "隐私政策",
+    "last_updated": "最后更新时间：2025年12月18日",
+    "section1_title": "介绍",
+    "section1_content": "欢迎来到Inavora。我们致力于保护您的个人信息和您的隐私权。本隐私政策描述了您在使用我们的网站和服务时，我们如何收集、使用和分享您的个人信息。",
+    "section2_title": "我们收集的信息",
+    "section2_content": "我们收集信息以向所有用户提供更好的服务。我们收集的信息类型包括：",
+    "section2_point1": "个人身份信息（姓名、电子邮件地址、电话号码等）",
+    "section2_point2": "使用数据（IP地址、浏览器类型、查看的页面、花费的时间等）",
+    "section2_point3": "设备信息（设备类型、操作系统、唯一设备标识符）",
+    "section2_point4": "Cookie和类似的跟踪技术",
+    "section3_title": "我们如何使用您的信息",
+    "section3_content": "我们使用收集到的信息来提供、维护和改进我们的服务。具体来说，我们可能会将您的信息用于：",
+    "section3_point1": "提供和维护我们的服务",
+    "section3_point2": "通知您有关我们服务的更改",
+    "section3_point3": "允许您参与我们服务的互动功能",
+    "section4_title": "数据安全",
+    "section4_content": "我们实施适当的安全措施来防止未经授权的访问、更改、披露或破坏您的个人信息。但是，通过互联网传输或电子存储的任何方法都不是100%安全的。"
+  },
+  "terms": {
+    "title": "服务条款",
+    "last_updated": "最后更新时间：2025年12月18日",
+    "section1_title": "接受条款",
+    "section1_content": "通过访问或使用Inavora平台，您同意受这些服务条款以及所有适用法律和法规的约束。如果您不同意这些条款中的任何一条，您被禁止使用或访问本网站。",
+    "section2_title": "使用许可",
+    "section2_content": "允许临时下载一份Inavora网站上的材料，仅限于个人、非商业性的临时观看。这是一种许可授予，而非所有权转让。",
+    "section3_title": "免责声明",
+    "section3_content": "Inavora网站上的材料按\"现状\"提供。Inavora不提供任何明示或暗示的保证，并在此声明并否定所有其他保证，包括但不限于对适销性、特定用途适用性或不侵犯知识产权或其他权利的暗示保证或条件。",
+    "section3_point1": "网站上的材料按\"现状\"提供，无任何保证",
+    "section3_point2": "我们不保证网站不会中断或无错误",
+    "section3_point3": "我们不保证使用网站获得的结果是准确或可靠的",
+    "section4_title": "限制",
+    "section4_content": "在任何情况下，Inavora或其供应商均不对因使用或无法使用Inavora网站上的材料而引起的任何损害（包括但不限于数据或利润损失，或因业务中断造成的损害）承担责任，即使Inavora或授权代表已口头或书面通知可能发生此类损害。"
+  },
   "page_titles": {
     "home": "因诺瓦拉",
     "home_full": "因诺瓦拉 - 互动演示文稿平台",
@@ -946,10 +983,10 @@
     "free_plan_name": "免费",
     "free_plan_price": "₹0",
     "free_plan_feature1": "适用于一个用户",
-    "free_plan_feature2": "无限演示",
+    "free_plan_feature2": "每月 3 个演示文稿",
     "free_plan_feature3": "每场演示10张幻灯片",
     "free_plan_feature4": "20名观众成员",
-    "free_plan_feature5": "水印",
+
     "free_plan_button_current": "当前计划",
     "free_plan_button_continue": "继续使用免费版",
     "pro_plan_name": "专业版",
@@ -963,8 +1000,8 @@
     "pro_plan_feature2": "无限演示",
     "pro_plan_feature3": "无限幻灯片",
     "pro_plan_feature4": "无限观众",
-    "pro_plan_feature5": "普通导出结果",
-    "pro_plan_feature6": "无水印",
+    "pro_plan_feature5": "导出结果",
+
     "pro_plan_button": "升级到专业版",
     "pro_plan_popular": "热门",
     "lifetime_plan_name": "终身版",
@@ -999,7 +1036,8 @@
     "users_feature": "用户",
     "ai_features_feature": "AI功能（即将推出）",
     "export_results_feature": "导出结果",
-    "watermark_free_feature": "无水印",
+    "detailed_export_results_feature": "详细导出结果",
+
     "priority_support_feature": "优先支持",
     "lifetime_access_feature": "终身访问",
     "custom_branding_feature": "自定义品牌",
@@ -1593,6 +1631,7 @@
       "failed_to_load": "Failed to load presentation",
       "created": "Presentation created",
       "failed_to_create": "Failed to create presentation",
+      "free_plan_limit_reached": "免费计划限制已达到：您每30天可以创建3个演示文稿。升级计划以获得无限演示文稿。",
       "saved": "Presentation saved",
       "failed_to_save": "Failed to save presentation",
       "draft_restored": "Draft restored",
@@ -1625,7 +1664,8 @@
       "pin_image_url_required": "Pin on Image Slide {{number}}: Image URL is required",
       "text_content_required": "Text Slide {{number}}: Content is required",
       "image_url_required": "Image Slide {{number}}: Image URL is required",
-      "video_url_required": "Video Slide {{number}}: Video URL is required"
+      "video_url_required": "Video Slide {{number}}: Video URL is required",
+      "upgrade_to_create_slide": "升级以创建此幻灯片"
     },
     "present_mode": {
       "presentation_live": "Presentation is now live!",
@@ -1805,5 +1845,12 @@
       "submit_success_message": "谢谢！您的评价已提交，将进行审核。",
       "submit_error": "提交评价失败。请重试。"
     }
+  },
+  "common": {
+    "something_went_wrong": "出了点问题。请再试一次。",
+    "network_error": "网络错误。请检查您的连接。",
+    "request_failed": "请求失败。请再试一次。",
+    "operation_failed": "操作失败。请再试一次。",
+    "back": "返回"
   }
 }

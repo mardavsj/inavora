@@ -39,6 +39,9 @@ export const translateError = (error, t, defaultKey = 'common.something_went_wro
     'too many requests': 'common.rate_limit_error',
     'upload limit exceeded': 'common.upload_limit_error',
     'rate limit': 'common.rate_limit_error',
+
+    // Plan / subscription limits
+    'free_plan_presentation_limit': 'toasts.presentation.free_plan_limit_reached',
     
     // Generic errors
     'something went wrong': 'common.something_went_wrong',

@@ -28,7 +28,6 @@ const PricingPage = () => {
                 t('pricing.free_plan_feature2'),
                 t('pricing.free_plan_feature3'),
                 t('pricing.free_plan_feature4'),
-                t('pricing.free_plan_feature5')
             ],
             buttonText: user ? t('pricing.free_plan_button_current') : t('pricing.free_plan_button_continue'),
             disabled: user ? true : false,
@@ -49,7 +48,6 @@ const PricingPage = () => {
                 t('pricing.pro_plan_feature3'),
                 t('pricing.pro_plan_feature4'),
                 t('pricing.pro_plan_feature5'),
-                t('pricing.pro_plan_feature6')
             ],
             buttonText: t('pricing.pro_plan_button'),
             color: 'from-teal-400 to-emerald-500',
@@ -96,12 +94,12 @@ const PricingPage = () => {
 
     const comparisonFeatures = [
         { name: t('pricing.price_feature'), free: t('pricing.free_plan_price'), pro: `${billingCycle === 'monthly' ? t('pricing.pro_plan_price_monthly') : t('pricing.pro_plan_price_yearly')}${billingCycle === 'monthly' ? t('pricing.pro_plan_period_monthly') : t('pricing.pro_plan_period_yearly')}`, lifetime: t('pricing.lifetime_plan_price'), institution: `${t('pricing.institution_plan_price')}${t('pricing.institution_plan_period')}` },
-        { name: t('pricing.slides_per_presentation_feature'), free: '10', pro: t('pricing.pro_plan_feature1'), lifetime: t('pricing.pro_plan_feature1'), institution: t('pricing.pro_plan_feature1') },
-        { name: t('pricing.audience_limit_feature'), free: '20', pro: t('pricing.pro_plan_feature2'), lifetime: t('pricing.pro_plan_feature2'), institution: t('pricing.pro_plan_feature2') },
+        { name: t('pricing.slides_per_presentation_feature'), free: '10', pro: t('pricing.pro_plan_feature3'), lifetime: t('pricing.pro_plan_feature3'), institution: t('pricing.pro_plan_feature3') },
+        { name: t('pricing.audience_limit_feature'), free: '20', pro: t('pricing.pro_plan_feature4'), lifetime: t('pricing.pro_plan_feature4'), institution: t('pricing.pro_plan_feature4') },
         { name: t('pricing.users_feature'), free: '1', pro: '1', lifetime: '1', institution: '10 - 50k+' },
         { name: t('pricing.ai_features_feature'), free: false, pro: true, lifetime: true, institution: true },
-        { name: t('pricing.export_results_feature'), free: false, pro: true, lifetime: true, institution: true },
-        { name: t('pricing.watermark_free_feature'), free: false, pro: true, lifetime: true, institution: true },
+        { name: t('pricing.export_results_feature'), free: false, pro: true, lifetime: false, institution: false },
+        { name: t('pricing.detailed_export_results_feature'), free: false, pro: false, lifetime: true, institution: true },
         { name: t('pricing.priority_support_feature'), free: false, pro: true, lifetime: true, institution: true },
         { name: t('pricing.lifetime_access_feature'), free: false, pro: false, lifetime: true, institution: false },
         { name: t('pricing.custom_branding_feature'), free: false, pro: false, lifetime: false, institution: true },

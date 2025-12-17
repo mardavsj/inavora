@@ -697,6 +697,9 @@
     "load_presentations_error": "Failed to load presentations",
     "logout_success": "Logged out successfully!",
     "logout_error": "Failed to logout. Please try again.",
+    "free_plan_limit_title": "Free Plan Limit Reached",
+    "free_plan_limit_ok": "Ok",
+    "free_plan_limit_upgrade": "Upgrade Plan",
     "untitled_presentation": "Untitled Presentation",
     "mcq_presentation": "MCQ Presentation",
     "untitled_mcq_question": "Untitled MCQ Question",
@@ -895,6 +898,40 @@
     "privacy_policy": "Privacy Policy",
     "terms_of_service": "Terms of Service"
   },
+  "privacy": {
+    "title": "Privacy Policy",
+    "last_updated": "Last updated: December 18, 2025",
+    "section1_title": "Introduction",
+    "section1_content": "Welcome to Inavora. We are committed to protecting your personal information and your right to privacy. This Privacy Policy describes how we collect, use, and share your personal information when you use our website and services.",
+    "section2_title": "Information We Collect",
+    "section2_content": "We collect information to provide better services to all of our users. The types of information we collect include:",
+    "section2_point1": "Personal identification information (Name, email address, phone number, etc.)",
+    "section2_point2": "Usage data (IP address, browser type, pages viewed, time spent, etc.)",
+    "section2_point3": "Device information (device type, operating system, unique device identifiers)",
+    "section2_point4": "Cookies and similar tracking technologies",
+    "section3_title": "How We Use Your Information",
+    "section3_content": "We use the information we collect to provide, maintain, and improve our services. Specifically, we may use your information to:",
+    "section3_point1": "Provide and maintain our service",
+    "section3_point2": "Notify you about changes to our service",
+    "section3_point3": "Allow you to participate in interactive features of our service",
+    "section4_title": "Data Security",
+    "section4_content": "We implement appropriate security measures to protect against unauthorized access, alteration, disclosure, or destruction of your personal information. However, no method of transmission over the Internet or electronic storage is 100% secure."
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "last_updated": "Last updated: December 18, 2025",
+    "section1_title": "Acceptance of Terms",
+    "section1_content": "By accessing or using the Inavora platform, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any of these terms, you are prohibited from using or accessing this site.",
+    "section2_title": "Use License",
+    "section2_content": "Permission is granted to temporarily download one copy of materials on Inavora's website for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title.",
+    "section3_title": "Disclaimer",
+    "section3_content": "The materials on Inavora's website are provided on an 'as is' basis. Inavora makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.",
+    "section3_point1": "Materials on the website are provided 'as is' without warranty",
+    "section3_point2": "We do not warrant that the website will be uninterrupted or error-free",
+    "section3_point3": "We do not warrant that the results obtained from the use of the website will be accurate or reliable",
+    "section4_title": "Limitations",
+    "section4_content": "In no event shall Inavora or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on Inavora's website, even if Inavora or an authorized representative has been notified orally or in writing of the possibility of such damage."
+  },
   "page_titles": {
     "home": "Inavora",
     "home_full": "Inavora - Interactive Presentations Platform",
@@ -960,10 +997,9 @@
     "free_plan_name": "Free",
     "free_plan_price": "₹0",
     "free_plan_feature1": "For One User",
-    "free_plan_feature2": "Unlimited Presentations",
+    "free_plan_feature2": "3 Presentations per month",
     "free_plan_feature3": "10 Slides per presentation",
     "free_plan_feature4": "20 Audience members",
-    "free_plan_feature5": "Watermark",
     "free_plan_button_current": "Current Plan",
     "free_plan_button_continue": "Continue with Free",
     "pro_plan_name": "Pro",
@@ -977,8 +1013,7 @@
     "pro_plan_feature2": "Unlimited Presentations",
     "pro_plan_feature3": "Unlimited Slides",
     "pro_plan_feature4": "Unlimited Audience",
-    "pro_plan_feature5": "Normal Export Results",
-    "pro_plan_feature6": "No Water Mark",
+    "pro_plan_feature5": "Export Results",
     "pro_plan_button": "Upgrade to Pro",
     "pro_plan_popular": "POPULAR",
     "lifetime_plan_name": "Lifetime",
@@ -1014,7 +1049,7 @@
     "users_feature": "Users",
     "ai_features_feature": "AI Features (Coming Soon)",
     "export_results_feature": "Export Results",
-    "watermark_free_feature": "Watermark-free",
+    "detailed_export_results_feature": "Detailed Export Results",
     "priority_support_feature": "Priority Support",
     "lifetime_access_feature": "Lifetime Access",
     "custom_branding_feature": "Custom Branding",
@@ -1748,6 +1783,7 @@
       "not_found": "Presentation not found or access denied",
       "created": "Presentation created",
       "failed_to_create": "Failed to create presentation",
+      "free_plan_limit_reached": "Free plan limit reached: You can create up to 3 presentations every 30 days. Upgrade Plan for unlimited presentations.",
       "saved": "Presentation saved",
       "failed_to_save": "Failed to save presentation",
       "draft_restored": "Draft restored",
@@ -1780,7 +1816,8 @@
       "pin_image_url_required": "Pin on Image Slide {{number}}: Image URL is required",
       "text_content_required": "Text Slide {{number}}: Content is required",
       "image_url_required": "Image Slide {{number}}: Image URL is required",
-      "video_url_required": "Video Slide {{number}}: Video URL is required"
+      "video_url_required": "Video Slide {{number}}: Video URL is required",
+      "upgrade_to_create_slide": "Upgrade to create this slide"
     },
     "present_mode": {
       "presentation_live": "Presentation is now live!",
@@ -1976,6 +2013,7 @@
     "something_went_wrong": "Something went wrong. Please try again.",
     "network_error": "Network error. Please check your connection.",
     "request_failed": "Request failed. Please try again.",
-    "operation_failed": "Operation failed. Please try again."
+    "operation_failed": "Operation failed. Please try again.",
+    "back": "Back"
   }
 }

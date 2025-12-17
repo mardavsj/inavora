@@ -15,7 +15,6 @@ const Testimonials = () => {
   const [, setStats] = useState({ averageRating: 0, totalCount: 0 });
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
-  const [filters] = useState({ rating: '', sort: 'newest' });
   const [pagination, setPagination] = useState({ page: 1, limit: 12, total: 0, pages: 1 });
 
   const fetchTestimonials = useCallback(async () => {
@@ -24,38 +23,41 @@ const Testimonials = () => {
       const params = {
         page: pagination.page,
         limit: pagination.limit,
-        ...(filters.rating && { rating: filters.rating }),
-        ...(filters.sort && { sort: filters.sort }),
         // Add cache-busting timestamp to prevent browser caching
         _t: Date.now()
       };
-      const response = await api.get('/testimonials', { params });
-      
+      // Use the private endpoint to fetch only user's testimonials
+      const response = await api.get('/testimonials/my', { params });
+
       if (response.data.success) {
         setTestimonials(response.data.data.testimonials);
-        setStats(response.data.data.stats);
+        // Stats might not be returned by getMyTestimonials, handle gracefully
+        if (response.data.data.stats) {
+          setStats(response.data.data.stats);
+        }
         setPagination(response.data.data.pagination);
       }
     } catch (error) {
       console.error('Error fetching testimonials:', error);
+      // Handle 401 specifically if needed, but api interceptor should handle it
       toast.error(t('testimonials.loading_error'));
     } finally {
       setLoading(false);
     }
-  }, [pagination.page, pagination.limit, filters, t]);
+  }, [pagination.page, pagination.limit, t]);
 
   useEffect(() => {
     fetchTestimonials();
-    
+
     // Refetch when page becomes visible (user switches back to tab)
     const handleVisibilityChange = () => {
       if (!document.hidden) {
         fetchTestimonials();
       }
     };
-    
+
     document.addEventListener('visibilitychange', handleVisibilityChange);
-    
+
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
@@ -79,12 +81,11 @@ const Testimonials = () => {
           <div className="flex items-center justify-between">
             <button
               onClick={() => navigate(-1)}
-              className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors"
+              className="flex items-center border border-white/30 px-3 py-1 rounded-lg gap-2 text-sm font-medium text-gray-300 hover:text-white transition-colors"
             >
-              <ArrowLeft className="w-5 h-5" />
+              <ArrowLeft className="w-4 h-4" />
               <span>{t('testimonials.back')}</span>
             </button>
-            <h1 className="text-2xl font-bold">{t('testimonials.page_title')}</h1>
             <div className="w-20"></div> {/* Spacer for centering */}
           </div>
         </div>
@@ -101,7 +102,7 @@ const Testimonials = () => {
             <MessageSquare className="w-5 h-5 text-blue-400" />
             <span className="text-blue-400 font-medium">{t('testimonials.badge_text')}</span>
           </motion.div>
-          
+
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -110,7 +111,7 @@ const Testimonials = () => {
           >
             {t('testimonials.page_title')}
           </motion.h1>
-          
+
 
           <motion.button
             initial={{ opacity: 0, y: 20 }}
@@ -172,13 +173,6 @@ const Testimonials = () => {
             <p className="text-slate-400 mb-8 max-w-md mx-auto">
               {t('testimonials.no_testimonials_description')}
             </p>
-            <button
-              onClick={() => setShowForm(true)}
-              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-teal-500 text-white font-semibold rounded-lg hover:shadow-lg hover:shadow-blue-500/25 transition-all"
-            >
-              <Plus className="w-5 h-5" />
-              {t('testimonials.share_experience')}
-            </button>
           </div>
         )}
       </main>

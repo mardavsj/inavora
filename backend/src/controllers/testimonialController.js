@@ -21,19 +21,18 @@ exports.submitTestimonial = async (req, res) => {
     }
 
     const { name, email, rating, testimonial, role, institution, avatar } = req.body;
-    
-    // Get user ID if authenticated (from Firebase token if available)
-    // For now, we'll get it from the request if a user is logged in
-    // This would need to be set by auth middleware if you want to track logged-in users
-    const userId = null; // Can be enhanced later with user auth middleware
-    
+
+    // Get user ID from authenticated user
+    const userId = req.user._id;
+
     // Get IP address for spam prevention
     const ipAddress = req.ip || req.connection.remoteAddress;
 
-    // Check if user has already submitted a testimonial (if logged in)
+    // Check if user has already submitted a testimonial
     if (userId) {
-      const existingTestimonial = await Testimonial.findOne({ userId, status: { $ne: 'rejected' } });
-      if (existingTestimonial) {
+      const existingTestimonial = await Testimonial.findOne({ userId });
+      // Allow updating if rejected, otherwise block new submissions
+      if (existingTestimonial && existingTestimonial.status !== 'rejected') {
         return res.status(400).json({
           success: false,
           message: 'You have already submitted a testimonial. You can update your existing one.'
@@ -90,20 +89,70 @@ exports.submitTestimonial = async (req, res) => {
 };
 
 /**
+ * Get user's own testimonials (private)
+ */
+exports.getMyTestimonials = async (req, res) => {
+  try {
+    const { page = 1, limit = 10 } = req.query;
+    const userId = req.user._id;
+
+    const query = { userId };
+
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+    const limitNum = parseInt(limit);
+
+    const [testimonials, total] = await Promise.all([
+      Testimonial.find(query)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limitNum)
+        .lean(),
+      Testimonial.countDocuments(query)
+    ]);
+
+    res.json({
+      success: true,
+      data: {
+        testimonials,
+        pagination: {
+          page: parseInt(page),
+          limit: limitNum,
+          total,
+          pages: Math.ceil(total / limitNum)
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching my testimonials:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch your testimonials',
+      error: error.message
+    });
+  }
+};
+
+/**
  * Get approved testimonials (public)
  */
 exports.getTestimonials = async (req, res) => {
   try {
-    const { 
-      page = 1, 
-      limit = 10, 
-      rating, 
-      role, 
+    const {
+      page = 1,
+      limit = 10,
+      rating,
+      role,
+      institution,
       featured,
-      sort = 'newest' 
+      sort = 'newest'
     } = req.query;
 
     const query = { status: 'approved' };
+
+    // Filter by institution
+    if (institution) {
+      query.institution = new RegExp(institution, 'i');
+    }
 
     // Filter by rating
     if (rating) {
@@ -204,11 +253,11 @@ exports.getTestimonials = async (req, res) => {
  */
 exports.getAllTestimonials = async (req, res) => {
   try {
-    const { 
-      page = 1, 
-      limit = 50, 
+    const {
+      page = 1,
+      limit = 50,
       status,
-      search 
+      search
     } = req.query;
 
     const query = {};
@@ -267,9 +316,9 @@ exports.getAllTestimonials = async (req, res) => {
 exports.getTestimonialById = async (req, res) => {
   try {
     const { id } = req.params;
-    
+
     const testimonial = await Testimonial.findById(id);
-    
+
     if (!testimonial) {
       return res.status(404).json({
         success: false,
@@ -312,7 +361,7 @@ exports.approveTestimonial = async (req, res) => {
     const { isFeatured } = req.body;
 
     const testimonial = await Testimonial.findById(id);
-    
+
     if (!testimonial) {
       return res.status(404).json({
         success: false,
@@ -353,7 +402,7 @@ exports.rejectTestimonial = async (req, res) => {
     const { moderationNotes } = req.body;
 
     const testimonial = await Testimonial.findById(id);
-    
+
     if (!testimonial) {
       return res.status(404).json({
         success: false,
@@ -392,7 +441,7 @@ exports.updateTestimonial = async (req, res) => {
     const { name, rating, testimonial, role, institution, isFeatured } = req.body;
 
     const testimonialDoc = await Testimonial.findById(id);
-    
+
     if (!testimonialDoc) {
       return res.status(404).json({
         success: false,
@@ -432,7 +481,7 @@ exports.deleteTestimonial = async (req, res) => {
     const { id } = req.params;
 
     const testimonial = await Testimonial.findByIdAndDelete(id);
-    
+
     if (!testimonial) {
       return res.status(404).json({
         success: false,

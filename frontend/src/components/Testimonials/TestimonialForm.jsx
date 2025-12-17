@@ -21,6 +21,20 @@ const TestimonialForm = ({ onClose, onSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
+  // Disable background scrolling when modal is open
+  useEffect(() => {
+    // Store the original overflow value to restore it later
+    const originalOverflow = document.body.style.overflow;
+    
+    // Disable scrolling on the background
+    document.body.style.overflow = 'hidden';
+    
+    // Cleanup function to restore original overflow when component unmounts
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, []);
+
   // Auto-fill name and email when component mounts if user is logged in
   useEffect(() => {
     if (currentUser) {
@@ -188,74 +202,80 @@ const TestimonialForm = ({ onClose, onSuccess }) => {
             )}
           </div>
 
-          {/* Name */}
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
-              {t('testimonials.form.name')} <span className="text-red-400">*</span>
-            </label>
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              className={`w-full px-4 py-2 bg-slate-800 border rounded-lg text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none ${
-                errors.name ? 'border-red-500' : 'border-slate-700'
-              }`}
-              placeholder={t('testimonials.form.name_placeholder')}
-            />
-            {errors.name && (
-              <p className="text-red-400 text-sm mt-1">{errors.name}</p>
-            )}
+          {/* Name and Email Row */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Name */}
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-2">
+                {t('testimonials.form.name')} <span className="text-red-400">*</span>
+              </label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                className={`w-full px-4 py-2 bg-slate-800 border rounded-lg text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none ${
+                  errors.name ? 'border-red-500' : 'border-slate-700'
+                }`}
+                placeholder={t('testimonials.form.name_placeholder')}
+              />
+              {errors.name && (
+                <p className="text-red-400 text-sm mt-1">{errors.name}</p>
+              )}
+            </div>
+
+            {/* Email */}
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-2">
+                {t('testimonials.form.email')} <span className="text-red-400">*</span>
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className={`w-full px-4 py-2 bg-slate-800 border rounded-lg text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none ${
+                  errors.email ? 'border-red-500' : 'border-slate-700'
+                }`}
+                placeholder={t('testimonials.form.email_placeholder')}
+              />
+              {errors.email && (
+                <p className="text-red-400 text-sm mt-1">{errors.email}</p>
+              )}
+            </div>
           </div>
 
-          {/* Email */}
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
-              {t('testimonials.form.email')} <span className="text-red-400">*</span>
-            </label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className={`w-full px-4 py-2 bg-slate-800 border rounded-lg text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none ${
-                errors.email ? 'border-red-500' : 'border-slate-700'
-              }`}
-              placeholder={t('testimonials.form.email_placeholder')}
-            />
-            {errors.email && (
-              <p className="text-red-400 text-sm mt-1">{errors.email}</p>
-            )}
-          </div>
+          {/* Role and Institution Row */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Role (Optional) */}
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-2">
+                {t('testimonials.form.role')}
+              </label>
+              <input
+                type="text"
+                name="role"
+                value={formData.role}
+                onChange={handleChange}
+                className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                placeholder={t('testimonials.form.role_placeholder')}
+              />
+            </div>
 
-          {/* Role (Optional) */}
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
-              {t('testimonials.form.role')}
-            </label>
-            <input
-              type="text"
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-              placeholder={t('testimonials.form.role_placeholder')}
-            />
-          </div>
-
-          {/* Institution (Optional) */}
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
-              {t('testimonials.form.institution')}
-            </label>
-            <input
-              type="text"
-              name="institution"
-              value={formData.institution}
-              onChange={handleChange}
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-              placeholder={t('testimonials.form.institution_placeholder')}
-            />
+            {/* Institution (Optional) */}
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-2">
+                {t('testimonials.form.institution')}
+              </label>
+              <input
+                type="text"
+                name="institution"
+                value={formData.institution}
+                onChange={handleChange}
+                className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                placeholder={t('testimonials.form.institution_placeholder')}
+              />
+            </div>
           </div>
 
           {/* Testimonial */}
@@ -267,7 +287,7 @@ const TestimonialForm = ({ onClose, onSuccess }) => {
               name="testimonial"
               value={formData.testimonial}
               onChange={handleChange}
-              rows={6}
+              rows={4}
               className={`w-full px-4 py-2 bg-slate-800 border rounded-lg text-white placeholder-slate-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none resize-none ${
                 errors.testimonial ? 'border-red-500' : 'border-slate-700'
               }`}

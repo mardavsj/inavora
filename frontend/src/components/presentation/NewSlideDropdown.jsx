@@ -1,9 +1,29 @@
 import { BarChart3, Cloud, MessageSquare, Sliders, HelpCircle, Grid2X2, MapPin, ChartBarDecreasing, MessagesSquare, SquareStack, Brain, Type, Image, Video, BookOpen, FileText, Monitor, Palette, Upload } from 'lucide-react';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import toast from 'react-hot-toast';
 
-const NewSlideDropdown = ({ onSelectType, onClose, isHorizontal = false }) => {
+const NewSlideDropdown = ({ onSelectType, onClose, isHorizontal = false, user }) => {
   const { t } = useTranslation();
+  
+  // Check if user is on a free plan
+  const isFreePlan = user && (user.subscription?.plan === 'free' || !user.subscription);
+  
+  // Define restricted slide types for free users
+  const restrictedSlideTypes = ['miro', 'powerpoint', 'google_slides', 'upload'];
+  
+  // Function to handle slide type selection
+  const handleSelectType = (type) => {
+    // Check if user is on free plan and trying to create a restricted slide
+    if (isFreePlan && restrictedSlideTypes.includes(type)) {
+      const message = t('toasts.presentation.upgrade_to_create_slide');
+      toast.error(message);
+      return;
+    }
+    
+    onSelectType(type);
+  };
+  
   const slideTypes = [
     {
       category: t('new_slide_dropdown.present_your_content'),
@@ -40,10 +60,30 @@ const NewSlideDropdown = ({ onSelectType, onClose, isHorizontal = false }) => {
     {
       category: t('new_slide_dropdown.bring_your_slides_in'),
       items: [
-        { type: 'miro', label: t('new_slide_dropdown.import_from_miro'), icon: Palette, color: 'text-purple-500' },
-        { type: 'powerpoint', label: t('new_slide_dropdown.import_powerpoint'), icon: FileText, color: 'text-green-500' },
-        { type: 'google_slides', label: t('new_slide_dropdown.import_from_google_slides'), icon: Monitor, color: 'text-blue-500' },
-        { type: 'upload', label: t('new_slide_dropdown.upload_presentation'), icon: Upload, color: 'text-orange-500' },
+        { 
+          type: 'miro', 
+          label: t('new_slide_dropdown.import_from_miro'), 
+          icon: Palette, 
+          color: 'text-purple-500'
+        },
+        { 
+          type: 'powerpoint', 
+          label: t('new_slide_dropdown.import_powerpoint'), 
+          icon: FileText, 
+          color: 'text-green-500'
+        },
+        { 
+          type: 'google_slides', 
+          label: t('new_slide_dropdown.import_from_google_slides'), 
+          icon: Monitor, 
+          color: 'text-blue-500'
+        },
+        { 
+          type: 'upload', 
+          label: t('new_slide_dropdown.upload_presentation'), 
+          icon: Upload, 
+          color: 'text-orange-500'
+        },
       ]
     },
   ];
@@ -81,14 +121,21 @@ const NewSlideDropdown = ({ onSelectType, onClose, isHorizontal = false }) => {
             <div className="grid grid-cols-2 gap-2">
               {category.items.map((item) => {
                 const Icon = item.icon;
+                const isRestricted = isFreePlan && restrictedSlideTypes.includes(item.type);
+                
                 return (
                   <button
                     key={item.type}
-                    onClick={() => onSelectType(item.type)}
-                    className="flex items-center gap-2 p-2 rounded-lg transition-colors text-left bg-[#242424] hover:bg-[#2E2E2E] border border-transparent hover:border-[#4CAF50]/40"
+                    onClick={() => handleSelectType(item.type)}
+
+                    className={`flex items-center gap-2 p-2 rounded-lg transition-colors text-left border ${isRestricted 
+                      ? 'bg-[#242424] border-[#555555] border-dashed cursor-not-allowed opacity-70' 
+                      : 'bg-[#242424] hover:bg-[#2E2E2E] border-transparent hover:border-[#4CAF50]/40'}`}
                   >
                     <Icon className={`h-4 w-4 ${item.color}`} />
-                    <span className="text-sm text-[#E0E0E0]">{item.label}</span>
+                    <span className={`text-sm ${isRestricted ? 'text-[#BBBBBB]' : 'text-[#E0E0E0]'}`}>
+                      {item.label}
+                    </span>
                   </button>
                 );
               })}

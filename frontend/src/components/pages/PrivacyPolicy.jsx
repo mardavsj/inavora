@@ -1,12 +1,11 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const PrivacyPolicy = () => {
     const navigate = useNavigate();
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const { t } = useTranslation();
 
     return (
@@ -30,16 +29,13 @@ const PrivacyPolicy = () => {
                         <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-300">{t('navbar.brand_name')}</span>
                     </div>
 
-                    <div className="hidden md:flex items-center gap-8">
-                        <button onClick={() => navigate('/')} className="text-sm font-medium text-gray-300 hover:text-white transition-colors">{t('navbar.home')}</button>
-                        <button onClick={() => navigate('/pricing')} className="text-sm font-medium text-gray-300 hover:text-white transition-colors">{t('navbar.pricing')}</button>
-                    </div>
-
-                    <div className="md:hidden">
-                        <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="text-gray-300 hover:text-white">
-                            {mobileMenuOpen ? <X /> : <Menu />}
-                        </button>
-                    </div>
+                    <button
+                        onClick={() => navigate(-1)}
+                        className="flex items-center border border-white/30 px-3 py-1 rounded-lg gap-2 text-sm font-medium text-gray-300 hover:text-white transition-colors"
+                    >
+                        <ArrowLeft className="w-4 h-4" />
+                        {t('common.back') || 'Back'}
+                    </button>
                 </div>
             </nav>
 

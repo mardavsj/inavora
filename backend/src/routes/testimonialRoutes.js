@@ -3,6 +3,7 @@ const router = express.Router();
 const { body } = require('express-validator');
 const testimonialController = require('../controllers/testimonialController');
 const { verifySuperAdmin } = require('../middleware/superAdminAuth');
+const { verifyToken } = require('../middleware/auth');
 
 // Validation rules
 const testimonialValidation = [
@@ -35,8 +36,11 @@ const testimonialValidation = [
 ];
 
 // Public routes
-router.post('/', testimonialValidation, testimonialController.submitTestimonial);
 router.get('/', testimonialController.getTestimonials);
+
+// Private routes
+router.post('/', verifyToken, testimonialValidation, testimonialController.submitTestimonial);
+router.get('/my', verifyToken, testimonialController.getMyTestimonials);
 
 // Admin routes (require super admin authentication) - must come before /:id route
 router.get('/admin/all', verifySuperAdmin, testimonialController.getAllTestimonials);

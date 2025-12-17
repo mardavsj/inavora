@@ -156,7 +156,7 @@ function App() {
               <Route path="/contact" element={<Contact />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/terms-of-service" element={<TermsOfService />} />
-              <Route path="/testimonials" element={<Testimonials />} />
+              <Route path="/testimonials" element={<ProtectedRoute> <Testimonials /> </ProtectedRoute>} />
               <Route path="/maintenance" element={<Maintenance />} />
               
               {/* Super Admin Routes */}

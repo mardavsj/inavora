@@ -647,6 +647,9 @@
     "live": "En direct"
   },
   "dashboard": {
+    "free_plan_limit_title": "Limite du Plan Gratuit Atteinte",
+    "free_plan_limit_ok": "Ok",
+    "free_plan_limit_upgrade": "Mettre à Niveau",
     "dashboard": "Tableau de bord",
     "manage_presentations": "Gérez vos présentations interactives",
     "recent_activity": "Activité récente",
@@ -848,6 +851,40 @@
     "privacy_policy": "Politique de confidentialité",
     "terms_of_service": "Conditions d'utilisation"
   },
+  "privacy": {
+    "title": "Politique de confidentialité",
+    "last_updated": "Dernière mise à jour : 18 décembre 2025",
+    "section1_title": "Introduction",
+    "section1_content": "Bienvenue sur Inavora. Nous nous engageons à protéger vos informations personnelles et votre droit à la vie privée. Cette politique de confidentialité décrit comment nous collectons, utilisons et partageons vos informations personnelles lorsque vous utilisez notre site Web et nos services.",
+    "section2_title": "Informations que nous collectons",
+    "section2_content": "Nous collectons des informations pour fournir de meilleurs services à tous nos utilisateurs. Les types d'informations que nous collectons incluent :",
+    "section2_point1": "Informations d'identification personnelle (Nom, adresse e-mail, numéro de téléphone, etc.)",
+    "section2_point2": "Données d'utilisation (Adresse IP, type de navigateur, pages consultées, temps passé, etc.)",
+    "section2_point3": "Informations sur l'appareil (Type d'appareil, système d'exploitation, identifiants uniques de l'appareil)",
+    "section2_point4": "Cookies et technologies de suivi similaires",
+    "section3_title": "Comment nous utilisons vos informations",
+    "section3_content": "Nous utilisons les informations que nous collectons pour fournir, maintenir et améliorer nos services. Plus précisément, nous pouvons utiliser vos informations pour :",
+    "section3_point1": "Fournir et maintenir notre service",
+    "section3_point2": "Vous informer des changements apportés à notre service",
+    "section3_point3": "Vous permettre de participer aux fonctionnalités interactives de notre service",
+    "section4_title": "Sécurité des données",
+    "section4_content": "Nous mettons en œuvre des mesures de sécurité appropriées pour protéger contre tout accès non autorisé, altération, divulgation ou destruction de vos informations personnelles. Cependant, aucune méthode de transmission sur Internet ou de stockage électronique n'est sécurisée à 100 %."
+  },
+  "terms": {
+    "title": "Conditions d'utilisation",
+    "last_updated": "Dernière mise à jour : 18 décembre 2025",
+    "section1_title": "Acceptation des conditions",
+    "section1_content": "En accédant ou en utilisant la plateforme Inavora, vous acceptez d'être lié par ces Conditions d'utilisation et toutes les lois et réglementations applicables. Si vous n'acceptez pas ces conditions, vous êtes interdit d'utiliser ou d'accéder à ce site.",
+    "section2_title": "Licence d'utilisation",
+    "section2_content": "L'autorisation est accordée de télécharger temporairement une copie des documents sur le site Web d'Inavora uniquement pour un visionnage transitoire personnel et non commercial. Il s'agit de l'octroi d'une licence, non d'un transfert de titre.",
+    "section3_title": "Clause de non-responsabilité",
+    "section3_content": "Les documents sur le site Web d'Inavora sont fournis « tels quels ». Inavora ne donne aucune garantie, expresse ou implicite, et décline et annule ici toutes les autres garanties, y compris, sans limitation, les garanties ou conditions implicites de qualité marchande, d'adéquation à un usage particulier, ou de non-contrefaçon de propriété intellectuelle ou autre violation de droits.",
+    "section3_point1": "Les documents sur le site Web sont fournis « tels quels » sans garantie",
+    "section3_point2": "Nous ne garantissons pas que le site Web sera ininterrompu ou exempt d'erreurs",
+    "section3_point3": "Nous ne garantissons pas que les résultats obtenus par l'utilisation du site Web seront exacts ou fiables",
+    "section4_title": "Limitations",
+    "section4_content": "En aucun cas Inavora ou ses fournisseurs ne seront responsables de tout dommage (y compris, sans limitation, les dommages pour perte de données ou de bénéfices, ou dus à une interruption d'activité) résultant de l'utilisation ou de l'impossibilité d'utiliser les documents sur le site Web d'Inavora, même si Inavora ou un représentant autorisé a été informé oralement ou par écrit de la possibilité de tels dommages."
+  },
   "about": {
     "mission_badge": "Notre mission",
     "hero_title_line1": "Où les présentations",
@@ -886,10 +923,10 @@
     "free_plan_name": "Gratuit",
     "free_plan_price": "₹0",
     "free_plan_feature1": "Pour Un Utilisateur",
-    "free_plan_feature2": "Présentations Illimitées",
+    "free_plan_feature2": "3 présentations par mois",
     "free_plan_feature3": "10 diapositives par présentation",
     "free_plan_feature4": "20 membres du public",
-    "free_plan_feature5": "Filigrane",
+
     "free_plan_button_current": "Plan actuel",
     "free_plan_button_continue": "Continuer avec Gratuit",
     "pro_plan_name": "Pro",
@@ -903,8 +940,8 @@
     "pro_plan_feature2": "Présentations Illimitées",
     "pro_plan_feature3": "Diapositives illimitées",
     "pro_plan_feature4": "Public illimité",
-    "pro_plan_feature5": "Résultats d'Exportation Normaux",
-    "pro_plan_feature6": "Sans Filigrane",
+    "pro_plan_feature5": "Exporter les Résultats",
+
     "pro_plan_button": "Passer à Pro",
     "pro_plan_popular": "POPULAIRE",
     "lifetime_plan_name": "À vie",
@@ -939,7 +976,8 @@
     "users_feature": "Utilisateurs",
     "ai_features_feature": "Fonctions IA (Bientôt disponible)",
     "export_results_feature": "Exporter les résultats",
-    "watermark_free_feature": "Sans filigrane",
+    "detailed_export_results_feature": "Résultats d'Exportation Détaillés",
+
     "priority_support_feature": "Support prioritaire",
     "lifetime_access_feature": "Accès à vie",
     "custom_branding_feature": "Marque personnalisée",
@@ -1133,6 +1171,7 @@
       "failed_to_load": "Failed to load presentation",
       "created": "Presentation created",
       "failed_to_create": "Failed to create presentation",
+      "free_plan_limit_reached": "Limite du plan gratuit atteinte : Vous pouvez créer jusqu'à 3 présentations tous les 30 jours. Mettez à niveau le Plan pour des présentations illimitées.",
       "saved": "Presentation saved",
       "failed_to_save": "Failed to save presentation",
       "draft_restored": "Draft restored",
@@ -1165,7 +1204,8 @@
       "pin_image_url_required": "Pin on Image Slide {{number}}: Image URL is required",
       "text_content_required": "Text Slide {{number}}: Content is required",
       "image_url_required": "Image Slide {{number}}: Image URL is required",
-      "video_url_required": "Video Slide {{number}}: Video URL is required"
+      "video_url_required": "Video Slide {{number}}: Video URL is required",
+      "upgrade_to_create_slide": "Mettez à niveau pour créer cette diapositive"
     },
     "present_mode": {
       "presentation_live": "Presentation is now live!",
@@ -1680,5 +1720,12 @@
       "submit_success_message": "Merci ! Votre témoignage a été envoyé et sera examiné.",
       "submit_error": "Échec de l'envoi du témoignage. Veuillez réessayer."
     }
+  },
+  "common": {
+    "something_went_wrong": "Quelque chose s'est mal passé. Veuillez réessayer.",
+    "network_error": "Erreur réseau. Veuillez vérifier votre connexion.",
+    "request_failed": "La requête a échoué. Veuillez réessayer.",
+    "operation_failed": "L'opération a échoué. Veuillez réessayer.",
+    "back": "Retour"
   }
 }

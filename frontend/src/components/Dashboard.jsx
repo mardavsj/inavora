@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { JoinPresentationBtn, JoinPresentationDialog } from './common/JoinPresentationDialog';
 import LanguageSelector from './common/LanguageSelector/LanguageSelector';
 import SupportWidget from './common/SupportWidget';
+import { translateError } from '../utils/errorTranslator';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ const Dashboard = () => {
   const [presentations, setPresentations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showDialog, setShowDialog] = useState(false);
+  const [showFreePlanLimitModal, setShowFreePlanLimitModal] = useState(false);
 
   // Search & Pagination State
   const [searchTerm, setSearchTerm] = useState('');
@@ -35,14 +37,41 @@ const Dashboard = () => {
     loadPresentations();
   }, []);
 
+  // Prevent background scrolling when modal is open
+  useEffect(() => {
+    if (showFreePlanLimitModal) {
+      // Save current overflow style
+      const originalOverflow = document.body.style.overflow;
+      // Disable scrolling
+      document.body.style.overflow = 'hidden';
+      
+      // Cleanup: restore scrolling when modal closes
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [showFreePlanLimitModal]);
+
   // Close menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         const logoutButton = document.querySelector('[data-logout-button]');
+        const feedbackButton = document.querySelector('[data-feedback-button]');
+        const contactButton = document.querySelector('[data-contact-button]');
+        
         if (logoutButton && (logoutButton === event.target || logoutButton.contains(event.target))) {
           return;
         }
+        
+        if (feedbackButton && (feedbackButton === event.target || feedbackButton.contains(event.target))) {
+          return;
+        }
+        
+        if (contactButton && (contactButton === event.target || contactButton.contains(event.target))) {
+          return;
+        }
+        
         setShowUserMenu(false);
       }
     };
@@ -82,10 +111,25 @@ const Dashboard = () => {
       setIsLoading(true);
       const title = t('dashboard.untitled_presentation');
       const { presentation } = await presentationService.createPresentation(title);
+      toast.success(t('toasts.presentation.created'));
       navigate(`/presentation/${presentation.id}`);
     } catch (error) {
       console.error('Create presentation error:', error);
-      toast.error(t('dashboard.template_creation_error'));
+      // Check if it's a free plan limit error
+      const errorCode = error?.response?.data?.code || error?.response?.data?.error;
+      if (errorCode === 'FREE_PLAN_PRESENTATION_LIMIT' || 
+          error?.response?.data?.error?.includes('Free plan limit') ||
+          error?.message?.includes('Free plan limit')) {
+        setShowFreePlanLimitModal(true);
+      } else {
+        toast.error(
+          translateError(
+            error,
+            t,
+            'toasts.presentation.failed_to_create'
+          )
+        );
+      }
     } finally {
       setIsLoading(false);
     }
@@ -151,7 +195,7 @@ const Dashboard = () => {
 
       const { presentation } = await presentationService.createPresentation(title);
 
-      toast.success(t('dashboard.presentation_created'));
+      toast.success(t('toasts.presentation.created'));
       navigate(`/presentation/${presentation.id}`, {
         state: {
           initialSlides: slidesToCreate,
@@ -161,7 +205,15 @@ const Dashboard = () => {
 
     } catch (error) {
       console.error('Create from template error:', error);
-      toast.error(t('dashboard.template_creation_error'));
+      // Check if it's a free plan limit error
+      const errorCode = error?.response?.data?.code || error?.response?.data?.error;
+      if (errorCode === 'FREE_PLAN_PRESENTATION_LIMIT' || 
+          error?.response?.data?.error?.includes('Free plan limit') ||
+          error?.message?.includes('Free plan limit')) {
+        setShowFreePlanLimitModal(true);
+      } else {
+        toast.error(t('dashboard.template_creation_error'));
+      }
       setIsLoading(false);
     }
   };
@@ -295,22 +347,28 @@ const Dashboard = () => {
                     {t('navbar.upgrade_to_pro')}
                   </Link>
                 )}
-                <Link
-                  to="/testimonials"
-                  className='px-4 py-3 border-b border-white/5 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-2'
-                  onClick={() => setShowUserMenu(false)}
+                <button
+                  onClick={() => {
+                    setShowUserMenu(false);
+                    setTimeout(() => navigate('/testimonials'), 100);
+                  }}
+                  className='px-4 py-3 border-b border-white/5 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-2 w-full text-left'
+                  data-feedback-button="true"
                 >
                   <MessageSquare className='w-4 h-4' />
                   {t('dashboard.share_feedback')}
-                </Link>
-                <Link
-                  to="/contact"
-                  className='px-4 py-3 border-b border-white/5 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-2'
-                  onClick={() => setShowUserMenu(false)}
+                </button>
+                <button
+                  onClick={() => {
+                    setShowUserMenu(false);
+                    setTimeout(() => navigate('/contact'), 100);
+                  }}
+                  className='px-4 py-3 border-b border-white/5 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-2 w-full text-left'
+                  data-contact-button="true"
                 >
                   <Mail className='w-4 h-4' />
                   {t('dashboard.contact_support')}
-                </Link>
+                </button>
                 <button
                   onClick={(e) => handleLogout(e)}
                   data-logout-button="true"
@@ -621,6 +679,64 @@ const Dashboard = () => {
       {showDialog &&
         <JoinPresentationDialog onCancel={setShowDialog} />
       }
+
+      {/* Free Plan Limit Modal */}
+      <AnimatePresence>
+        {showFreePlanLimitModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            onClick={() => setShowFreePlanLimitModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              onClick={e => e.stopPropagation()}
+              className="bg-[#1e293b] border border-red-500/30 rounded-2xl p-8 max-w-md w-full shadow-2xl shadow-red-500/20"
+            >
+              {/* Icon */}
+              <div className="flex justify-center mb-4">
+                <div className="w-16 h-16 rounded-full bg-red-500/20 flex items-center justify-center border-2 border-red-500/50">
+                  <Crown className="w-8 h-8 text-red-400" />
+                </div>
+              </div>
+
+              {/* Title */}
+              <h3 className="text-2xl font-bold text-white mb-4 text-center">
+                {t('dashboard.free_plan_limit_title')}
+              </h3>
+
+              {/* Message */}
+              <p className="text-gray-300 mb-8 text-center leading-relaxed">
+                {t('toasts.presentation.free_plan_limit_reached')}
+              </p>
+
+              {/* Buttons */}
+              <div className="flex gap-4 justify-center">
+                <button
+                  onClick={() => setShowFreePlanLimitModal(false)}
+                  className="px-6 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-xl transition-colors font-medium border border-white/10"
+                >
+                  {t('dashboard.free_plan_limit_ok')}
+                </button>
+                <button
+                  onClick={() => {
+                    setShowFreePlanLimitModal(false);
+                    navigate('/pricing');
+                  }}
+                  className="px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl transition-all font-bold hover:shadow-lg hover:shadow-red-500/25 flex items-center gap-2"
+                >
+                  <Crown className="w-4 h-4" />
+                  {t('dashboard.free_plan_limit_upgrade')}
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       
       {/* Support Widget */}
       <SupportWidget />

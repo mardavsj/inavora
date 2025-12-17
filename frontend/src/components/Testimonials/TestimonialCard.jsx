@@ -11,23 +11,45 @@ const TestimonialCard = ({ testimonial, index = 0 }) => {
     return name[0].toUpperCase();
   };
 
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'approved': return 'bg-green-500/10 text-green-400 border-green-500/20';
+      case 'rejected': return 'bg-red-500/10 text-red-400 border-red-500/20';
+      default: return 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20';
+    }
+  };
+
+  const getStatusLabel = (status) => {
+    switch (status) {
+      case 'approved': return 'Approved';
+      case 'rejected': return 'Rejected';
+      default: return 'Pending Review';
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
-      className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-slate-700 transition-all h-full flex flex-col"
+      className="bg-slate-900/50 border border-slate-800 rounded-xl p-6 hover:border-slate-700 transition-all h-full flex flex-col relative"
     >
+      {/* Status Badge - Only show if status is present (private view) */}
+      {testimonial.status && (
+        <div className={`absolute top-4 right-4 px-2 py-1 rounded-full text-xs font-medium border ${getStatusColor(testimonial.status)}`}>
+          {getStatusLabel(testimonial.status)}
+        </div>
+      )}
+
       {/* Rating */}
       <div className="flex items-center gap-1 mb-4">
         {[1, 2, 3, 4, 5].map((star) => (
           <Star
             key={star}
-            className={`w-4 h-4 ${
-              star <= testimonial.rating
+            className={`w-4 h-4 ${star <= testimonial.rating
                 ? 'fill-yellow-400 text-yellow-400'
                 : 'text-slate-600'
-            }`}
+              }`}
           />
         ))}
       </div>

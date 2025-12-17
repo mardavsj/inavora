@@ -632,6 +632,9 @@
     "delete_confirmation": "هل أنت متأكد من حذف <highlight>{{title}}</highlight>؟ لا يمكن التراجع عن هذا الإجراء وسيؤدي إلى حذف جميع الشرائح والردود بشكل دائم.",
     "cancel": "إلغاء",
     "delete": "حذف",
+    "free_plan_limit_title": "تم الوصول إلى حد الخطة المجانية",
+    "free_plan_limit_ok": "حسناً",
+    "free_plan_limit_upgrade": "ترقية الخطة",
     "sign_out": "تسجيل الخروج",
     "plan": "الخطة",
     "share_feedback": "مشاركة التعليقات",
@@ -820,6 +823,40 @@
     "privacy_policy": "سياسة الخصوصية",
     "terms_of_service": "شروط الخدمة"
   },
+  "privacy": {
+    "title": "سياسة الخصوصية",
+    "last_updated": "آخر تحديث: 18 ديسمبر 2025",
+    "section1_title": "مقدمة",
+    "section1_content": "مرحبًا بك في Inavora. نحن ملتزمون بحماية معلوماتك الشخصية وحقك في الخصوصية. تصف سياسة الخصوصية هذه كيفية جمعنا واستخدامنا ومشاركة معلوماتك الشخصية عند استخدامك لموقعنا الإلكتروني وخدماتنا.",
+    "section2_title": "المعلومات التي نجمعها",
+    "section2_content": "نحن نجمع المعلومات لتقديم خدمات أفضل لجميع مستخدمينا. أنواع المعلومات التي نجمعها تشمل:",
+    "section2_point1": "معلومات التعريف الشخصية (الاسم، عنوان البريد الإلكتروني، رقم الهاتف، إلخ)",
+    "section2_point2": "بيانات الاستخدام (عنوان IP، نوع المتصفح، الصفحات التي تمت مشاهدتها، الوقت المستغرق، إلخ)",
+    "section2_point3": "معلومات الجهاز (نوع الجهاز، نظام التشغيل، معرفات فريدة للجهاز)",
+    "section2_point4": "ملفات تعريف الارتباط وتكنولوجيا التتبع المماثلة",
+    "section3_title": "كيف نستخدم معلوماتك",
+    "section3_content": "نحن نستخدم المعلومات التي نجمعها لتوفير خدماتنا والحفاظ عليها وتحسينها. وتحديدًا، قد نستخدم معلوماتك لـ:",
+    "section3_point1": "توفير خدمتنا والحفاظ عليها",
+    "section3_point2": "إعلامك بالتغييرات في خدمتنا",
+    "section3_point3": "السماح لك بالمشاركة في الميزات التفاعلية لخدمتنا",
+    "section4_title": "أمان البيانات",
+    "section4_content": "نحن ننفذ تدابير أمان مناسبة لحماية المعلومات الشخصية الخاصة بك من الوصول غير المصرح به أو التغيير أو الإفصاح أو التدمير. ومع ذلك، لا توجد طريقة نقل عبر الإنترنت أو تخزين إلكتروني آمن بنسبة 100%."
+  },
+  "terms": {
+    "title": "شروط الخدمة",
+    "last_updated": "آخر تحديث: 18 ديسمبر 2025",
+    "section1_title": "قبول الشروط",
+    "section1_content": "من خلال الوصول إلى منصة Inavora أو استخدامها، فإنك توافق على الالتزام بشروط الخدمة هذه وجميع القوانين واللوائح المعمول بها. إذا كنت لا توافق على أي من هذه الشروط، فأنت محظور من استخدام أو الدخول إلى هذا الموقع.",
+    "section2_title": "ترخيص الاستخدام",
+    "section2_content": "يُمنح إذن تنزيل نسخة واحدة مؤقتًا من المواد الموجودة على موقع Inavora لأغراض المشاهدة الشخصية وغير التجارية المؤقتة فقط. هذا منح ترخيص، وليس نقل الملكية.",
+    "section3_title": "إخلاء المسؤولية",
+    "section3_content": "يتم توفير المواد الموجودة على موقع Inavora على أساس \"كما هي\". لا يقدم Inavora أي ضمانات، صريحة أو ضمنية، وبهذا يتنازل ويُبطل جميع الضمانات الأخرى بما في ذلك، دون حصر، الضمانات الضمنية أو شروط قابلية التسويق أو الملاءمة لغرض معين أو عدم انتهاك حقوق الملكية الفكرية أو انتهاك حقوق أخرى.",
+    "section3_point1": "يتم توفير المواد الموجودة في الموقع \"كما هي\" دون ضمان",
+    "section3_point2": "لا نضمن أن الموقع سيكون مستمرًا أو خاليًا من الأخطاء",
+    "section3_point3": "لا نضمن أن النتائج التي تم الحصول عليها من استخدام الموقع ستكون دقيقة أو موثوقة",
+    "section4_title": "القيود",
+    "section4_content": "في أي حال من الأحوال لن يكون Inavora أو مورّدوها مسؤولين عن أي أضرار (بما في ذلك، دون حصر، الأضرار المتعلقة بفقدان البيانات أو الربح، أو بسبب انقطاع الأعمال) الناشئة عن استخدام أو عدم القدرة على استخدام المواد الموجودة على موقع Inavora، حتى لو تم إخطار Inavora أو ممثل مخول شفهيًا أو كتابيًا بإمكانية حدوث مثل هذا الضرر."
+  },
   "about": {
     "mission_badge": "مهمتنا",
     "hero_title_line1": "حيث العروض التقديمية",
@@ -857,10 +894,10 @@
     "free_plan_name": "مجاني",
     "free_plan_price": "₹0",
     "free_plan_feature1": "لمستخدم واحد",
-    "free_plan_feature2": "عروض تقديمية غير محدودة",
+    "free_plan_feature2": "3 عروض تقديمية شهريًا",
     "free_plan_feature3": "10 شرائح لكل عرض تقديمي",
     "free_plan_feature4": "20 عضو جمهور",
-    "free_plan_feature5": "علامة مائية",
+
     "free_plan_button_current": "الخطة الحالية",
     "free_plan_button_continue": "متابعة مع المجاني",
     "pro_plan_name": "احترافي",
@@ -874,8 +911,8 @@
     "pro_plan_feature2": "عروض تقديمية غير محدودة",
     "pro_plan_feature3": "شرائح غير محدودة",
     "pro_plan_feature4": "جمهور غير محدود",
-    "pro_plan_feature5": "نتائج التصدير العادية",
-    "pro_plan_feature6": "بدون علامة مائية",
+    "pro_plan_feature5": "تصدير النتائج",
+
     "pro_plan_button": "الترقية إلى الاحترافي",
     "pro_plan_popular": "شائع",
     "lifetime_plan_name": "مدى الحياة",
@@ -911,7 +948,8 @@
     "users_feature": "المستخدمون",
     "ai_features_feature": "ميزات الذكاء الاصطناعي (قريباً)",
     "export_results_feature": "تصدير النتائج",
-    "watermark_free_feature": "بدون علامة مائية",
+    "detailed_export_results_feature": "نتائج التصدير المفصلة",
+
     "priority_support_feature": "دعم أولوية",
     "lifetime_access_feature": "وصول مدى الحياة",
     "custom_branding_feature": "علامة تجارية مخصصة",
@@ -1171,6 +1209,7 @@
       "failed_to_load": "Failed to load presentation",
       "created": "Presentation created",
       "failed_to_create": "Failed to create presentation",
+      "free_plan_limit_reached": "تم الوصول إلى حد الخطة المجانية: يمكنك إنشاء ما يصل إلى 3 عروض تقديمية كل 30 يومًا. قم بترقية الخطة للحصول على عروض تقديمية غير محدودة.",
       "saved": "Presentation saved",
       "failed_to_save": "Failed to save presentation",
       "draft_restored": "Draft restored",
@@ -1203,7 +1242,8 @@
       "pin_image_url_required": "Pin on Image Slide {{number}}: Image URL is required",
       "text_content_required": "Text Slide {{number}}: Content is required",
       "image_url_required": "Image Slide {{number}}: Image URL is required",
-      "video_url_required": "Video Slide {{number}}: Video URL is required"
+      "video_url_required": "Video Slide {{number}}: Video URL is required",
+      "upgrade_to_create_slide": "قم بالترقية لإنشاء هذه الشريحة"
     },
     "present_mode": {
       "presentation_live": "Presentation is now live!",
@@ -1717,5 +1757,12 @@
       "submit_success_message": "شكراً لك! تم إرسال شهادتك وسيتم مراجعتها.",
       "submit_error": "فشل إرسال الشهادة. يرجى المحاولة مرة أخرى."
     }
+  },
+  "common": {
+    "something_went_wrong": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+    "network_error": "خطأ في الشبكة. يرجى التحقق من اتصالك.",
+    "request_failed": "فشل الطلب. يرجى المحاولة مرة أخرى.",
+    "operation_failed": "فشلت العملية. يرجى المحاولة مرة أخرى.",
+    "back": "رجوع"
   }
 }

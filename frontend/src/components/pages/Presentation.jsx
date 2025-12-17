@@ -1178,6 +1178,7 @@ export default function Presentation() {
                       setShowNewSlideDropdown(false);
                     }}
                     onClose={() => setShowNewSlideDropdown(false)}
+                    user={user}
                   />
                 )}
               </div>
@@ -1211,6 +1212,7 @@ export default function Presentation() {
                     }}
                     onClose={() => setShowNewSlideDropdown(false)}
                     isHorizontal={true}
+                    user={user}
                   />
                 </div>
               )}

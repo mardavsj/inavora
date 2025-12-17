@@ -14,7 +14,7 @@ import {
   Heart,
   Mic,
   Menu,
-  X,
+  MessageSquare,  X,
   Check,
   Mail,
   MapPin,
@@ -462,6 +462,26 @@ export default function Landing() {
                           </div>
                         )}
                         <button
+                          onClick={() => {
+                            setShowUserMenu(false);
+                            setTimeout(() => navigate('/testimonials'), 100);
+                          }}
+                          className="w-full px-4 py-3 text-left text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-2 border-b border-white/5"
+                        >
+                          <MessageSquare className="h-4 w-4" />
+                          {t('dashboard.share_feedback')}
+                        </button>
+                        <button
+                          onClick={() => {
+                            setShowUserMenu(false);
+                            setTimeout(() => navigate('/contact'), 100);
+                          }}
+                          className="w-full px-4 py-3 text-left text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-2 border-b border-white/5"
+                        >
+                          <Mail className="h-4 w-4" />
+                          {t('dashboard.contact_support')}
+                        </button>
+                        <button
                           onClick={(e) => handleLogout(e)}
                           data-logout-button="true"
                           className="w-full px-4 py-3 text-left text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300 flex items-center gap-2 transition-colors"
@@ -471,8 +491,7 @@ export default function Landing() {
                         </button>
                       </motion.div>
                     )}
-                  </AnimatePresence>
-                </div>
+                  </AnimatePresence>                </div>
               </>
             ) : (
               <>
@@ -610,6 +629,26 @@ export default function Landing() {
                       </div>
                     )}
                     <button
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        setTimeout(() => navigate('/testimonials'), 100);
+                      }}
+                      className="w-full px-3 py-2 text-left text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-2"
+                    >
+                      <MessageSquare className="h-4 w-4" />
+                      {t('dashboard.share_feedback')}
+                    </button>
+                    <button
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        setTimeout(() => navigate('/contact'), 100);
+                      }}
+                      className="w-full px-3 py-2 text-left text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-2"
+                    >
+                      <Mail className="h-4 w-4" />
+                      {t('dashboard.contact_support')}
+                    </button>
+                    <button
                       onClick={(e) => {
                         setMobileMenuOpen(false);
                         handleLogout(e);
@@ -621,7 +660,6 @@ export default function Landing() {
                     </button>
                   </div>
                 </div>):
-
                   (<div className="pt-4 border-t border-white/10 flex flex-col gap-3">
                     <button onClick={() => navigate('/login')} className="text-gray-300 hover:text-white font-medium text-left break-words">{t('navbar.sign_in')}</button>
                     <button onClick={() => navigate('/register')} className="bg-white text-slate-900 px-4 py-2 rounded-lg font-bold break-words">{t('navbar.get_started')}</button>

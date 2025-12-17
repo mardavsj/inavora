@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Presentation, Plus, Lock, User, ChevronDown, Settings, LogOut } from 'lucide-react';
+import { Presentation, Plus, Lock, User, ChevronDown, Settings, LogOut, MessageSquare, Mail } from 'lucide-react';
 import LanguageSelector from '../../common/LanguageSelector/LanguageSelector';
 import { JoinPresentationDialog } from '../../common/JoinPresentationDialog';
 import { useState, useRef, useEffect } from 'react';
@@ -165,6 +165,26 @@ const TopNav = ({ institution, onLogout, onOpenProfile }) => {
                                         >
                                             <User className="w-4 h-4" />
                                             {t('institution_admin.profile') || 'Profile'}
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                setIsProfileMenuOpen(false);
+                                                setTimeout(() => navigate('/testimonials'), 100);
+                                            }}
+                                            className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white transition-colors"
+                                        >
+                                            <MessageSquare className="w-4 h-4" />
+                                            {t('dashboard.share_feedback')}
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                setIsProfileMenuOpen(false);
+                                                setTimeout(() => navigate('/contact'), 100);
+                                            }}
+                                            className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white transition-colors"
+                                        >
+                                            <Mail className="w-4 h-4" />
+                                            {t('dashboard.contact_support')}
                                         </button>
                                         <button
                                             onClick={() => {
