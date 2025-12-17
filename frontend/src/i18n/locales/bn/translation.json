@@ -655,6 +655,9 @@
     "delete_confirmation": "আপনি কি সত্যিই <highlight>{{title}}</highlight> মুছে ফেলতে চান? এই ক্রিয়াটি পূর্বাবস্থায় ফেরানো যাবে না এবং সমস্ত স্লাইড এবং প্রতিক্রিয়া স্থায়ীভাবে সরিয়ে ফেলা হবে।",
     "cancel": "বাতিল করুন",
     "delete": "মুছে ফেলুন",
+    "free_plan_limit_title": "ফ্রি প্ল্যান সীমা পৌঁছেছে",
+    "free_plan_limit_ok": "ঠিক আছে",
+    "free_plan_limit_upgrade": "প্ল্যান আপগ্রেড করুন",
     "sign_out": "সাইন আউট",
     "plan": "পরিকল্পনা",
     "share_feedback": "মতামত শেয়ার করুন",
@@ -908,10 +911,10 @@
     "free_plan_name": "ফ্রি",
     "free_plan_price": "₹0",
     "free_plan_feature1": "একজন ব্যবহারকারীর জন্য",
-    "free_plan_feature2": "সীমাহীন উপস্থাপনা",
+    "free_plan_feature2": "প্রতি মাসে ৩টি উপস্থাপনা",
     "free_plan_feature3": "প্রতি উপস্থাপনায় 10 স্লাইড",
     "free_plan_feature4": "20 জন শ্রোতা",
-    "free_plan_feature5": "ওয়াটারমার্ক",
+
     "free_plan_button_current": "বর্তমান পরিকল্পনা",
     "free_plan_button_continue": "ফ্রি সহ চালিয়ে যান",
     "pro_plan_name": "প্রো",
@@ -925,8 +928,8 @@
     "pro_plan_feature2": "সীমাহীন উপস্থাপনা",
     "pro_plan_feature3": "সীমাহীন স্লাইড",
     "pro_plan_feature4": "সীমাহীন শ্রোতা",
-    "pro_plan_feature5": "স্বাভাবিক রপ্তানি ফলাফল",
-    "pro_plan_feature6": "কোনও ওয়াটারমার্ক নেই",
+    "pro_plan_feature5": "ফলাফল রপ্তানি করুন",
+
     "pro_plan_button": "প্রো-তে আপগ্রেড করুন",
     "pro_plan_popular": "জনপ্রিয়",
     "lifetime_plan_name": "জীবনকাল",
@@ -962,7 +965,8 @@
     "users_feature": "ব্যবহারকারী",
     "ai_features_feature": "এআই বৈশিষ্ট্য (শীঘ্রই আসছে)",
     "export_results_feature": "ফলাফল রপ্তানি করুন",
-    "watermark_free_feature": "ওয়াটারমার্ক-ফ্রি",
+    "detailed_export_results_feature": "বিস্তারিত রপ্তানির ফলাফল",
+
     "priority_support_feature": "অগ্রাধিকার সমর্থন",
     "lifetime_access_feature": "জীবনকাল অ্যাক্সেস",
     "custom_branding_feature": "কাস্টম ব্র্যান্ডিং",
@@ -1592,6 +1596,7 @@
       "failed_to_load": "Failed to load presentation",
       "created": "Presentation created",
       "failed_to_create": "Failed to create presentation",
+      "free_plan_limit_reached": "ফ্রি প্ল্যান সীমা পৌঁছেছে: আপনি প্রতি 30 দিনে 3টি উপস্থাপনা তৈরি করতে পারেন। সীমাহীন উপস্থাপনার জন্য প্ল্যান আপগ্রেড করুন।",
       "saved": "Presentation saved",
       "failed_to_save": "Failed to save presentation",
       "draft_restored": "Draft restored",
@@ -1624,7 +1629,8 @@
       "pin_image_url_required": "Pin on Image Slide {{number}}: Image URL is required",
       "text_content_required": "Text Slide {{number}}: Content is required",
       "image_url_required": "Image Slide {{number}}: Image URL is required",
-      "video_url_required": "Video Slide {{number}}: Video URL is required"
+      "video_url_required": "Video Slide {{number}}: Video URL is required",
+      "upgrade_to_create_slide": "এই স্লাইড তৈরি করতে আপগ্রেড করুন"
     },
     "present_mode": {
       "presentation_live": "Presentation is now live!",

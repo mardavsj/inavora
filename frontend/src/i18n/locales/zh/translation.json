@@ -667,6 +667,9 @@
     "delete_confirmation": "您确定要删除<highlight>{{title}}</highlight>吗？此操作无法撤销，并将永久删除所有幻灯片和回复。",
     "cancel": "取消",
     "delete": "删除",
+    "free_plan_limit_title": "免费计划限制已达到",
+    "free_plan_limit_ok": "确定",
+    "free_plan_limit_upgrade": "升级计划",
     "sign_out": "退出",
     "plan": "计划",
     "share_feedback": "分享反馈",
@@ -946,10 +949,10 @@
     "free_plan_name": "免费",
     "free_plan_price": "₹0",
     "free_plan_feature1": "适用于一个用户",
-    "free_plan_feature2": "无限演示",
+    "free_plan_feature2": "每月 3 个演示文稿",
     "free_plan_feature3": "每场演示10张幻灯片",
     "free_plan_feature4": "20名观众成员",
-    "free_plan_feature5": "水印",
+
     "free_plan_button_current": "当前计划",
     "free_plan_button_continue": "继续使用免费版",
     "pro_plan_name": "专业版",
@@ -963,8 +966,8 @@
     "pro_plan_feature2": "无限演示",
     "pro_plan_feature3": "无限幻灯片",
     "pro_plan_feature4": "无限观众",
-    "pro_plan_feature5": "普通导出结果",
-    "pro_plan_feature6": "无水印",
+    "pro_plan_feature5": "导出结果",
+
     "pro_plan_button": "升级到专业版",
     "pro_plan_popular": "热门",
     "lifetime_plan_name": "终身版",
@@ -999,7 +1002,8 @@
     "users_feature": "用户",
     "ai_features_feature": "AI功能（即将推出）",
     "export_results_feature": "导出结果",
-    "watermark_free_feature": "无水印",
+    "detailed_export_results_feature": "详细导出结果",
+
     "priority_support_feature": "优先支持",
     "lifetime_access_feature": "终身访问",
     "custom_branding_feature": "自定义品牌",
@@ -1593,6 +1597,7 @@
       "failed_to_load": "Failed to load presentation",
       "created": "Presentation created",
       "failed_to_create": "Failed to create presentation",
+      "free_plan_limit_reached": "免费计划限制已达到：您每30天可以创建3个演示文稿。升级计划以获得无限演示文稿。",
       "saved": "Presentation saved",
       "failed_to_save": "Failed to save presentation",
       "draft_restored": "Draft restored",
@@ -1625,7 +1630,8 @@
       "pin_image_url_required": "Pin on Image Slide {{number}}: Image URL is required",
       "text_content_required": "Text Slide {{number}}: Content is required",
       "image_url_required": "Image Slide {{number}}: Image URL is required",
-      "video_url_required": "Video Slide {{number}}: Video URL is required"
+      "video_url_required": "Video Slide {{number}}: Video URL is required",
+      "upgrade_to_create_slide": "升级以创建此幻灯片"
     },
     "present_mode": {
       "presentation_live": "Presentation is now live!",

@@ -647,6 +647,9 @@
     "live": "En direct"
   },
   "dashboard": {
+    "free_plan_limit_title": "Limite du Plan Gratuit Atteinte",
+    "free_plan_limit_ok": "Ok",
+    "free_plan_limit_upgrade": "Mettre à Niveau",
     "dashboard": "Tableau de bord",
     "manage_presentations": "Gérez vos présentations interactives",
     "recent_activity": "Activité récente",
@@ -886,10 +889,10 @@
     "free_plan_name": "Gratuit",
     "free_plan_price": "₹0",
     "free_plan_feature1": "Pour Un Utilisateur",
-    "free_plan_feature2": "Présentations Illimitées",
+    "free_plan_feature2": "3 présentations par mois",
     "free_plan_feature3": "10 diapositives par présentation",
     "free_plan_feature4": "20 membres du public",
-    "free_plan_feature5": "Filigrane",
+
     "free_plan_button_current": "Plan actuel",
     "free_plan_button_continue": "Continuer avec Gratuit",
     "pro_plan_name": "Pro",
@@ -903,8 +906,8 @@
     "pro_plan_feature2": "Présentations Illimitées",
     "pro_plan_feature3": "Diapositives illimitées",
     "pro_plan_feature4": "Public illimité",
-    "pro_plan_feature5": "Résultats d'Exportation Normaux",
-    "pro_plan_feature6": "Sans Filigrane",
+    "pro_plan_feature5": "Exporter les Résultats",
+
     "pro_plan_button": "Passer à Pro",
     "pro_plan_popular": "POPULAIRE",
     "lifetime_plan_name": "À vie",
@@ -939,7 +942,8 @@
     "users_feature": "Utilisateurs",
     "ai_features_feature": "Fonctions IA (Bientôt disponible)",
     "export_results_feature": "Exporter les résultats",
-    "watermark_free_feature": "Sans filigrane",
+    "detailed_export_results_feature": "Résultats d'Exportation Détaillés",
+
     "priority_support_feature": "Support prioritaire",
     "lifetime_access_feature": "Accès à vie",
     "custom_branding_feature": "Marque personnalisée",
@@ -1133,6 +1137,7 @@
       "failed_to_load": "Failed to load presentation",
       "created": "Presentation created",
       "failed_to_create": "Failed to create presentation",
+      "free_plan_limit_reached": "Limite du plan gratuit atteinte : Vous pouvez créer jusqu'à 3 présentations tous les 30 jours. Mettez à niveau le Plan pour des présentations illimitées.",
       "saved": "Presentation saved",
       "failed_to_save": "Failed to save presentation",
       "draft_restored": "Draft restored",
@@ -1165,7 +1170,8 @@
       "pin_image_url_required": "Pin on Image Slide {{number}}: Image URL is required",
       "text_content_required": "Text Slide {{number}}: Content is required",
       "image_url_required": "Image Slide {{number}}: Image URL is required",
-      "video_url_required": "Video Slide {{number}}: Video URL is required"
+      "video_url_required": "Video Slide {{number}}: Video URL is required",
+      "upgrade_to_create_slide": "Mettez à niveau pour créer cette diapositive"
     },
     "present_mode": {
       "presentation_live": "Presentation is now live!",

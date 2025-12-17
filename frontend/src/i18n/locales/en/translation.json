@@ -697,6 +697,9 @@
     "load_presentations_error": "Failed to load presentations",
     "logout_success": "Logged out successfully!",
     "logout_error": "Failed to logout. Please try again.",
+    "free_plan_limit_title": "Free Plan Limit Reached",
+    "free_plan_limit_ok": "Ok",
+    "free_plan_limit_upgrade": "Upgrade Plan",
     "untitled_presentation": "Untitled Presentation",
     "mcq_presentation": "MCQ Presentation",
     "untitled_mcq_question": "Untitled MCQ Question",
@@ -960,10 +963,10 @@
     "free_plan_name": "Free",
     "free_plan_price": "₹0",
     "free_plan_feature1": "For One User",
-    "free_plan_feature2": "Unlimited Presentations",
+    "free_plan_feature2": "3 Presentations per month",
     "free_plan_feature3": "10 Slides per presentation",
     "free_plan_feature4": "20 Audience members",
-    "free_plan_feature5": "Watermark",
+
     "free_plan_button_current": "Current Plan",
     "free_plan_button_continue": "Continue with Free",
     "pro_plan_name": "Pro",
@@ -977,8 +980,8 @@
     "pro_plan_feature2": "Unlimited Presentations",
     "pro_plan_feature3": "Unlimited Slides",
     "pro_plan_feature4": "Unlimited Audience",
-    "pro_plan_feature5": "Normal Export Results",
-    "pro_plan_feature6": "No Water Mark",
+    "pro_plan_feature5": "Export Results",
+
     "pro_plan_button": "Upgrade to Pro",
     "pro_plan_popular": "POPULAR",
     "lifetime_plan_name": "Lifetime",
@@ -1014,7 +1017,8 @@
     "users_feature": "Users",
     "ai_features_feature": "AI Features (Coming Soon)",
     "export_results_feature": "Export Results",
-    "watermark_free_feature": "Watermark-free",
+    "detailed_export_results_feature": "Detailed Export Results",
+
     "priority_support_feature": "Priority Support",
     "lifetime_access_feature": "Lifetime Access",
     "custom_branding_feature": "Custom Branding",
@@ -1748,6 +1752,7 @@
       "not_found": "Presentation not found or access denied",
       "created": "Presentation created",
       "failed_to_create": "Failed to create presentation",
+      "free_plan_limit_reached": "Free plan limit reached: You can create up to 3 presentations every 30 days. Upgrade Plan for unlimited presentations.",
       "saved": "Presentation saved",
       "failed_to_save": "Failed to save presentation",
       "draft_restored": "Draft restored",
@@ -1780,7 +1785,8 @@
       "pin_image_url_required": "Pin on Image Slide {{number}}: Image URL is required",
       "text_content_required": "Text Slide {{number}}: Content is required",
       "image_url_required": "Image Slide {{number}}: Image URL is required",
-      "video_url_required": "Video Slide {{number}}: Video URL is required"
+      "video_url_required": "Video Slide {{number}}: Video URL is required",
+      "upgrade_to_create_slide": "Upgrade to create this slide"
     },
     "present_mode": {
       "presentation_live": "Presentation is now live!",

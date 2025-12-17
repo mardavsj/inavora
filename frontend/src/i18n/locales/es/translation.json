@@ -656,6 +656,9 @@
     "load_presentations_error": "Error al cargar las presentaciones",
     "logout_success": "¡Cierre de sesión exitoso!",
     "logout_error": "Error al cerrar sesión. Por favor, inténtelo de nuevo.",
+    "free_plan_limit_title": "Límite del Plan Gratuito Alcanzado",
+    "free_plan_limit_ok": "Ok",
+    "free_plan_limit_upgrade": "Actualizar Plan",
     "untitled_presentation": "Presentación Sin Título",
     "mcq_presentation": "Presentación de Opción Múltiple",
     "untitled_mcq_question": "Pregunta de Opción Múltiple Sin Título",
@@ -916,10 +919,10 @@
     "free_plan_name": "Gratis",
     "free_plan_price": "₹0",
     "free_plan_feature1": "Para Un Usuario",
-    "free_plan_feature2": "Presentaciones Ilimitadas",
+    "free_plan_feature2": "3 presentaciones al mes",
     "free_plan_feature3": "10 Diapositivas por presentación",
     "free_plan_feature4": "20 Miembros del público",
-    "free_plan_feature5": "Marca de agua",
+
     "free_plan_button_current": "Plan Actual",
     "free_plan_button_continue": "Continuar con Gratis",
     "pro_plan_name": "Pro",
@@ -933,8 +936,8 @@
     "pro_plan_feature2": "Presentaciones Ilimitadas",
     "pro_plan_feature3": "Diapositivas Ilimitadas",
     "pro_plan_feature4": "Audiencia Ilimitada",
-    "pro_plan_feature5": "Resultados de Exportación Normales",
-    "pro_plan_feature6": "Sin Marca de Agua",
+    "pro_plan_feature5": "Exportar Resultados",
+
     "pro_plan_button": "Actualizar a Pro",
     "pro_plan_popular": "POPULAR",
     "lifetime_plan_name": "De por Vida",
@@ -969,7 +972,8 @@
     "users_feature": "Usuarios",
     "ai_features_feature": "Funciones de IA (Próximamente)",
     "export_results_feature": "Exportar Resultados",
-    "watermark_free_feature": "Sin marca de agua",
+    "detailed_export_results_feature": "Resultados de Exportación Detallados",
+
     "priority_support_feature": "Soporte Prioritario",
     "lifetime_access_feature": "Acceso de por Vida",
     "custom_branding_feature": "Marca Personalizada",
@@ -1563,6 +1567,7 @@
       "failed_to_load": "Failed to load presentation",
       "created": "Presentation created",
       "failed_to_create": "Failed to create presentation",
+      "free_plan_limit_reached": "Límite del plan gratuito alcanzado: Puedes crear hasta 3 presentaciones cada 30 días. Actualiza el Plan para presentaciones ilimitadas.",
       "saved": "Presentation saved",
       "failed_to_save": "Failed to save presentation",
       "draft_restored": "Draft restored",
@@ -1595,7 +1600,8 @@
       "pin_image_url_required": "Pin on Image Slide {{number}}: Image URL is required",
       "text_content_required": "Text Slide {{number}}: Content is required",
       "image_url_required": "Image Slide {{number}}: Image URL is required",
-      "video_url_required": "Video Slide {{number}}: Video URL is required"
+      "video_url_required": "Video Slide {{number}}: Video URL is required",
+      "upgrade_to_create_slide": "Actualiza para crear esta diapositiva"
     },
     "present_mode": {
       "presentation_live": "Presentation is now live!",

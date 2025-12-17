@@ -627,6 +627,9 @@
     "delete_confirmation": "क्या आप वाकई <highlight>{{title}}</highlight> को हटाना चाहते हैं? यह क्रिया पूर्ववत नहीं की जा सकती और सभी स्लाइड और प्रतिक्रियाओं को स्थायी रूप से हटा देगी।",
     "cancel": "रद्द करें",
     "delete": "हटाएं",
+    "free_plan_limit_title": "मुफ्त योजना सीमा पहुंच गई",
+    "free_plan_limit_ok": "ठीक है",
+    "free_plan_limit_upgrade": "योजना अपग्रेड करें",
     "sign_out": "साइन आउट",
     "plan": "योजना",
     "share_feedback": "प्रतिक्रिया साझा करें",
@@ -881,10 +884,10 @@
     "free_plan_name": "मुफ्त",
     "free_plan_price": "₹0",
     "free_plan_feature1": "एक उपयोगकर्ता के लिए",
-    "free_plan_feature2": "असीमित प्रस्तुतियां",
+    "free_plan_feature2": "प्रति माह 3 प्रस्तुतियां",
     "free_plan_feature3": "प्रति प्रस्तुति 10 स्लाइड्स",
     "free_plan_feature4": "20 दर्शक सदस्य",
-    "free_plan_feature5": "वॉटरमार्क",
+
     "free_plan_button_current": "वर्तमान योजना",
     "free_plan_button_continue": "मुफ्त के साथ जारी रखें",
     "pro_plan_name": "प्रो",
@@ -898,8 +901,8 @@
     "pro_plan_feature2": "असीमित प्रस्तुतियां",
     "pro_plan_feature3": "असीमित स्लाइड्स",
     "pro_plan_feature4": "असीमित दर्शक",
-    "pro_plan_feature5": "सामान्य निर्यात परिणाम",
-    "pro_plan_feature6": "कोई वॉटरमार्क नहीं",
+    "pro_plan_feature5": "परिणाम निर्यात करें",
+
     "pro_plan_button": "प्रो में अपग्रेड करें",
     "pro_plan_popular": "लोकप्रिय",
     "lifetime_plan_name": "आजीवन",
@@ -934,7 +937,8 @@
     "users_feature": "उपयोगकर्ता",
     "ai_features_feature": "एआई सुविधाएँ (जल्द आ रहा है)",
     "export_results_feature": "निर्यात परिणाम",
-    "watermark_free_feature": "वॉटरमार्क-मुक्त",
+    "detailed_export_results_feature": "विस्तृत निर्यात परिणाम",
+
     "priority_support_feature": "प्राथमिकता समर्थन",
     "lifetime_access_feature": "आजीवन पहुंच",
     "custom_branding_feature": "कस्टम ब्रांडिंग",
@@ -1533,6 +1537,7 @@
       "failed_to_load": "प्रस्तुति लोड करने में विफल",
       "created": "प्रस्तुति बनाई गई",
       "failed_to_create": "प्रस्तुति बनाने में विफल",
+      "free_plan_limit_reached": "मुफ्त योजना सीमा पहुंच गई: आप हर 30 दिनों में 3 प्रस्तुतियां बना सकते हैं। असीमित प्रस्तुतियों के लिए योजना अपग्रेड करें।",
       "saved": "प्रस्तुति सहेजी गई",
       "failed_to_save": "प्रस्तुति सहेजने में विफल",
       "draft_restored": "ड्राफ्ट पुनर्स्थापित किया गया",
@@ -1565,7 +1570,8 @@
       "pin_image_url_required": "छवि पर पिन स्लाइड {{number}}: छवि URL आवश्यक है",
       "text_content_required": "टेक्स्ट स्लाइड {{number}}: सामग्री आवश्यक है",
       "image_url_required": "छवि स्लाइड {{number}}: छवि URL आवश्यक है",
-      "video_url_required": "वीडियो स्लाइड {{number}}: वीडियो URL आवश्यक है"
+      "video_url_required": "वीडियो स्लाइड {{number}}: वीडियो URL आवश्यक है",
+      "upgrade_to_create_slide": "इस स्लाइड को बनाने के लिए अपग्रेड करें"
     },
     "present_mode": {
       "presentation_live": "प्रस्तुति अब लाइव है!",

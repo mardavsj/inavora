@@ -8,6 +8,7 @@ const quizScoringService = require('../services/quizScoringService');
 const { createSlide, updateSlide, deleteSlide } = require('./slideController.js');
 const { AppError, asyncHandler } = require('../middleware/errorHandler');
 const Logger = require('../utils/logger');
+const { isSubscriptionActive } = require('../services/subscriptionService');
 
 /**
  * Create a new presentation
@@ -29,6 +30,34 @@ const createPresentation = asyncHandler(async (req, res, next) => {
     throw new AppError('Presentation title is required', 400, 'VALIDATION_ERROR');
   }
 
+  // Enforce free plan limit: max 3 presentations in the last 30 days
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new AppError('User not found', 404, 'USER_NOT_FOUND');
+  }
+
+  const hasActiveSubscription = await isSubscriptionActive(user.subscription, user);
+
+  if (!hasActiveSubscription) {
+    // User is effectively on the free plan
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+    const recentPresentationCount = await Presentation.countDocuments({
+      userId,
+      createdAt: { $gte: thirtyDaysAgo }
+    });
+
+    if (recentPresentationCount >= 3) {
+      // Use a stable code so the frontend can translate this message
+      throw new AppError(
+        'FREE_PLAN_PRESENTATION_LIMIT',
+        403,
+        'FREE_PLAN_PRESENTATION_LIMIT'
+      );
+    }
+  }
+
   let accessCode;
   let isUnique = false;
 
@@ -37,14 +66,15 @@ const createPresentation = asyncHandler(async (req, res, next) => {
     const existing = await Presentation.findOne({ accessCode });
     if (!existing) isUnique = true;
   }
-    const presentation = new Presentation({
-      userId,
-      title: title.trim(),
-      accessCode,
-      isLive: false,
-      currentSlideIndex: 0,
-      showResults: true
-    });
+
+  const presentation = new Presentation({
+    userId,
+    title: title.trim(),
+    accessCode,
+    isLive: false,
+    currentSlideIndex: 0,
+    showResults: true
+  });
 
   await presentation.save();
 

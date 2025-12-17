@@ -178,6 +178,9 @@
     "delete_confirmation": "நீங்கள் உண்மையில் <highlight>{{title}}</highlight>ஐ நீக்க விரும்புகிறீர்களா? இந்த செயலை மீட்க முடியாது மேலும் அனைத்து வழங்கல்கள் மற்றும் பதில்களையும் நிரந்தரமாக அகற்றும்.",
     "cancel": "ரத்துசெய்",
     "delete": "நீக்கு",
+    "free_plan_limit_title": "இலவச திட்ட வரம்பு எட்டப்பட்டது",
+    "free_plan_limit_ok": "சரி",
+    "free_plan_limit_upgrade": "திட்டத்தை மேம்படுத்தவும்",
     "sign_out": "வெளியேறு",
     "plan": "திட்டம்",
     "share_feedback": "கருத்தை பகிரவும்",
@@ -404,10 +407,10 @@
     "free_plan_name": "இலவசம்",
     "free_plan_price": "₹0",
     "free_plan_feature1": "ஒரு பயனருக்கு",
-    "free_plan_feature2": "வரம்பற்ற விளக்கக்காட்சிகள்",
+    "free_plan_feature2": "ஒரு மாதத்திற்கு 3 விளக்கக்காட்சிகள்",
     "free_plan_feature3": "ஒரு விளக்கக்காட்சிக்கு 10 வழங்கல்கள்",
     "free_plan_feature4": "20 பார்வையாளர்கள்",
-    "free_plan_feature5": "ஜலர் முத்திரை",
+
     "free_plan_button_current": "தற்போதைய திட்டம்",
     "free_plan_button_continue": "இலவசமாக தொடரவும்",
     "pro_plan_name": "சிறப்பு",
@@ -421,8 +424,8 @@
     "pro_plan_feature2": "வரம்பற்ற விளக்கக்காட்சிகள்",
     "pro_plan_feature3": "வரம்பற்ற வழங்கல்கள்",
     "pro_plan_feature4": "வரம்பற்ற பார்வையாளர்",
-    "pro_plan_feature5": "சாதாரண ஏற்றுமதி முடிவுகள்",
-    "pro_plan_feature6": "நீர்முத்திரை இல்லை",
+    "pro_plan_feature5": "முடிவுகளை ஏற்றுமதி செய்யவும்",
+
     "pro_plan_button": "ப்ரோவுக்கு மேம்படுத்தவும்",
     "pro_plan_popular": "பிரபலமான",
     "lifetime_plan_name": "வாழ்நாள் முழுவதும்",
@@ -458,7 +461,8 @@
     "users_feature": "பயனர்கள்",
     "ai_features_feature": "ஏஐ அம்சங்கள் (விரைவில் வருகின்றன)",
     "export_results_feature": "முடிவுகளை ஏற்றுமதி செய்யவும்",
-    "watermark_free_feature": "ஜலர் முத்திரை-இல்லாமல்",
+    "detailed_export_results_feature": "விரிவான ஏற்றுமதி முடிவுகள்",
+
     "priority_support_feature": "முன்னுரிமை ஆதரவு",
     "lifetime_access_feature": "வாழ்நாள் முழுவதும் அணுகல்",
     "custom_branding_feature": "தனிப்பயன் பிராண்டிங்",
@@ -1180,6 +1184,7 @@
       "failed_to_load": "Failed to load presentation",
       "created": "Presentation created",
       "failed_to_create": "Failed to create presentation",
+      "free_plan_limit_reached": "இலவச திட்ட வரம்பு எட்டப்பட்டது: நீங்கள் ஒவ்வொரு 30 நாட்களிலும் 3 விளக்கக்காட்சிகளை உருவாக்கலாம். வரம்பற்ற விளக்கக்காட்சிகளுக்கு திட்டத்தை மேம்படுத்தவும்.",
       "saved": "Presentation saved",
       "failed_to_save": "Failed to save presentation",
       "draft_restored": "Draft restored",
@@ -1212,7 +1217,8 @@
       "pin_image_url_required": "Pin on Image Slide {{number}}: Image URL is required",
       "text_content_required": "Text Slide {{number}}: Content is required",
       "image_url_required": "Image Slide {{number}}: Image URL is required",
-      "video_url_required": "Video Slide {{number}}: Video URL is required"
+      "video_url_required": "Video Slide {{number}}: Video URL is required",
+      "upgrade_to_create_slide": "இந்த ஸ்லைடை உருவாக்க மேம்படுத்தவும்"
     },
     "present_mode": {
       "presentation_live": "Presentation is now live!",
