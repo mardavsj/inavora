@@ -937,7 +937,8 @@ export default function Landing() {
                   t('pricing.pro_plan_feature2'),
                   t('pricing.pro_plan_feature3'),
                   t('pricing.pro_plan_feature4'),
-                  t('pricing.pro_plan_feature5')
+                  t('pricing.pro_plan_feature5'),
+                  t('pricing.pro_plan_feature6')
                 ],
                 color: 'from-teal-400 to-emerald-500',
                 borderColor: 'border-teal-500/30',
