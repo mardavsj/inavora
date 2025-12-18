@@ -707,7 +707,7 @@ export default function Landing() {
               <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
                 <JoinPresentationBtn onClick={setShowJoinDialog} />
                 <button
-                  onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
+                  onClick={() => navigate('/how-it-works')}
                   className="w-full sm:w-auto sm:max-w-none px-8 py-4 rounded-xl bg-white/5 border border-white/10 font-bold text-lg hover:bg-white/10 transition-all flex items-center justify-center gap-2"
                 >
                   {t('landing.see_how_it_works')}

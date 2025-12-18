@@ -1111,7 +1111,6 @@
     "free_plan_feature2": "每月 3 个演示文稿",
     "free_plan_feature3": "每场演示10张幻灯片",
     "free_plan_feature4": "20名观众成员",
-
     "free_plan_button_current": "当前计划",
     "free_plan_button_continue": "继续使用免费版",
     "pro_plan_name": "专业版",
@@ -1126,7 +1125,6 @@
     "pro_plan_feature3": "无限幻灯片",
     "pro_plan_feature4": "无限观众",
     "pro_plan_feature5": "导出结果",
-
     "pro_plan_button": "升级到专业版",
     "pro_plan_popular": "热门",
     "lifetime_plan_name": "终身版",
@@ -1162,7 +1160,6 @@
     "ai_features_feature": "AI功能（即将推出）",
     "export_results_feature": "导出结果",
     "detailed_export_results_feature": "详细导出结果",
-
     "priority_support_feature": "优先支持",
     "lifetime_access_feature": "终身访问",
     "custom_branding_feature": "自定义品牌",
@@ -1289,8 +1286,8 @@
     "admin_access": "管理员权限",
     "dashboard_overview": "仪表板概览",
     "dashboard_description": "监控您机构的活动和表现",
-    "total_users": "总用户数",
-    "active": "活跃",
+    "total_users": "用户",
+    "active": "活动",
     "presentations": "演示文稿",
     "live": "进行中",
     "total_slides": "总幻灯片数",
@@ -1392,7 +1389,6 @@
     "watermark": "水印",
     "watermark_desc": "在演示文稿上显示水印",
     "advanced_analytics": "高级分析",
-    "advanced_analytics_desc": "启用详细的分析跟踪",
     "save_settings": "保存设置",
     "add_user_modal_title": "添加用户",
     "email_label": "电子邮件",
@@ -1434,7 +1430,6 @@
     "previous": "上一页",
     "next": "下一页",
     "page_info": "第 {{current}} 页，共 {{total}} 页",
-    "total_users": "用户",
     "email_input_hint": "（每行一个，或用逗号分隔）",
     "email_input_description": "您可以粘贴多个电子邮件。每个电子邮件应在新行上或用逗号分隔。",
     "validation_failed_fallback": "无法验证用户。继续为所有用户支付。",
@@ -1509,7 +1504,6 @@
     "keys_configured": "密钥已配置",
     "create_first_api_key": "创建您的第一个API密钥",
     "unnamed_key": "未命名密钥",
-    "active": "活动",
     "inactive": "非活动",
     "created_on": "创建于",
     "show": "显示",
@@ -1972,6 +1966,697 @@
       "validation_error": "请修复表单中的错误",
       "submit_success_message": "谢谢！您的评价已提交，将进行审核。",
       "submit_error": "提交评价失败。请重试。"
+    }
+  },
+  "how_it_works": {
+    "hero": {
+      "title": "Inavora 如何工作",
+      "subtitle": "通过简单的步骤学习如何使用 Inavora。非常适合初学者和专家！",
+      "tagline": "为每个人简化"
+    },
+    "quick_start": {
+      "title": "快速入门指南",
+      "subtitle": "选择您的路径开始",
+      "participant": {
+        "title": "我想加入演示",
+        "description": "无需账户！使用代码或二维码立即加入。",
+        "option1_title": "选项 1：使用演示代码",
+        "option1_desc": "输入演示者显示的 6 位代码",
+        "option2_title": "选项 2：扫描二维码",
+        "option2_desc": "使用手机摄像头扫描二维码"
+      },
+      "presenter": {
+        "title": "我想创建演示",
+        "description": "创建账户以开始构建交互式演示。",
+        "option1_title": "免费注册",
+        "option1_desc": "使用 Google 或电子邮件创建您的账户",
+        "option2_title": "开始创建",
+        "option2_desc": "使用交互式幻灯片构建演示"
+      }
+    },
+    "steps": {
+      "title": "分步指南",
+      "subtitle": "您需要知道的一切，简单解释",
+      "step1": {
+        "title": "如何加入演示（参与者）",
+        "description": "任何人都可以在不创建账户的情况下加入。就是这么简单！",
+        "step1": "在手机或电脑上打开 www.inavora.com",
+        "step2": "点击\"加入演示\"按钮",
+        "step3": "输入 6 位演示代码（由演示者显示）或使用手机扫描二维码",
+        "step4": "输入您的姓名",
+        "step5": "您现在已连接到实时会话！🎉"
+      },
+      "step2": {
+        "title": "如何创建账户（演示者）",
+        "description": "只有演示者需要账户。参与者无需账户即可加入！",
+        "step1": "访问 www.inavora.com",
+        "step2": "点击\"开始\"按钮",
+        "step3": "使用以下方式注册：Google 账户或电子邮件和密码",
+        "step4": "注册后，您将进入控制面板",
+        "step5": "现在您可以创建、管理和演示会话！"
+      },
+      "step3": {
+        "title": "如何更改语言",
+        "description": "Inavora 说您的语言！随时切换，即使在会话期间也可以。",
+        "step1": "查看屏幕右上角",
+        "step2": "点击语言选择器（地球图标）",
+        "step3": "选择您首选的语言",
+        "step4": "整个界面立即更新！✨"
+      },
+      "step4": {
+        "title": "了解控制面板",
+        "description": "所有演示的命令中心。",
+        "step1": "创建新演示",
+        "step2": "以主持人身份加入演示",
+        "step3": "使用模板快速开始",
+        "step4": "查看所有已保存的演示",
+        "step5": "访问设置和升级选项"
+      },
+      "step5": {
+        "title": "如何创建新演示",
+        "description": "在几分钟内开始构建您的交互式演示。",
+        "step1": "点击\"新演示\"按钮",
+        "step2": "为您的演示命名",
+        "step3": "点击\"新幻灯片\"开始添加内容",
+        "step4": "从菜单中选择幻灯片类型",
+        "step5": "随时添加、删除或重新排序幻灯片！"
+      },
+      "step6": {
+        "title": "如何编辑幻灯片",
+        "description": "进行更改既简单又自动！",
+        "step1": "点击演示中的任何幻灯片",
+        "step2": "幻灯片设置面板在右侧打开",
+        "step3": "编辑：问题文本、答案选项、图片或视频",
+        "step4": "更改自动保存 - 无需保存按钮！✨"
+      },
+      "step7": {
+        "title": "如何开始实时演示",
+        "description": "实时进行，实时吸引您的观众！",
+        "step1": "点击\"演示\"按钮",
+        "step2": "与参与者分享演示代码或二维码",
+        "step3": "参与者使用代码立即加入",
+        "step4": "响应实时显示在您的屏幕上！🎉"
+      },
+      "step8": {
+        "title": "查看结果",
+        "description": "实时或会话后查看观众的想法。",
+        "step1": "在会话期间或之后点击\"结果\"按钮",
+        "step2": "查看：投票结果、测验分数、观众响应",
+        "step3": "分析反馈和参与数据",
+        "step4": "导出结果以进行进一步分析"
+      },
+      "step9": {
+        "title": "导入幻灯片",
+        "description": "将您现有的演示导入 Inavora！",
+        "step1": "从 PowerPoint：上传 .ppt 或 .pptx 文件 - 幻灯片自动转换",
+        "step2": "从 Google Slides：连接您的 Google 账户并直接导入",
+        "step3": "从 Miro：连接您的 Miro 板并将框架导入为幻灯片",
+        "step4": "在导入的幻灯片上添加交互式问题"
+      }
+    },
+    "slide_types": {
+      "title": "您可以创建的幻灯片类型",
+      "subtitle": "为您的内容选择完美的幻灯片类型",
+      "present_content": {
+        "title": "展示您的内容",
+        "text_slide": {
+          "title": "文本幻灯片",
+          "description": "添加文本、说明或解释。非常适合议程和笔记。"
+        },
+        "image_slide": {
+          "title": "图片幻灯片",
+          "description": "上传或显示图片。非常适合图表、照片或视觉效果。"
+        },
+        "video_slide": {
+          "title": "视频幻灯片",
+          "description": "添加视频链接或上传视频。对演示很有用。"
+        },
+        "instruction_slide": {
+          "title": "说明幻灯片",
+          "description": "显示参与者应如何加入或响应。在会话开始时使用。"
+        }
+      },
+      "engage_audience": {
+        "title": "吸引您的观众",
+        "choose_one": {
+          "title": "选择一个",
+          "description": "单选题。参与者选择一个选项。"
+        },
+        "quiz": {
+          "title": "测验",
+          "description": "带评分的多个问题。非常适合竞赛和学习检查。"
+        },
+        "word_cloud": {
+          "title": "实时词云",
+          "description": "参与者提交词语。热门词语显示更大。"
+        },
+        "open_response": {
+          "title": "开放式回复",
+          "description": "参与者自由输入答案。最适合反馈和意见。"
+        },
+        "rating_scale": {
+          "title": "评分量表",
+          "description": "参与者使用数字或星星进行评分。对调查很有用。"
+        },
+        "rank_options": {
+          "title": "对选项进行排序",
+          "description": "参与者按偏好排列选项。"
+        },
+        "audience_questions": {
+          "title": "观众问题",
+          "description": "观众实时提交问题。演示者可以突出显示重要的问题。"
+        },
+        "number_guess": {
+          "title": "数字猜测挑战",
+          "description": "参与者猜测一个数字。有趣且引人入胜的活动！"
+        },
+        "points_allocation": {
+          "title": "分数分配",
+          "description": "参与者在选项之间分配分数。"
+        },
+        "opinion_matrix": {
+          "title": "意见矩阵",
+          "description": "以网格格式比较选项。"
+        },
+        "spot_image": {
+          "title": "图片上的点",
+          "description": "参与者在图片上点击或单击位置。"
+        }
+      },
+      "challenge_mode": {
+        "title": "挑战模式",
+        "pick_answer": {
+          "title": "选择答案",
+          "description": "参与者从选项中选择正确答案。"
+        },
+        "type_answer": {
+          "title": "输入您的答案",
+          "description": "参与者输入确切答案。非常适合评估！"
+        }
+      }
+    },
+    "features": {
+      "title": "如何使用功能",
+      "subtitle": "掌握工具以创建出色的演示"
+    },
+    "pricing_faq": {
+      "title": "定价 – 常见问题",
+      "subtitle": "关于 Inavora 定价计划您需要了解的一切",
+      "q1": {
+        "question": "Inavora 提供哪些计划？",
+        "answer": "Inavora 提供四个简单计划，为不同需求而设计：",
+        "free": "免费 – 使用基本功能试用 Inavora",
+        "pro": "Pro – 适用于个人专业人士和创作者",
+        "lifetime": "终身 – 一次性付款，长期使用",
+        "institution": "机构 – 适用于学校、大学和组织",
+        "note": "每个计划都是透明的，没有隐藏费用。"
+      },
+      "q2": {
+        "question": "免费计划包括什么？",
+        "price": "₹0",
+        "price_label": "（免费）",
+        "description": "免费计划非常适合想要探索 Inavora 的首次用户。",
+        "includes_title": "免费计划包括：",
+        "includes_user": "1 个用户（演示者）",
+        "includes_presentations": "每月最多 3 个演示",
+        "includes_slides": "每个演示 10 张幻灯片",
+        "includes_audience": "观众限制：20 名参与者",
+        "includes_slides_types": "访问核心交互式幻灯片类型",
+        "not_includes_title": "免费计划不包括：",
+        "not_includes_export": "导出结果",
+        "not_includes_import": "从 PowerPoint / Miro 导入",
+        "not_includes_analytics": "高级分析",
+        "not_includes_ai": "AI 功能",
+        "best_for": "最适合试用 Inavora 或小型非正式会话。"
+      },
+      "q3": {
+        "question": "Pro 计划包括什么？",
+        "price_monthly": "₹199",
+        "price_monthly_label": "/ 月",
+        "price_yearly": "或 ₹999",
+        "price_yearly_label": "/ 年",
+        "price_yearly_save": "（年度计划更省钱）",
+        "description": "Pro 计划专为教师、培训师、创始人、顾问和专业人士设计。",
+        "includes_user": "1 个用户",
+        "includes_presentations": "无限演示",
+        "includes_slides": "无限幻灯片",
+        "includes_audience": "无限参与者",
+        "includes_export": "导出结果",
+        "includes_import": "从 PowerPoint、Google Slides、Miro 导入",
+        "includes_analytics": "高级分析",
+        "includes_ai": "AI 功能",
+        "includes_support": "电子邮件支持",
+        "best_for": "最适合定期演示者、教师、培训师和专业人士。"
+      },
+      "q4": {
+        "question": "终身计划包括什么？",
+        "price": "₹4,999",
+        "price_label": "（一次性付款）",
+        "description": "终身计划非常适合想要避免每月或每年续费的长期用户。",
+        "includes_all_pro": "Pro 计划中的所有内容，以及：",
+        "includes_no_renewal": "无需续费 - 永久使用",
+        "includes_updates": "包含所有未来更新",
+        "includes_priority": "优先支持",
+        "best_for": "最适合想要终身访问的长期个人用户。"
+      },
+      "q5": {
+        "question": "机构计划包括什么？",
+        "description": "机构计划专为学校、大学、公司、非政府组织和大组织设计。",
+        "includes_users": "多个用户（管理员和演示者）",
+        "includes_presentations": "无限演示",
+        "includes_slides": "无限幻灯片",
+        "includes_audience": "无限参与者",
+        "includes_export": "导出结果",
+        "includes_import": "从 PowerPoint、Google Slides、Miro 导入",
+        "includes_analytics": "高级分析",
+        "includes_ai": "AI 功能",
+        "includes_admin": "管理仪表板",
+        "includes_permissions": "用户管理和权限",
+        "includes_support": "优先支持",
+        "includes_custom": "自定义品牌（可选）",
+        "best_for": "最适合学校、大学、公司和组织。"
+      },
+      "q6": {
+        "question": "如何升级我的计划？",
+        "step1": "转到您的控制面板",
+        "step2": "点击\"升级计划\"按钮",
+        "step3": "选择您首选的计划",
+        "step4": "完成付款",
+        "step5": "您的计划立即升级！"
+      },
+      "q7": {
+        "question": "我可以取消或更改我的计划吗？",
+        "answer": "可以！您可以随时从控制面板设置中更改或取消您的计划。"
+      },
+      "q8": {
+        "question": "接受哪些付款方式？",
+        "answer": "我们接受主要信用卡、借记卡、UPI 和其他本地付款方式。"
+      },
+      "q9": {
+        "question": "有免费试用吗？",
+        "answer": "有！免费计划永久可用。您可以无需任何付款即可试用所有基本功能。"
+      },
+      "q10": {
+        "question": "如果我超出计划限制会怎样？",
+        "answer": "您将收到通知。您可以升级计划或等到下一个计费周期。"
+      },
+      "q11": {
+        "question": "参与者需要付费吗？",
+        "answer": "不需要！参与者可以免费加入演示。只有演示者需要计划。"
+      },
+      "q12": {
+        "question": "我应该选择哪个计划？",
+        "casual": "临时用户 / 试用 Inavora？",
+        "casual_plan": "→ 免费",
+        "regular": "定期演示者 / 教师 / 创始人？",
+        "regular_plan": "→ Pro",
+        "long_term": "长期个人用户？",
+        "long_term_plan": "→ 终身",
+        "organization": "学校 / 大学 / 公司？",
+        "organization_plan": "→ 机构"
+      },
+      "q13": {
+        "question": "为什么推荐终身计划？",
+        "reason1": "一次性付款",
+        "reason2": "无需续费",
+        "reason3": "最佳长期价值",
+        "reason4": "包含 Pro 中的所有内容"
+      },
+      "q16": {
+        "question": "谁应该使用机构计划？",
+        "ideal_for": "最适合：",
+        "schools": "学校和大学",
+        "corporate": "企业培训团队",
+        "ngos": "非政府组织和基金会",
+        "government": "政府部门",
+        "organizations": "大型组织"
+      },
+      "q17": {
+        "question": "如果我是管理员，可以在哪里获得帮助？",
+        "answer": "管理员可以：",
+        "help1": "使用帮助中心",
+        "help2": "联系优先支持",
+        "help3": "直接从仪表板分享反馈"
+      }
+    },
+    "data_privacy_faq": {
+      "title": "数据和隐私常见问题",
+      "subtitle": "关于 Inavora 如何处理您的数据和保护您的隐私，您需要了解的一切",
+      "q1": {
+        "question": "Inavora 收集哪些数据？",
+        "answer": "Inavora 只收集有效运行平台所需的数据。",
+        "may_include": "这可能包括：",
+        "presenter_details": "演示者账户详情（姓名、电子邮件）",
+        "admin_details": "机构管理员详情",
+        "presentation_content": "用户创建的演示内容",
+        "participant_responses": "匿名参与者响应",
+        "usage_data": "使用数据（会话数、响应、参与度）",
+        "note": "Inavora 不收集不必要的个人数据。"
+      },
+      "q2": {
+        "question": "Inavora 是否收集参与者个人数据？",
+        "answer": "不需要参与者的个人数据。",
+        "participants": "参与者：",
+        "no_account": "不需要账户",
+        "join_code": "通常使用代码或二维码加入",
+        "optional_name": "可以输入姓名（可选，由演示者设置）",
+        "responses_treated": "响应被视为：",
+        "anonymous": "匿名，或",
+        "pseudonymous": "化名（如果输入了姓名）"
+      },
+      "q3": {
+        "question": "谁拥有在 Inavora 上创建的数据？",
+        "answer": "您拥有。",
+        "presenters_own": "演示者拥有他们的演示和结果",
+        "institutions_own": "机构拥有他们的组织数据",
+        "no_ownership": "Inavora 不声称对您的内容或响应拥有所有权"
+      },
+      "q4": {
+        "question": "Inavora 是否向第三方出售或共享数据？",
+        "answer": "不。",
+        "inavora": "Inavora：",
+        "no_sell": "不出售用户数据",
+        "no_share": "不与广告商共享数据",
+        "no_marketing": "未经同意不使用数据进行营销",
+        "data_use": "数据仅用于运营和改进平台。"
+      },
+      "q5": {
+        "question": "Inavora 是否符合数据保护标准？",
+        "answer": "Inavora 遵循行业标准的数据保护实践，包括：",
+        "secure_access": "安全访问控制",
+        "encrypted": "加密数据传输",
+        "role_based": "机构的基于角色的权限",
+        "for_institutions": "对于机构，Inavora 支持符合：",
+        "gdpr": "通用数据保护原则",
+        "institutional": "机构隐私政策"
+      },
+      "q6": {
+        "question": "数据存储在哪里？",
+        "secure_cloud": "数据存储在安全的云基础设施上",
+        "restricted": "访问仅限于授权系统和人员",
+        "monitoring": "定期监控和备份已就位",
+        "note": "（可根据要求与机构共享基础设施详情。）"
+      },
+      "q7": {
+        "question": "机构可以控制对其数据的访问吗？",
+        "answer": "可以。",
+        "admins_can": "机构管理员可以：",
+        "manage_users": "管理用户和权限",
+        "monitor": "通过分析监控活动",
+        "control_exports": "控制导出和报告",
+        "apply_policies": "内部应用访问策略"
+      },
+      "q8": {
+        "question": "谁可以查看分析和报告？",
+        "authorized": "仅授权用户（演示者或管理员）",
+        "institution_level": "机构级数据仅对管理员可见",
+        "no_exposure": "不暴露个人参与者身份"
+      },
+      "q9": {
+        "question": "数据保留多长时间？",
+        "active": "只要账户处于活动状态，数据就会保留",
+        "request_deletion": "机构可以请求删除数据",
+        "delete_presentations": "用户可以删除自己的演示",
+        "note": "保留政策尊重机构和法律要求。"
+      },
+      "q10": {
+        "question": "我可以导出我的数据吗？",
+        "answer": "可以。",
+        "depending_plan": "根据您的计划：",
+        "export_results": "导出演示结果",
+        "download_reports": "下载报告和分析",
+        "maintain_records": "维护您自己的记录"
+      },
+      "q11": {
+        "question": "如果我删除我的账户会怎样？",
+        "account_removed": "您的账户数据将被删除",
+        "presentations_deleted": "演示和相关数据将被删除",
+        "institutional_remains": "如果您是机构的一部分，机构数据将保持完整"
+      },
+      "q12": {
+        "question": "AI 功能对数据隐私是否安全？",
+        "ai_features": "AI 功能：",
+        "anonymized": "使用匿名或聚合数据",
+        "no_expose": "不暴露个人参与者信息",
+        "access_controls": "遵循严格的访问控制",
+        "opt_in": "AI 功能是选择加入的，并明确标记。"
+      },
+      "q13": {
+        "question": "Inavora 是否使用 cookie 或跟踪？",
+        "basic_cookies": "可能使用基本 cookie 进行登录和会话管理",
+        "no_intrusive": "没有侵入性的第三方跟踪",
+        "no_advertising": "没有广告跟踪器"
+      },
+      "q14": {
+        "question": "Inavora 如何防止滥用？",
+        "inavora_uses": "Inavora 使用：",
+        "role_based_access": "基于角色的访问控制",
+        "audit_logs": "审计日志（适用于机构）",
+        "monitoring": "监控异常活动"
+      },
+      "q15": {
+        "question": "我可以联系谁咨询数据或隐私问题？",
+        "email": "support@inavora.com",
+        "institutions_can": "机构还可以请求：",
+        "dpa": "数据处理附录 (DPA)",
+        "security_docs": "安全文档",
+        "privacy_clarifications": "隐私澄清"
+      },
+      "q16": {
+        "question": "为什么 Inavora 认真对待数据隐私",
+        "serves": "因为 Inavora 服务于：",
+        "schools": "学校和学生",
+        "institutions": "机构和政府",
+        "enterprises": "企业和非政府组织",
+        "trust": "信任是不可协商的。"
+      }
+    },
+    "faq": {
+      "title": "常见问题",
+      "participants_account": {
+        "title": "参与者需要账户吗？",
+        "answer": "不需要！参与者只需使用代码或二维码即可加入。无需注册。对他们完全免费！"
+      },
+      "where_used": {
+        "title": "Inavora 可以在哪里使用？",
+        "description": "Inavora 是一个通用交互式参与平台。可以在任何需要实时参与、反馈或决策的地方使用。",
+        "view_all": "查看所有用例"
+      }
+    },
+    "use_cases": {
+      "title": "Inavora 可以在哪里使用？",
+      "subtitle": "Inavora 是一个通用交互式参与平台。可以在任何需要实时参与、反馈或决策的地方使用。",
+      "education": {
+        "title": "教育和学习",
+        "items": [
+          "学校（小学、中学、高中）",
+          "学院和大学",
+          "辅导中心和补习机构",
+          "在线课程和虚拟教室",
+          "教师培训计划",
+          "学生反馈和评估",
+          "入学考试准备课程",
+          "学术会议和研讨会",
+          "家长-教师会议",
+          "教育委员会和培训机构"
+        ]
+      },
+      "startups": {
+        "title": "初创企业和商业",
+        "items": [
+          "初创企业路演",
+          "投资者路演会议",
+          "演示日和加速器计划",
+          "产品演示",
+          "客户发现会议",
+          "市场验证调查",
+          "内部团队会议",
+          "全员会议",
+          "战略讨论",
+          "回顾和审查"
+        ]
+      },
+      "corporate": {
+        "title": "企业和企业级",
+        "items": [
+          "企业培训课程",
+          "员工入职",
+          "领导力研讨会",
+          "市政厅和公司范围会议",
+          "绩效审查",
+          "内部调查和投票",
+          "决策研讨会",
+          "合规和政策培训",
+          "销售能力课程",
+          "人力资源参与计划"
+        ]
+      },
+      "investors": {
+        "title": "投资者和金融",
+        "items": [
+          "投资者演示",
+          "尽职调查会议",
+          "投资组合公司审查",
+          "LP 会议",
+          "董事会会议",
+          "投票和意见收集",
+          "风险评估研讨会",
+          "金融素养计划",
+          "股东参与课程"
+        ]
+      },
+      "government": {
+        "title": "政府和公共",
+        "items": [
+          "公众咨询",
+          "公民反馈课程",
+          "政策讨论",
+          "市政厅会议",
+          "政府官员培训",
+          "数字治理计划",
+          "智慧城市参与",
+          "公众意识活动",
+          "社区发展计划",
+          "选举意识和教育（非政治）"
+        ]
+      },
+      "ngos": {
+        "title": "非政府组织和社会影响",
+        "items": [
+          "社区会议",
+          "实地调查",
+          "志愿者培训",
+          "影响评估",
+          "意识计划",
+          "健康和教育活动",
+          "企业社会责任计划",
+          "从受益人收集反馈",
+          "农村参与计划",
+          "国际发展研讨会"
+        ]
+      },
+      "events": {
+        "title": "活动和会议",
+        "items": [
+          "会议和峰会",
+          "小组讨论",
+          "主题演讲",
+          "研讨会和训练营",
+          "黑客马拉松",
+          "聚会和社交活动",
+          "行业论坛",
+          "专业协会",
+          "校友聚会",
+          "奖项和认可活动"
+        ]
+      },
+      "research": {
+        "title": "研究和数据",
+        "items": [
+          "学术研究",
+          "市场研究",
+          "用户体验研究",
+          "行为研究",
+          "意见调查",
+          "调查和实验",
+          "焦点小组",
+          "社会科学研究",
+          "政策研究",
+          "产品研究"
+        ]
+      },
+      "healthcare": {
+        "title": "医疗保健和医学",
+        "items": [
+          "医学教育课程",
+          "护理和辅助医疗培训",
+          "公共卫生意识计划",
+          "患者教育研讨会",
+          "医院员工培训",
+          "医学会议",
+          "心理健康研讨会",
+          "临床病例讨论",
+          "社区健康调查"
+        ]
+      },
+      "communities": {
+        "title": "社区和协会",
+        "items": [
+          "居民福利协会",
+          "住房协会会议",
+          "合作社",
+          "专业协会",
+          "宗教或文化团体",
+          "校友社区",
+          "家长团体",
+          "青年俱乐部",
+          "语言和文化组织"
+        ]
+      },
+      "marketing": {
+        "title": "营销和销售",
+        "items": [
+          "产品发布",
+          "客户反馈课程",
+          "演示期间的实时投票",
+          "品牌参与活动",
+          "路演",
+          "现场销售会议",
+          "经销商聚会",
+          "零售员工培训",
+          "合作伙伴能力计划"
+        ]
+      },
+      "remote": {
+        "title": "远程和全球团队",
+        "items": [
+          "远程团队会议",
+          "混合研讨会",
+          "跨国合作",
+          "全球培训计划",
+          "分布式劳动力参与",
+          "时区友好的互动",
+          "多语言参与课程"
+        ]
+      },
+      "legal": {
+        "title": "法律和治理",
+        "items": [
+          "法律培训课程",
+          "政策研讨会",
+          "利益相关者咨询",
+          "道德和合规培训",
+          "仲裁或调解研讨会",
+          "专业法律教育"
+        ]
+      },
+      "gamification": {
+        "title": "游戏化和参与",
+        "items": [
+          "测验竞赛",
+          "学习游戏",
+          "团队建设活动",
+          "破冰课程",
+          "参与挑战",
+          "技能评估",
+          "知识检查"
+        ]
+      }
+    },
+    "flow_diagram": {
+      "title": "这一切如何协同工作",
+      "subtitle": "查看从开始到结束的完整流程",
+      "step1": "注册",
+      "step2": "创建",
+      "step3": "分享",
+      "step4": "演示",
+      "step5": "分析"
+    },
+    "cta": {
+      "title": "准备开始了吗？",
+      "subtitle": "加入数千名创建精彩互动演示的用户",
+      "create_account": "创建免费账户",
+      "join_presentation": "加入演示"
     }
   },
   "common": {

@@ -1081,7 +1081,6 @@
     "free_plan_feature2": "3 presentaciones al mes",
     "free_plan_feature3": "10 Diapositivas por presentación",
     "free_plan_feature4": "20 Miembros del público",
-
     "free_plan_button_current": "Plan Actual",
     "free_plan_button_continue": "Continuar con Gratis",
     "pro_plan_name": "Pro",
@@ -1096,7 +1095,6 @@
     "pro_plan_feature3": "Diapositivas Ilimitadas",
     "pro_plan_feature4": "Audiencia Ilimitada",
     "pro_plan_feature5": "Exportar Resultados",
-
     "pro_plan_button": "Actualizar a Pro",
     "pro_plan_popular": "POPULAR",
     "lifetime_plan_name": "De por Vida",
@@ -1132,7 +1130,6 @@
     "ai_features_feature": "Funciones de IA (Próximamente)",
     "export_results_feature": "Exportar Resultados",
     "detailed_export_results_feature": "Resultados de Exportación Detallados",
-
     "priority_support_feature": "Soporte Prioritario",
     "lifetime_access_feature": "Acceso de por Vida",
     "custom_branding_feature": "Marca Personalizada",
@@ -1259,8 +1256,8 @@
     "admin_access": "Acceso de Administrador",
     "dashboard_overview": "Resumen del Panel",
     "dashboard_description": "Monitoree la actividad y el rendimiento de su institución",
-    "total_users": "Total de Usuarios",
-    "active": "activo",
+    "total_users": "usuarios",
+    "active": "Activo",
     "presentations": "Presentaciones",
     "live": "en vivo",
     "total_slides": "Total de Diapositivas",
@@ -1362,7 +1359,6 @@
     "watermark": "Marca de Agua",
     "watermark_desc": "Mostrar marca de agua en presentaciones",
     "advanced_analytics": "Análisis Avanzado",
-    "advanced_analytics_desc": "Habilitar seguimiento de análisis detallado",
     "save_settings": "Guardar Configuración",
     "add_user_modal_title": "Agregar Usuario",
     "email_label": "Correo Electrónico",
@@ -1404,7 +1400,6 @@
     "previous": "Anterior",
     "next": "Siguiente",
     "page_info": "Página {{current}} de {{total}}",
-    "total_users": "usuarios",
     "email_input_hint": "(Uno por línea, o separados por comas)",
     "email_input_description": "Puede pegar múltiples correos electrónicos. Cada correo electrónico debe estar en una nueva línea o separado por comas.",
     "validation_failed_fallback": "No se pudieron validar los usuarios. Continuando con el pago para todos los usuarios.",
@@ -1479,7 +1474,6 @@
     "keys_configured": "claves configuradas",
     "create_first_api_key": "Crea tu primera clave API",
     "unnamed_key": "Clave Sin Nombre",
-    "active": "Activo",
     "inactive": "Inactivo",
     "created_on": "Creado el",
     "show": "Mostrar",
@@ -1942,6 +1936,697 @@
       "validation_error": "Por favor corrige los errores en el formulario",
       "submit_success_message": "¡Gracias! Tu testimonio ha sido enviado y será revisado.",
       "submit_error": "Error al enviar el testimonio. Por favor intenta de nuevo."
+    }
+  },
+  "how_it_works": {
+    "hero": {
+      "title": "Cómo funciona Inavora",
+      "subtitle": "Aprende a usar Inavora en pasos simples. ¡Perfecto para principiantes y expertos por igual!",
+      "tagline": "Hecho simple para todos"
+    },
+    "quick_start": {
+      "title": "Guía de inicio rápido",
+      "subtitle": "Elige tu camino para comenzar",
+      "participant": {
+        "title": "Quiero unirme a una presentación",
+        "description": "¡No se necesita cuenta! Únete al instante con un código o código QR.",
+        "option1_title": "Opción 1: Usar código de presentación",
+        "option1_desc": "Ingresa el código de 6 dígitos mostrado por el presentador",
+        "option2_title": "Opción 2: Escanear código QR",
+        "option2_desc": "Usa la cámara de tu teléfono para escanear el código QR"
+      },
+      "presenter": {
+        "title": "Quiero crear presentaciones",
+        "description": "Crea una cuenta para comenzar a construir presentaciones interactivas.",
+        "option1_title": "Regístrate gratis",
+        "option1_desc": "Usa Google o correo electrónico para crear tu cuenta",
+        "option2_title": "Comienza a crear",
+        "option2_desc": "Crea presentaciones con diapositivas interactivas"
+      }
+    },
+    "steps": {
+      "title": "Guía paso a paso",
+      "subtitle": "Todo lo que necesitas saber, explicado de forma simple",
+      "step1": {
+        "title": "Cómo unirse a una presentación (Para participantes)",
+        "description": "Cualquiera puede unirse sin crear una cuenta. ¡Es así de simple!",
+        "step1": "Abre www.inavora.com en tu teléfono o computadora",
+        "step2": "Haz clic en el botón 'Unirse a una presentación'",
+        "step3": "Ingresa el código de presentación de 6 dígitos (mostrado por el presentador) O escanea el código QR con tu teléfono",
+        "step4": "Ingresa tu nombre",
+        "step5": "¡Ahora estás conectado a la sesión en vivo! 🎉"
+      },
+      "step2": {
+        "title": "Cómo crear una cuenta (Para presentadores)",
+        "description": "Solo los presentadores necesitan una cuenta. ¡Los participantes pueden unirse sin una!",
+        "step1": "Ve a www.inavora.com",
+        "step2": "Haz clic en el botón 'Comenzar'",
+        "step3": "Regístrate usando: cuenta de Google O correo electrónico y contraseña",
+        "step4": "Después del registro, llegarás a tu Panel de control",
+        "step5": "¡Ahora puedes crear, gestionar y presentar sesiones!"
+      },
+      "step3": {
+        "title": "Cómo cambiar el idioma",
+        "description": "¡Inavora habla tu idioma! Cambia en cualquier momento, incluso durante una sesión.",
+        "step1": "Mira la esquina superior derecha de la pantalla",
+        "step2": "Haz clic en el selector de idioma (icono del globo)",
+        "step3": "Elige tu idioma preferido",
+        "step4": "¡Toda la interfaz se actualiza al instante! ✨"
+      },
+      "step4": {
+        "title": "Entender el Panel de control",
+        "description": "Tu centro de comando para todas las presentaciones.",
+        "step1": "Crear nuevas presentaciones",
+        "step2": "Unirse a una presentación como anfitrión",
+        "step3": "Usar plantillas para inicios rápidos",
+        "step4": "Ver todas tus presentaciones guardadas",
+        "step5": "Acceder a configuraciones y opciones de actualización"
+      },
+      "step5": {
+        "title": "Cómo crear una nueva presentación",
+        "description": "Comienza a construir tu presentación interactiva en minutos.",
+        "step1": "Haz clic en el botón 'Nueva presentación'",
+        "step2": "Dale un nombre a tu presentación",
+        "step3": "Haz clic en 'Nueva diapositiva' para comenzar a agregar contenido",
+        "step4": "Elige tipos de diapositivas del menú",
+        "step5": "¡Agrega, elimina o reordena diapositivas en cualquier momento!"
+      },
+      "step6": {
+        "title": "Cómo editar una diapositiva",
+        "description": "¡Hacer cambios es fácil y automático!",
+        "step1": "Haz clic en cualquier diapositiva de tu presentación",
+        "step2": "El panel de Configuración de diapositiva se abre en el lado derecho",
+        "step3": "Edita: texto de pregunta, opciones de respuesta, imágenes o videos",
+        "step4": "¡Los cambios se guardan automáticamente - no se necesita botón de guardar! ✨"
+      },
+      "step7": {
+        "title": "Cómo iniciar una presentación en vivo",
+        "description": "¡Ve en vivo y involucra a tu audiencia en tiempo real!",
+        "step1": "Haz clic en el botón 'Presentar'",
+        "step2": "Comparte el código de presentación o código QR con los participantes",
+        "step3": "Los participantes se unen al instante usando el código",
+        "step4": "¡Las respuestas aparecen en vivo en tu pantalla! 🎉"
+      },
+      "step8": {
+        "title": "Ver resultados",
+        "description": "Ve qué piensa tu audiencia en tiempo real o después de la sesión.",
+        "step1": "Haz clic en el botón 'Resultados' durante o después de una sesión",
+        "step2": "Ver: resultados de encuestas, puntajes de cuestionarios, respuestas de la audiencia",
+        "step3": "Analiza datos de comentarios y participación",
+        "step4": "Exporta resultados para análisis adicional"
+      },
+      "step9": {
+        "title": "Importar diapositivas",
+        "description": "¡Trae tus presentaciones existentes a Inavora!",
+        "step1": "Desde PowerPoint: Sube archivos .ppt o .pptx - las diapositivas se convierten automáticamente",
+        "step2": "Desde Google Slides: Conecta tu cuenta de Google e importa directamente",
+        "step3": "Desde Miro: Conecta tu tablero de Miro e importa marcos como diapositivas",
+        "step4": "Agrega preguntas interactivas encima de las diapositivas importadas"
+      }
+    },
+    "slide_types": {
+      "title": "Tipos de diapositivas que puedes crear",
+      "subtitle": "Elige el tipo de diapositiva perfecto para tu contenido",
+      "present_content": {
+        "title": "Presenta tu contenido",
+        "text_slide": {
+          "title": "Diapositiva de texto",
+          "description": "Agrega texto, instrucciones o explicaciones. Perfecto para agendas y notas."
+        },
+        "image_slide": {
+          "title": "Diapositiva de imagen",
+          "description": "Sube o muestra imágenes. Genial para diagramas, fotos o elementos visuales."
+        },
+        "video_slide": {
+          "title": "Diapositiva de video",
+          "description": "Agrega enlaces de video o sube videos. Útil para demostraciones."
+        },
+        "instruction_slide": {
+          "title": "Diapositiva de instrucciones",
+          "description": "Muestra cómo deben unirse o responder los participantes. Úsala al inicio de la sesión."
+        }
+      },
+      "engage_audience": {
+        "title": "Involucra a tu audiencia",
+        "choose_one": {
+          "title": "Elige uno",
+          "description": "Pregunta de opción única. Los participantes seleccionan una opción."
+        },
+        "quiz": {
+          "title": "Cuestionario",
+          "description": "Múltiples preguntas con puntuación. Perfecto para competencias y verificaciones de aprendizaje."
+        },
+        "word_cloud": {
+          "title": "Nube de palabras en vivo",
+          "description": "Los participantes envían palabras. Las palabras populares aparecen más grandes."
+        },
+        "open_response": {
+          "title": "Respuesta abierta",
+          "description": "Los participantes escriben respuestas libremente. Mejor para comentarios y opiniones."
+        },
+        "rating_scale": {
+          "title": "Escala de calificación",
+          "description": "Los participantes califican usando números o estrellas. Útil para encuestas."
+        },
+        "rank_options": {
+          "title": "Clasificar las opciones",
+          "description": "Los participantes organizan las opciones por preferencia."
+        },
+        "audience_questions": {
+          "title": "Preguntas de la audiencia",
+          "description": "La audiencia envía preguntas en vivo. El presentador puede resaltar las importantes."
+        },
+        "number_guess": {
+          "title": "Desafío de adivinar el número",
+          "description": "Los participantes adivinan un número. ¡Actividad divertida y atractiva!"
+        },
+        "points_allocation": {
+          "title": "Asignación de puntos",
+          "description": "Los participantes distribuyen puntos entre las opciones."
+        },
+        "opinion_matrix": {
+          "title": "Matriz de opinión",
+          "description": "Compara opciones en formato de cuadrícula."
+        },
+        "spot_image": {
+          "title": "Punto en imagen",
+          "description": "Los participantes tocan o hacen clic en una ubicación de una imagen."
+        }
+      },
+      "challenge_mode": {
+        "title": "Modo desafío",
+        "pick_answer": {
+          "title": "Elige la respuesta",
+          "description": "Los participantes eligen la respuesta correcta de las opciones."
+        },
+        "type_answer": {
+          "title": "Escribe tu respuesta",
+          "description": "Los participantes escriben una respuesta exacta. ¡Genial para evaluaciones!"
+        }
+      }
+    },
+    "features": {
+      "title": "Cómo usar las funciones",
+      "subtitle": "Domina las herramientas para crear presentaciones increíbles"
+    },
+    "pricing_faq": {
+      "title": "Precios – Preguntas Frecuentes",
+      "subtitle": "Todo lo que necesitas saber sobre los planes de precios de Inavora",
+      "q1": {
+        "question": "¿Qué planes ofrece Inavora?",
+        "answer": "Inavora ofrece cuatro planes simples, diseñados para diferentes necesidades:",
+        "free": "Gratis – Prueba Inavora con funciones básicas",
+        "pro": "Pro – Para profesionales y creadores individuales",
+        "lifetime": "De por vida – Pago único, uso a largo plazo",
+        "institution": "Institucional – Para escuelas, universidades y organizaciones",
+        "note": "Cada plan es transparente, sin cargos ocultos."
+      },
+      "q2": {
+        "question": "¿Qué incluye el Plan Gratis?",
+        "price": "₹0",
+        "price_label": "(Gratis)",
+        "description": "El plan Gratis es ideal para usuarios primerizos que quieren explorar Inavora.",
+        "includes_title": "El Plan Gratis incluye:",
+        "includes_user": "1 usuario (presentador)",
+        "includes_presentations": "Hasta 3 presentaciones por mes",
+        "includes_slides": "10 diapositivas por presentación",
+        "includes_audience": "Límite de audiencia: 20 participantes",
+        "includes_slides_types": "Acceso a tipos de diapositivas interactivas principales",
+        "not_includes_title": "El Plan Gratis NO incluye:",
+        "not_includes_export": "Exportar resultados",
+        "not_includes_import": "Importar desde PowerPoint / Miro",
+        "not_includes_analytics": "Análisis avanzados",
+        "not_includes_ai": "Funciones de IA",
+        "best_for": "Mejor para probar Inavora o sesiones informales pequeñas."
+      },
+      "q3": {
+        "question": "¿Qué incluye el Plan Pro?",
+        "price_monthly": "₹199",
+        "price_monthly_label": "/ mes",
+        "price_yearly": "O ₹999",
+        "price_yearly_label": "/ año",
+        "price_yearly_save": "(ahorra más con el plan anual)",
+        "description": "El plan Pro está diseñado para maestros, entrenadores, fundadores, consultores y profesionales.",
+        "includes_user": "1 usuario",
+        "includes_presentations": "Presentaciones ilimitadas",
+        "includes_slides": "Diapositivas ilimitadas",
+        "includes_audience": "Participantes ilimitados",
+        "includes_export": "Exportar resultados",
+        "includes_import": "Importar desde PowerPoint, Google Slides, Miro",
+        "includes_analytics": "Análisis avanzados",
+        "includes_ai": "Funciones de IA",
+        "includes_support": "Soporte por correo electrónico",
+        "best_for": "Mejor para presentadores regulares, maestros, entrenadores y profesionales."
+      },
+      "q4": {
+        "question": "¿Qué incluye el Plan de por vida?",
+        "price": "₹4,999",
+        "price_label": "(Pago único)",
+        "description": "El plan de por vida es perfecto para usuarios a largo plazo que quieren evitar renovaciones mensuales o anuales.",
+        "includes_all_pro": "Todo en el Plan Pro, además de:",
+        "includes_no_renewal": "Sin renovaciones - usa para siempre",
+        "includes_updates": "Todas las actualizaciones futuras incluidas",
+        "includes_priority": "Soporte prioritario",
+        "best_for": "Mejor para usuarios individuales a largo plazo que quieren acceso de por vida."
+      },
+      "q5": {
+        "question": "¿Qué incluye el Plan Institucional?",
+        "description": "El plan Institucional está diseñado para escuelas, universidades, empresas, ONG y organizaciones grandes.",
+        "includes_users": "Múltiples usuarios (administradores y presentadores)",
+        "includes_presentations": "Presentaciones ilimitadas",
+        "includes_slides": "Diapositivas ilimitadas",
+        "includes_audience": "Participantes ilimitados",
+        "includes_export": "Exportar resultados",
+        "includes_import": "Importar desde PowerPoint, Google Slides, Miro",
+        "includes_analytics": "Análisis avanzados",
+        "includes_ai": "Funciones de IA",
+        "includes_admin": "Panel de administración",
+        "includes_permissions": "Gestión de usuarios y permisos",
+        "includes_support": "Soporte prioritario",
+        "includes_custom": "Marca personalizada (opcional)",
+        "best_for": "Mejor para escuelas, universidades, empresas y organizaciones."
+      },
+      "q6": {
+        "question": "¿Cómo actualizo mi plan?",
+        "step1": "Ve a tu Panel de control",
+        "step2": "Haz clic en el botón 'Actualizar plan'",
+        "step3": "Elige tu plan preferido",
+        "step4": "Completa el pago",
+        "step5": "¡Tu plan se actualiza al instante!"
+      },
+      "q7": {
+        "question": "¿Puedo cancelar o cambiar mi plan?",
+        "answer": "¡Sí! Puedes cambiar o cancelar tu plan en cualquier momento desde la configuración de tu Panel de control."
+      },
+      "q8": {
+        "question": "¿Qué métodos de pago se aceptan?",
+        "answer": "Aceptamos las principales tarjetas de crédito, tarjetas de débito, UPI y otros métodos de pago locales."
+      },
+      "q9": {
+        "question": "¿Hay una prueba gratuita?",
+        "answer": "¡Sí! El plan Gratis está disponible para siempre. Puedes probar todas las funciones básicas sin ningún pago."
+      },
+      "q10": {
+        "question": "¿Qué sucede si excedo los límites de mi plan?",
+        "answer": "Recibirás una notificación. Puedes actualizar tu plan o esperar hasta el próximo ciclo de facturación."
+      },
+      "q11": {
+        "question": "¿Los participantes necesitan pagar?",
+        "answer": "¡No! Los participantes pueden unirse a las presentaciones gratis. Solo los presentadores necesitan un plan."
+      },
+      "q12": {
+        "question": "¿Qué plan debo elegir?",
+        "casual": "¿Usuario ocasional / probando Inavora?",
+        "casual_plan": "→ Gratis",
+        "regular": "¿Presentador regular / maestro / fundador?",
+        "regular_plan": "→ Pro",
+        "long_term": "¿Usuario individual a largo plazo?",
+        "long_term_plan": "→ De por vida",
+        "organization": "¿Escuela / universidad / empresa?",
+        "organization_plan": "→ Institucional"
+      },
+      "q13": {
+        "question": "¿Por qué se recomienda el Plan de por vida?",
+        "reason1": "Pago único",
+        "reason2": "Sin renovaciones",
+        "reason3": "Mejor valor a largo plazo",
+        "reason4": "Incluye todo en Pro"
+      },
+      "q16": {
+        "question": "¿Quién debe usar el Plan Institucional?",
+        "ideal_for": "Ideal para:",
+        "schools": "Escuelas y universidades",
+        "corporate": "Equipos de capacitación corporativa",
+        "ngos": "ONG y fundaciones",
+        "government": "Departamentos gubernamentales",
+        "organizations": "Organizaciones grandes"
+      },
+      "q17": {
+        "question": "¿Dónde puedo obtener ayuda si soy administrador?",
+        "answer": "Los administradores pueden:",
+        "help1": "Usar el Centro de ayuda",
+        "help2": "Contactar soporte prioritario",
+        "help3": "Compartir comentarios directamente desde el panel"
+      }
+    },
+    "data_privacy_faq": {
+      "title": "Datos y Privacidad – Preguntas Frecuentes",
+      "subtitle": "Todo lo que necesitas saber sobre cómo Inavora maneja tus datos y protege tu privacidad",
+      "q1": {
+        "question": "¿Qué datos recopila Inavora?",
+        "answer": "Inavora recopila solo los datos necesarios para ejecutar la plataforma de manera efectiva.",
+        "may_include": "Esto puede incluir:",
+        "presenter_details": "Detalles de la cuenta del presentador (nombre, correo electrónico)",
+        "admin_details": "Detalles del administrador de la institución",
+        "presentation_content": "Contenido de presentación creado por usuarios",
+        "participant_responses": "Respuestas anónimas de participantes",
+        "usage_data": "Datos de uso (número de sesiones, respuestas, participación)",
+        "note": "Inavora no recopila datos personales innecesarios."
+      },
+      "q2": {
+        "question": "¿Inavora recopila datos personales de los participantes?",
+        "answer": "No se requieren datos personales de los participantes.",
+        "participants": "Participantes:",
+        "no_account": "No necesitan una cuenta",
+        "join_code": "Generalmente se unen usando un código o QR",
+        "optional_name": "Pueden ingresar un nombre (opcional, establecido por el presentador)",
+        "responses_treated": "Las respuestas se tratan como:",
+        "anonymous": "Anónimas, o",
+        "pseudonymous": "Seudónimas (si se ingresa un nombre)"
+      },
+      "q3": {
+        "question": "¿Quién posee los datos creados en Inavora?",
+        "answer": "Tú.",
+        "presenters_own": "Los presentadores poseen sus presentaciones y resultados",
+        "institutions_own": "Las instituciones poseen sus datos organizacionales",
+        "no_ownership": "Inavora no reclama la propiedad de tu contenido o respuestas"
+      },
+      "q4": {
+        "question": "¿Inavora vende o comparte datos con terceros?",
+        "answer": "No.",
+        "inavora": "Inavora:",
+        "no_sell": "No vende datos de usuarios",
+        "no_share": "No comparte datos con anunciantes",
+        "no_marketing": "No usa datos para marketing sin consentimiento",
+        "data_use": "Los datos se usan solo para operar y mejorar la plataforma."
+      },
+      "q5": {
+        "question": "¿Inavora cumple con los estándares de protección de datos?",
+        "answer": "Inavora sigue prácticas estándar de la industria para la protección de datos, incluyendo:",
+        "secure_access": "Controles de acceso seguros",
+        "encrypted": "Transmisión de datos encriptada",
+        "role_based": "Permisos basados en roles para instituciones",
+        "for_institutions": "Para instituciones, Inavora apoya el cumplimiento de:",
+        "gdpr": "Principios generales de protección de datos",
+        "institutional": "Políticas de privacidad institucionales"
+      },
+      "q6": {
+        "question": "¿Dónde se almacenan los datos?",
+        "secure_cloud": "Los datos se almacenan en infraestructura en la nube segura",
+        "restricted": "El acceso está restringido a sistemas y personal autorizados",
+        "monitoring": "Hay monitoreo regular y copias de seguridad",
+        "note": "(Los detalles de la infraestructura se pueden compartir con instituciones bajo solicitud.)"
+      },
+      "q7": {
+        "question": "¿Pueden las instituciones controlar el acceso a sus datos?",
+        "answer": "Sí.",
+        "admins_can": "Los administradores de instituciones pueden:",
+        "manage_users": "Gestionar usuarios y permisos",
+        "monitor": "Monitorear actividad a través de análisis",
+        "control_exports": "Controlar exportaciones e informes",
+        "apply_policies": "Aplicar políticas de acceso internamente"
+      },
+      "q8": {
+        "question": "¿Quién puede ver análisis e informes?",
+        "authorized": "Solo usuarios autorizados (presentadores o administradores)",
+        "institution_level": "Los datos a nivel de institución son visibles solo para administradores",
+        "no_exposure": "Las identidades individuales de participantes no se exponen"
+      },
+      "q9": {
+        "question": "¿Cuánto tiempo se conservan los datos?",
+        "active": "Los datos se conservan mientras la cuenta esté activa",
+        "request_deletion": "Las instituciones pueden solicitar la eliminación de datos",
+        "delete_presentations": "Los usuarios pueden eliminar sus propias presentaciones",
+        "note": "Las políticas de retención respetan los requisitos institucionales y legales."
+      },
+      "q10": {
+        "question": "¿Puedo exportar mis datos?",
+        "answer": "Sí.",
+        "depending_plan": "Dependiendo de tu plan:",
+        "export_results": "Exportar resultados de presentación",
+        "download_reports": "Descargar informes y análisis",
+        "maintain_records": "Mantener tus propios registros"
+      },
+      "q11": {
+        "question": "¿Qué sucede si elimino mi cuenta?",
+        "account_removed": "Se eliminan los datos de tu cuenta",
+        "presentations_deleted": "Se eliminan las presentaciones y los datos asociados",
+        "institutional_remains": "Los datos institucionales permanecen intactos si eres parte de una institución"
+      },
+      "q12": {
+        "question": "¿Las funciones de IA son seguras para la privacidad de datos?",
+        "ai_features": "Funciones de IA:",
+        "anonymized": "Usan datos anonimizados o agregados",
+        "no_expose": "No exponen información personal de participantes",
+        "access_controls": "Siguen controles de acceso estrictos",
+        "opt_in": "Las funciones de IA son opcionales y están claramente marcadas."
+      },
+      "q13": {
+        "question": "¿Inavora usa cookies o seguimiento?",
+        "basic_cookies": "Se pueden usar cookies básicas para inicio de sesión y gestión de sesiones",
+        "no_intrusive": "No hay seguimiento intrusivo de terceros",
+        "no_advertising": "No hay rastreadores publicitarios"
+      },
+      "q14": {
+        "question": "¿Cómo protege Inavora contra el uso indebido?",
+        "inavora_uses": "Inavora usa:",
+        "role_based_access": "Control de acceso basado en roles",
+        "audit_logs": "Registros de auditoría (para instituciones)",
+        "monitoring": "Monitoreo de actividad anormal"
+      },
+      "q15": {
+        "question": "¿A quién puedo contactar para preguntas sobre datos o privacidad?",
+        "email": "support@inavora.com",
+        "institutions_can": "Las instituciones también pueden solicitar:",
+        "dpa": "Anexo de procesamiento de datos (DPA)",
+        "security_docs": "Documentación de seguridad",
+        "privacy_clarifications": "Aclaraciones de privacidad"
+      },
+      "q16": {
+        "question": "Por qué Inavora se toma en serio la privacidad de datos",
+        "serves": "Porque Inavora sirve a:",
+        "schools": "Escuelas y estudiantes",
+        "institutions": "Instituciones y gobiernos",
+        "enterprises": "Empresas y ONG",
+        "trust": "La confianza no es negociable."
+      }
+    },
+    "faq": {
+      "title": "Preguntas Frecuentes",
+      "participants_account": {
+        "title": "¿Los participantes necesitan una cuenta?",
+        "answer": "¡No! Los participantes pueden unirse usando solo un código o código QR. No se requiere registro. ¡Es completamente gratis para ellos!"
+      },
+      "where_used": {
+        "title": "¿Dónde se puede usar Inavora?",
+        "description": "Inavora es una plataforma de participación interactiva de propósito general. Se puede usar en cualquier lugar donde las personas necesiten participación, comentarios o decisiones en tiempo real.",
+        "view_all": "Ver todos los casos de uso"
+      }
+    },
+    "use_cases": {
+      "title": "¿Dónde se puede usar Inavora?",
+      "subtitle": "Inavora es una plataforma de participación interactiva de propósito general. Se puede usar en cualquier lugar donde las personas necesiten participación, comentarios o decisiones en tiempo real.",
+      "education": {
+        "title": "Educación y Aprendizaje",
+        "items": [
+          "Escuelas (primaria, secundaria, preparatoria)",
+          "Colegios y universidades",
+          "Centros de tutoría e institutos",
+          "Clases en línea y aulas virtuales",
+          "Programas de capacitación docente",
+          "Comentarios y evaluaciones de estudiantes",
+          "Sesiones de preparación para exámenes de admisión",
+          "Conferencias académicas y seminarios",
+          "Reuniones de padres y maestros",
+          "Juntas escolares y autoridades de capacitación"
+        ]
+      },
+      "startups": {
+        "title": "Startups y Negocios",
+        "items": [
+          "Presentaciones de startups",
+          "Reuniones de presentación para inversionistas",
+          "Días de demostración y programas aceleradores",
+          "Demostraciones de productos",
+          "Sesiones de descubrimiento de clientes",
+          "Encuestas de validación de mercado",
+          "Reuniones internas de equipo",
+          "Reuniones de toda la empresa",
+          "Discusiones estratégicas",
+          "Retrospectivas y revisiones"
+        ]
+      },
+      "corporate": {
+        "title": "Corporativo y Empresarial",
+        "items": [
+          "Sesiones de capacitación corporativa",
+          "Incorporación de empleados",
+          "Talleres de liderazgo",
+          "Reuniones de toda la empresa",
+          "Revisiones de desempeño",
+          "Encuestas y votaciones internas",
+          "Talleres de toma de decisiones",
+          "Capacitación en cumplimiento y políticas",
+          "Sesiones de capacidad de ventas",
+          "Programas de participación de RR.HH."
+        ]
+      },
+      "investors": {
+        "title": "Inversionistas y Finanzas",
+        "items": [
+          "Presentaciones para inversionistas",
+          "Reuniones de debida diligencia",
+          "Revisiones de empresas de cartera",
+          "Reuniones de LP",
+          "Reuniones de junta directiva",
+          "Votación y recopilación de opiniones",
+          "Talleres de evaluación de riesgos",
+          "Programas de alfabetización financiera",
+          "Sesiones de participación de accionistas"
+        ]
+      },
+      "government": {
+        "title": "Gobierno y Público",
+        "items": [
+          "Consultas públicas",
+          "Sesiones de comentarios ciudadanos",
+          "Discusiones de políticas",
+          "Reuniones de ayuntamiento",
+          "Capacitación de funcionarios gubernamentales",
+          "Programas de gobernanza digital",
+          "Participación de ciudades inteligentes",
+          "Campañas de concienciación pública",
+          "Programas de desarrollo comunitario",
+          "Concienciación y educación electoral (no político)"
+        ]
+      },
+      "ngos": {
+        "title": "ONG y Impacto Social",
+        "items": [
+          "Reuniones comunitarias",
+          "Encuestas de campo",
+          "Capacitación de voluntarios",
+          "Evaluación de impacto",
+          "Programas de concienciación",
+          "Extensión de salud y educación",
+          "Programas de RSC",
+          "Recopilación de comentarios de beneficiarios",
+          "Programas de participación rural",
+          "Talleres de desarrollo internacional"
+        ]
+      },
+      "events": {
+        "title": "Eventos y Conferencias",
+        "items": [
+          "Conferencias y cumbres",
+          "Discusiones de panel",
+          "Sesiones plenarias",
+          "Talleres y bootcamps",
+          "Hackatones",
+          "Encuentros y eventos de networking",
+          "Foros de la industria",
+          "Asociaciones profesionales",
+          "Reuniones de exalumnos",
+          "Eventos de premios y reconocimiento"
+        ]
+      },
+      "research": {
+        "title": "Investigación y Datos",
+        "items": [
+          "Investigación académica",
+          "Investigación de mercado",
+          "Investigación de experiencia del usuario",
+          "Estudios de comportamiento",
+          "Encuestas de opinión",
+          "Encuestas y experimentos",
+          "Grupos focales",
+          "Investigación en ciencias sociales",
+          "Investigación de políticas",
+          "Investigación de productos"
+        ]
+      },
+      "healthcare": {
+        "title": "Atención Médica y Medicina",
+        "items": [
+          "Sesiones de educación médica",
+          "Capacitación en enfermería y paramédicos",
+          "Programas de concienciación sobre salud pública",
+          "Talleres de educación para pacientes",
+          "Capacitación del personal del hospital",
+          "Conferencias médicas",
+          "Talleres de salud mental",
+          "Discusiones de casos clínicos",
+          "Encuestas de salud comunitaria"
+        ]
+      },
+      "communities": {
+        "title": "Comunidades y Asociaciones",
+        "items": [
+          "Sociedades de bienestar de residentes",
+          "Reuniones de sociedades de vivienda",
+          "Sociedades cooperativas",
+          "Asociaciones profesionales",
+          "Grupos religiosos o culturales",
+          "Comunidades de exalumnos",
+          "Grupos de padres",
+          "Clubes juveniles",
+          "Organizaciones de idioma y cultura"
+        ]
+      },
+      "marketing": {
+        "title": "Marketing y Ventas",
+        "items": [
+          "Lanzamientos de productos",
+          "Sesiones de comentarios de clientes",
+          "Votaciones en vivo durante demostraciones",
+          "Campañas de participación de marca",
+          "Roadshows",
+          "Reuniones de ventas en campo",
+          "Encuentros de distribuidores",
+          "Capacitación del personal minorista",
+          "Programas de capacidad de socios"
+        ]
+      },
+      "remote": {
+        "title": "Equipos Remotos y Globales",
+        "items": [
+          "Reuniones de equipos remotos",
+          "Talleres híbridos",
+          "Colaboración entre países",
+          "Programas de capacitación global",
+          "Participación de fuerza laboral distribuida",
+          "Interacción amigable con zonas horarias",
+          "Sesiones de participación multilingüe"
+        ]
+      },
+      "legal": {
+        "title": "Legal y Gobernanza",
+        "items": [
+          "Sesiones de capacitación legal",
+          "Talleres de políticas",
+          "Consultas con partes interesadas",
+          "Capacitación en ética y cumplimiento",
+          "Talleres de arbitraje o mediación",
+          "Educación legal profesional"
+        ]
+      },
+      "gamification": {
+        "title": "Gamificación y Participación",
+        "items": [
+          "Competiciones de cuestionarios",
+          "Juegos de aprendizaje",
+          "Actividades de formación de equipos",
+          "Sesiones rompehielos",
+          "Desafíos de participación",
+          "Evaluaciones de habilidades",
+          "Verificaciones de conocimiento"
+        ]
+      }
+    },
+    "flow_diagram": {
+      "title": "Cómo funciona todo junto",
+      "subtitle": "Ver el flujo completo de principio a fin",
+      "step1": "Registrarse",
+      "step2": "Crear",
+      "step3": "Compartir",
+      "step4": "Presentar",
+      "step5": "Analizar"
+    },
+    "cta": {
+      "title": "¿Listo para comenzar?",
+      "subtitle": "Únete a miles de usuarios creando increíbles presentaciones interactivas",
+      "create_account": "Crear cuenta gratuita",
+      "join_presentation": "Unirse a una presentación"
     }
   },
   "common": {

@@ -19,6 +19,7 @@ const PresentMode = lazy(() => import('./components/pages/PresentMode'));
 const JoinPresentation = lazy(() => import('./components/pages/JoinPresentation'));
 const PricingPage = lazy(() => import('./components/pages/PricingPage.jsx'));
 const About = lazy(() => import('./components/pages/About'));
+const HowItWorks = lazy(() => import('./components/pages/HowItWorks'));
 const Careers = lazy(() => import('./components/pages/Careers'));
 const Contact = lazy(() => import('./components/pages/Contact'));
 const PrivacyPolicy = lazy(() => import('./components/pages/PrivacyPolicy'));
@@ -112,6 +113,8 @@ function PageTitleUpdater() {
       title = t('page_titles.pricing');
     } else if (path === '/about') {
       title = t('page_titles.about');
+    } else if (path === '/how-it-works') {
+      title = t('page_titles.how_it_works');
     } else if (path === '/careers') {
       title = t('page_titles.careers');
     } else if (path === '/contact') {
@@ -153,6 +156,7 @@ function App() {
               <Route path="/join/:code" element={<JoinPresentation />} />
               <Route path="/pricing" element={<PricingPage />} />
               <Route path="/about" element={<About />} />
+              <Route path="/how-it-works" element={<HowItWorks />} />
               <Route path="/careers" element={<Careers />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
