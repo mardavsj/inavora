@@ -128,12 +128,12 @@ const SlideCanvas = ({ slide, presentation, isPresenter = false, onSettingsChang
     return url;
   };
 
-  // Update local state when slide prop changes
+  // Update local state when slide prop changes (only when slide ID changes to avoid infinite loops)
   useEffect(() => {
     if (slide?.question !== undefined) {
       setQuestion(slide.question);
     }
-  }, [slide?.question]);
+  }, [slide?.id]); // Only depend on slide ID, not question, to prevent infinite loops
 
   // Fetch leaderboard data when viewing a leaderboard slide
   useEffect(() => {
@@ -1033,37 +1033,6 @@ const SlideCanvas = ({ slide, presentation, isPresenter = false, onSettingsChang
               
               <div className="mt-4 sm:mt-6 text-center text-xs sm:text-sm text-[#8A8A8A]">
                 {t('slide_canvas.redirect_google_slides')}
-              </div>
-            </div>
-          </div>
-        );
-
-      case 'upload':
-        return (
-          <div className="w-full max-w-4xl mx-auto">
-            <div className="rounded-3xl border border-[#2F2F2F] bg-[#1F1F1F] shadow-[0_12px_40px_rgba(0,0,0,0.45)] p-4 sm:p-6 lg:p-8">
-              <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-[#E0E0E0] mb-4 sm:mb-6 text-center">
-                {question || t('slide_canvas.uploaded_presentation_title')}
-              </h2>
-              
-              <div className="aspect-video bg-[#232323] rounded-xl overflow-hidden border border-[#2F2F2F] flex items-center justify-center">
-                <div className="text-center p-4 sm:p-6">
-                  <div className="mx-auto w-12 h-12 sm:w-16 sm:h-16 bg-blue-500 rounded-full flex items-center justify-center mb-3 sm:mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 sm:h-8 sm:w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                  </div>
-                  <h3 className="text-lg sm:text-xl font-semibold text-white mb-2">{t('slide_canvas.uploaded_presentation')}</h3>
-                  <p className="text-gray-400 mb-3 sm:mb-4 text-xs sm:text-sm">{t('slide_canvas.participants_can_view')}</p>
-                  <div className="inline-flex items-center px-3 py-1 sm:px-4 sm:py-2 bg-blue-600 rounded-full">
-                    <span className="h-1.5 w-1.5 sm:h-2 sm:w-2 bg-white rounded-full mr-1.5 sm:mr-2 animate-pulse"></span>
-                    <span className="text-white text-xs sm:text-sm">{t('slide_canvas.live_presentation')}</span>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="mt-4 sm:mt-6 text-center text-xs sm:text-sm text-[#8A8A8A]">
-                {t('slide_canvas.redirect_uploaded_presentation')}
               </div>
             </div>
           </div>

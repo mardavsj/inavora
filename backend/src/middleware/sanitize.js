@@ -37,7 +37,7 @@ function sanitizeObject(obj) {
   if (typeof obj === 'object') {
     const sanitized = {};
     const skipFields = ['imageUrl', 'videoUrl', 'powerpointUrl', 'googleSlidesUrl', 
-                       'miroUrl', 'uploadedFileUrl', 'photoURL', 'logo', 'textContent',
+                       'miroUrl', 'photoURL', 'logo', 'textContent',
                        'instructionContent', 'question'];
     
     for (const key in obj) {

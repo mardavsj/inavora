@@ -121,9 +121,6 @@ module.exports.createSlide = asyncHandler(async (req, res, next) => {
       powerpointUrl,
       powerpointPublicId,
       googleSlidesUrl,
-      uploadedFileUrl,
-      uploadedFilePublicId,
-      uploadedFileName,
       order  // Accept order from frontend
     } = req.body;
 
@@ -216,9 +213,6 @@ module.exports.createSlide = asyncHandler(async (req, res, next) => {
       powerpointUrl: type === 'powerpoint' ? (powerpointUrl || '') : undefined,
       powerpointPublicId: type === 'powerpoint' ? powerpointPublicId : undefined,
       googleSlidesUrl: type === 'google_slides' ? (googleSlidesUrl || '') : undefined,
-      uploadedFileUrl: type === 'upload' ? (uploadedFileUrl || '') : undefined,
-      uploadedFilePublicId: type === 'upload' ? uploadedFilePublicId : undefined,
-      uploadedFileName: type === 'upload' ? (uploadedFileName || '') : undefined,
   });
 
   await slide.save();
@@ -282,9 +276,6 @@ module.exports.createSlide = asyncHandler(async (req, res, next) => {
         powerpointUrl: slide.powerpointUrl,
         powerpointPublicId: slide.powerpointPublicId,
         googleSlidesUrl: slide.googleSlidesUrl,
-        uploadedFileUrl: slide.uploadedFileUrl,
-        uploadedFilePublicId: slide.uploadedFilePublicId,
-        uploadedFileName: slide.uploadedFileName,
         createdAt: slide.createdAt,
         updatedAt: slide.updatedAt
       }
@@ -335,9 +326,6 @@ module.exports.updateSlide = asyncHandler(async (req, res, next) => {
       powerpointUrl,
       powerpointPublicId,
       googleSlidesUrl,
-      uploadedFileUrl,
-      uploadedFilePublicId,
-      uploadedFileName,
       order  // Add order field
     } = req.body;
 
@@ -480,15 +468,6 @@ module.exports.updateSlide = asyncHandler(async (req, res, next) => {
     if (googleSlidesUrl !== undefined && slide.type === 'google_slides') {
       slide.googleSlidesUrl = googleSlidesUrl;
     }
-    if (uploadedFileUrl !== undefined && slide.type === 'upload') {
-      slide.uploadedFileUrl = uploadedFileUrl;
-    }
-    if (uploadedFilePublicId !== undefined && slide.type === 'upload') {
-      slide.uploadedFilePublicId = uploadedFilePublicId;
-    }
-    if (uploadedFileName !== undefined && slide.type === 'upload') {
-      slide.uploadedFileName = uploadedFileName;
-    }
   if (order !== undefined) {
     slide.order = order;
   }
@@ -550,9 +529,6 @@ module.exports.updateSlide = asyncHandler(async (req, res, next) => {
         powerpointUrl: slide.powerpointUrl,
         powerpointPublicId: slide.powerpointPublicId,
         googleSlidesUrl: slide.googleSlidesUrl,
-        uploadedFileUrl: slide.uploadedFileUrl,
-        uploadedFilePublicId: slide.uploadedFilePublicId,
-        uploadedFileName: slide.uploadedFileName,
         createdAt: slide.createdAt,
       updatedAt: slide.updatedAt
     }

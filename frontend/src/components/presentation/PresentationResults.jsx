@@ -27,7 +27,6 @@ import TypeAnswerResult from '../interactions/Results/TypeAnswerResult';
 import MiroResult from '../interactions/Results/MiroResult';
 import PowerPointResult from '../interactions/Results/PowerPointResult';
 import GoogleSlidesResult from '../interactions/Results/GoogleSlidesResult';
-import UploadResult from '../interactions/Results/UploadResult';
 import InstructionResult from '../interactions/Results/InstructionResult';
 import TextResult from '../interactions/Results/TextResult';
 import ImageResult from '../interactions/Results/ImageResult';
@@ -574,8 +573,6 @@ const PresentationResults = ({ slides, presentationId }) => {
                 return <PowerPointResult slide={slide} data={slideResults} />;
             case 'google_slides':
                 return <GoogleSlidesResult slide={slide} data={slideResults} />;
-            case 'upload':
-                return <UploadResult slide={slide} data={slideResults} />;
             case 'instruction':
                 return <InstructionResult slide={slide} data={slideResults} presentation={presentation} />;
             case 'text':

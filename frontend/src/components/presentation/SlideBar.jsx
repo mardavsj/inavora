@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { BarChart3, Cloud, MessageSquare, Sliders, ChartBarDecreasing, Plus, X, MessagesSquare, CircleQuestionMark, SquareStack, Grid2X2, MapPin, Brain, Trophy, GripVertical, Settings, FileText, Presentation, Monitor, Upload, Type, Image, Video, BookOpen } from 'lucide-react';
+import { BarChart3, Cloud, MessageSquare, Sliders, ChartBarDecreasing, Plus, X, MessagesSquare, CircleQuestionMark, SquareStack, Grid2X2, MapPin, Brain, Trophy, GripVertical, Settings, FileText, Presentation, Monitor, Type, Image, Video, BookOpen } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onNewSlideClick, showNewSlideDropdown, onSlideReorder, isHorizontal = false, onEditSlide }) => {
@@ -410,18 +410,6 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
             </div>
             <div className="flex-1 flex items-center justify-center bg-[#232323] rounded-sm border border-[#2F2F2F]">
               <Monitor className="h-3 w-3 text-[#4285F4]" />
-            </div>
-          </div>
-        );
-
-      case 'upload':
-        return (
-          <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-gradient-to-br from-[#1F1F1F] to-[#181818]">
-            <div className="text-[6px] sm:text-[7px] font-semibold text-[#E0E0E0] text-center leading-tight line-clamp-1">
-              {truncatedQuestion || t('slide_types.upload')}
-            </div>
-            <div className="flex-1 flex items-center justify-center bg-[#232323] rounded-sm border border-[#2F2F2F]">
-              <Upload className="h-3 w-3 text-[#4CAF50]" />
             </div>
           </div>
         );

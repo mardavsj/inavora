@@ -696,11 +696,6 @@ export default function Presentation() {
               ...(slide.powerpointPublicId && { powerpointPublicId: slide.powerpointPublicId })
             }),
             ...(slideType === 'google_slides' && { googleSlidesUrl: slide.googleSlidesUrl || '' }),
-            ...(slideType === 'upload' && { 
-              uploadedFileUrl: slide.uploadedFileUrl || '',
-              ...(slide.uploadedFilePublicId && { uploadedFilePublicId: slide.uploadedFilePublicId }),
-              uploadedFileName: slide.uploadedFileName || ''
-            }),
             // Add order property
             order: slide.order
           });
@@ -748,11 +743,6 @@ export default function Presentation() {
               ...(slide.powerpointPublicId && { powerpointPublicId: slide.powerpointPublicId })
             }),
             ...(slideType === 'google_slides' && { googleSlidesUrl: slide.googleSlidesUrl || '' }),
-            ...(slideType === 'upload' && { 
-              uploadedFileUrl: slide.uploadedFileUrl || '',
-              ...(slide.uploadedFilePublicId && { uploadedFilePublicId: slide.uploadedFilePublicId }),
-              uploadedFileName: slide.uploadedFileName || ''
-            }),
             // Add order property
             order: slide.order
           });
@@ -924,10 +914,6 @@ export default function Presentation() {
       }),
       ...(slideType === 'google_slides' && {
         googleSlidesUrl: ''
-      }),
-      ...(slideType === 'upload' && {
-        uploadedFileUrl: '',
-        uploadedFileName: ''
       }),
       // Instruction slide specific content
       ...(slideType === 'instruction' && {

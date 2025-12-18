@@ -1,4 +1,4 @@
-import { BarChart3, Cloud, MessageSquare, Sliders, HelpCircle, Grid2X2, MapPin, ChartBarDecreasing, MessagesSquare, SquareStack, Brain, Type, Image, Video, BookOpen, FileText, Monitor, Palette, Upload } from 'lucide-react';
+import { BarChart3, Cloud, MessageSquare, Sliders, HelpCircle, Grid2X2, MapPin, ChartBarDecreasing, MessagesSquare, SquareStack, Brain, Type, Image, Video, BookOpen, FileText, Monitor, Palette } from 'lucide-react';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
@@ -10,7 +10,7 @@ const NewSlideDropdown = ({ onSelectType, onClose, isHorizontal = false, user })
   const isFreePlan = user && (user.subscription?.plan === 'free' || !user.subscription);
   
   // Define restricted slide types for free users
-  const restrictedSlideTypes = ['miro', 'powerpoint', 'google_slides', 'upload'];
+  const restrictedSlideTypes = ['miro', 'powerpoint', 'google_slides'];
   
   // Function to handle slide type selection
   const handleSelectType = (type) => {
@@ -77,12 +77,6 @@ const NewSlideDropdown = ({ onSelectType, onClose, isHorizontal = false, user })
           label: t('new_slide_dropdown.import_from_google_slides', { googleSlidesBrand: t('new_slide_dropdown.google_slides_brand') }),
           icon: Monitor, 
           color: 'text-blue-500'
-        },
-        { 
-          type: 'upload', 
-          label: t('new_slide_dropdown.upload_presentation'), 
-          icon: Upload, 
-          color: 'text-orange-500'
         },
       ]
     },

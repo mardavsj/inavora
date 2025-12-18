@@ -20,7 +20,6 @@ import TypeAnswerPresenterView from '../interactions/typeAnswer/presenter/Presen
 import MiroPresenterView from '../interactions/miro/presenter/PresenterView';
 import PowerPointPresenterView from '../interactions/powerpoint/presenter/PresenterView';
 import GoogleSlidesPresenterView from '../interactions/googleSlides/presenter/PresenterView';
-import UploadPresenterView from '../interactions/upload/presenter/PresenterView';
 import {
   defaultOpenEndedSettings,
   mergeOpenEndedState,
@@ -1002,13 +1001,6 @@ const PresentMode = () => {
       case 'google_slides':
         return (
           <GoogleSlidesPresenterView
-            slide={slide}
-            responses={openEndedResponses}
-          />
-        );
-      case 'upload':
-        return (
-          <UploadPresenterView
             slide={slide}
             responses={openEndedResponses}
           />

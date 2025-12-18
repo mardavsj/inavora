@@ -20,7 +20,6 @@ import TypeAnswerEditor from '../interactions/typeAnswer/Editor';
 import MiroEditor from '../interactions/miro/Editor';
 import PowerPointEditor from '../interactions/powerpoint/Editor';
 import GoogleSlidesEditor from '../interactions/googleSlides/Editor';
-import UploadEditor from '../interactions/upload/Editor';
 
 const SlideEditor = ({ slide, onUpdate, onClose, isOpen }) => {
   const { t } = useTranslation(); // Added translation hook
@@ -127,10 +126,6 @@ const SlideEditor = ({ slide, onUpdate, onClose, isOpen }) => {
 
       {slide?.type === 'google_slides' && (
         <GoogleSlidesEditor slide={slide} onUpdate={onUpdate} />
-      )}
-
-      {slide?.type === 'upload' && (
-        <UploadEditor slide={slide} onUpdate={onUpdate} />
       )}
 
       {slide?.type === 'leaderboard' && (

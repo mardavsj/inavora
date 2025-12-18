@@ -271,9 +271,6 @@ const getPresentationById = asyncHandler(async (req, res, next) => {
         powerpointUrl: slide.powerpointUrl,
         powerpointPublicId: slide.powerpointPublicId,
         googleSlidesUrl: slide.googleSlidesUrl,
-        uploadedFileUrl: slide.uploadedFileUrl,
-        uploadedFilePublicId: slide.uploadedFilePublicId,
-        uploadedFileName: slide.uploadedFileName,
         createdAt: slide.createdAt,
         updatedAt: slide.updatedAt
       }))
@@ -639,7 +636,6 @@ const getPresentationResultById = asyncHandler(async (req, res, next) => {
         case 'miro':
         case 'powerpoint':
         case 'google_slides':
-        case 'upload':
           // These slide types don't have complex results, just show total responses
           // The totalResponses field is already set above
           break;

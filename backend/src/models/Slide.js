@@ -19,7 +19,7 @@ const slideSchema = new mongoose.Schema({
   type: {
     type: String,
     required: true,
-    enum: ['multiple_choice', 'word_cloud', 'open_ended', 'scales', 'ranking', 'qna', 'guess_number', 'hundred_points', '2x2_grid', 'pin_on_image', 'quiz', 'leaderboard', 'text', 'image', 'video', 'instruction', 'pick_answer', 'type_answer', 'miro', 'powerpoint', 'google_slides', 'upload'],
+    enum: ['multiple_choice', 'word_cloud', 'open_ended', 'scales', 'ranking', 'qna', 'guess_number', 'hundred_points', '2x2_grid', 'pin_on_image', 'quiz', 'leaderboard', 'text', 'image', 'video', 'instruction', 'pick_answer', 'type_answer', 'miro', 'powerpoint', 'google_slides'],
     index: true
   },
   question: {
@@ -298,19 +298,6 @@ const slideSchema = new mongoose.Schema({
   },
   // For google_slides slide type
   googleSlidesUrl: {
-    type: String,
-    default: ''
-  },
-  // For upload slide type
-  uploadedFileUrl: {
-    type: String,
-    default: ''
-  },
-  uploadedFilePublicId: {
-    type: String,
-    default: null
-  },
-  uploadedFileName: {
     type: String,
     default: ''
   },
