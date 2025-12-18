@@ -14,7 +14,7 @@
   "landing": {
     "interactive_engagement_platform": "منصة التفاعل والمشاركة",
     "engage_connect_evolve": "تفاعل. اتصال. تطور.",
-    "with_inavora": "مع Inavora.",
+    "with_inavora": "مع {{brandName}}.",
     "how_do_you_prefer_to_engage": "كيف تفضل التفاعل؟",
     "live_polls": "استطلاعات مباشرة",
     "live_polls_percent": "٥٨%",
@@ -35,7 +35,7 @@
     "connect_desc": "مع رؤى ذكية مدعومة بالذكاء الاصطناعي.",
     "evolve": "تطور",
     "evolve_desc": "من خلال النمو القائم على البيانات والتعلم الجماعي.",
-    "what_makes_unique": "ما الذي يجعل Inavora <highlight>فريدة؟</highlight>",
+    "what_makes_unique": "ما الذي يجعل {{brandName}} <highlight>فريدة؟</highlight>",
     "interactive_engagement": "المشاركة التفاعلية",
     "interactive_engagement_desc": "أنعش المحادثات باستخدام استطلاعات الرأي والاختبارات والأسئلة والأجوبة والملاحظات التي تبقي الجميع مشاركين.",
     "ai_assistance": "مساعدة الذكاء الاصطناعي",
@@ -59,7 +59,7 @@
     "more_than_tools": "أكثر من مجرد أدوات - حركة للاتصال",
     "movement_description": "Inavora ليست مجرد تطبيق مشاركة آخر. إنها المكان الذي تلتقي فيه التكنولوجيا والإنسانية. لا نجمع فقط الإجابات - نخلق المعنى. لا نقوم فقط بالأتمتة - نضخم الأصوات.",
     "platform_journey": "Inavora هي المنصة التي يجتمع فيها الناس للمشاركة والتواصل والتطور.",
-    "ready_start_journey": "هل أنت مستعد لبدء رحلتك مع Inavora؟",
+    "ready_start_journey": "هل أنت مستعد لبدء رحلتك مع {{brandName}}؟",
     "join_movement": "انضم إلى حركة التفاعل الذكي. غيّر طريقة تدريسك وقيادتك واتصالك.",
     "sign_up_today": "اشترك اليوم",
     "book_demo": "احجز عرض توضيحي",
@@ -88,8 +88,7 @@
     "pricing_pro_original_price": "₹2,388",
     "pricing_lifetime_price": "₹4,999",
     "pricing_institution_price": "₹5,489",
-    "pricing_pro_yearly_price": "₹999",
-    "pricing_save_20": "وفر 20%"
+    "pricing_pro_yearly_price": "₹999"
   },
   "slide_types": {
     "multiple_choice": "اختيار متعدد",
@@ -819,7 +818,7 @@
     "phone_number": "+91 9043411110",
     "location": "الموقع",
     "location_address": "تشيناي، الهند",
-    "rights_reserved": "© 2025 Inavora. جميع الحقوق محفوظة.",
+    "rights_reserved": "© 2025 {{brandName}}. جميع الحقوق محفوظة.",
     "privacy_policy": "سياسة الخصوصية",
     "terms_of_service": "شروط الخدمة"
   },
@@ -1003,7 +1002,7 @@
     "category_bug_report": "تقرير خطأ",
     "our_location_title": "موقعنا",
     "our_location_description": "تعال زر مقرنا الرئيسي في قلب المدينة التقنية.",
-    "footer_rights_reserved": "© 2025 Inavora. جميع الحقوق محفوظة."
+    "footer_rights_reserved": "© 2025 {{brandName}}. جميع الحقوق محفوظة."
   },
   "support_widget": {
     "need_help": "تحتاج مساعدة؟",

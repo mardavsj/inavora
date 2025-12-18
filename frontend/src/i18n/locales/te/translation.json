@@ -35,7 +35,7 @@
     "connect_desc": "తెలివైన AI-ఆధారిత అంతర్దృష్టులతో.",
     "evolve": "అభివృద్ధి చెందండి",
     "evolve_desc": "డేటా-ఆధారిత అభివృద్ధి మరియు సామూహిక నేర్పు ద్వారా.",
-    "what_makes_unique": "ఇనవోరాను <highlight>ప్రత్యేకంగా</highlight> ఏమి చేస్తుంది?",
+    "what_makes_unique": "{{brandName}}ను <highlight>ప్రత్యేకంగా</highlight> ఏమి చేస్తుంది?",
     "interactive_engagement": "పరస్పర చర్యాత్మక పాల్గొను",
     "interactive_engagement_desc": "పోల్స్, క్విజ్‌లు, ప్రశ్నలు మరియు స్పందనలతో సంభాషణలను జీవంతం చేయండి.",
     "ai_assistance": "AI సహాయం",
@@ -88,7 +88,7 @@
     "pricing_pro_original_price": "₹2,388",
     "pricing_lifetime_price": "₹4,999",
     "pricing_institution_price": "₹5,489",
-    "pricing_pro_yearly_price": "₹999/సంవత్సరం"
+    "pricing_pro_yearly_price": "₹999"
   },
   "presentation": {
     "loading": "ప్రదర్శన లోడ్ అవుతోంది...",

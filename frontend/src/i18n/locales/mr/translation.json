@@ -35,7 +35,7 @@
     "connect_desc": "बुद्धिमान एआय-चालित अंतर्दृष्टी सह.",
     "evolve": "विकसित करा",
     "evolve_desc": "डेटा-आधारित विकास आणि सामूहिक शिकण्याद्वारे.",
-    "what_makes_unique": "काय इन्व्होराला <highlight>अद्वितीय</highlight> बनवते?",
+    "what_makes_unique": "काय {{brandName}}ला <highlight>अद्वितीय</highlight> बनवते?",
     "interactive_engagement": "इंटरॅक्टिव्ह गप्पा",
     "interactive_engagement_desc": "मतदान, क्विझ, प्रश्न आणि प्रतिसादांद्वारे संवाद जिवंत करा.",
     "ai_assistance": "एआय सहाय्य",
@@ -88,7 +88,7 @@
     "pricing_pro_original_price": "₹2,388",
     "pricing_lifetime_price": "₹4,999",
     "pricing_institution_price": "₹5,489",
-    "pricing_pro_yearly_price": "₹999/वर्ष",
+    "pricing_pro_yearly_price": "₹999",
     "hero_title_line1": "इंटरॅक्टिव्ह",
     "hero_title_line2": "प्रस्तुती",
     "hero_title_highlight": "पुन्हा कल्पना केली",
@@ -1031,7 +1031,7 @@
     "sending": "पाठवत आहे...",
     "message_sent_success": "संदेश यशस्वीरित्या पाठवला!",
     "message_sent_error": "संदेश पाठवण्यात अयशस्वी. कृपया पुन्हा प्रयत्न करा.",
-    "footer_rights_reserved": "© 2025 Inavora. सर्व हक्क राखीव."
+    "footer_rights_reserved": "© 2025 {{brandName}}. सर्व हक्क राखीव."
   },
   "support_widget": {
     "need_help": "मदत हवी आहे?",

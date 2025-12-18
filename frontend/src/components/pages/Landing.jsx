@@ -268,12 +268,6 @@ export default function Landing() {
       color: "from-blue-500 to-cyan-500",
     },
     {
-      icon: <Bot className="w-6 h-6" />,
-      title: "ai_assistance",
-      description: "ai_assistance_desc",
-      color: "from-teal-400 to-emerald-500"
-    },
-    {
       icon: <Globe className="w-6 h-6" />,
       title: "community_connection",
       description: "community_connection_desc",
@@ -284,6 +278,12 @@ export default function Landing() {
       title: "growth_insights",
       description: "growth_insights_desc",
       color: "from-indigo-500 to-purple-500"
+    },
+    {
+      icon: <Bot className="w-6 h-6" />,
+      title: "ai_assistance",
+      description: "ai_assistance_desc",
+      color: "from-teal-400 to-emerald-500"
     },
   ];
 
@@ -696,7 +696,7 @@ export default function Landing() {
                   </div>
                 </div>
                 <div className="md:mt-4 mt-0 text-4xl lg:text-6xl">
-                  {t('landing.with_inavora')}
+                  {t('landing.with_inavora', { brandName: t('navbar.brand_name') })}
                 </div>
               </motion.h1>
 
@@ -842,7 +842,7 @@ export default function Landing() {
               transition={{ duration: 0.1, animation: 'linear' }}
               viewport={{ once: true }}
               className="text-3xl md:text-5xl font-bold mb-6"
-              dangerouslySetInnerHTML={{ __html: t('landing.what_makes_unique') }}
+              dangerouslySetInnerHTML={{ __html: t('landing.what_makes_unique', { brandName: t('navbar.brand_name') }) }}
             >
             </motion.h2>
           </div>
@@ -957,8 +957,7 @@ export default function Landing() {
                   t('pricing.free_plan_feature1'),
                   t('pricing.free_plan_feature2'),
                   t('pricing.free_plan_feature3'),
-                  t('pricing.free_plan_feature4'),
-                  t('pricing.free_plan_feature5')
+                  t('pricing.free_plan_feature4')
                 ],
                 color: 'from-blue-500 to-cyan-500',
                 borderColor: 'border-blue-500/20',
@@ -967,16 +966,15 @@ export default function Landing() {
               {
                 name: t('landing.pricing_pro'),
                 price: billingCycle === 'monthly' ? t('landing.pricing_pro_price') : t('landing.pricing_pro_yearly_price'),
-                period: billingCycle === 'monthly' ? '/month' : '/year',
+                period: billingCycle === 'monthly' ? t('pricing.pro_plan_period_monthly') : t('pricing.pro_plan_period_yearly'),
                 originalPrice: billingCycle === 'yearly' ? t('landing.pricing_pro_original_price') : null,
-                saveLabel: billingCycle === 'yearly' ? t('landing.pricing_save_20') : null,
+                saveLabel: billingCycle === 'yearly' ? t('pricing.pro_plan_save_label') : null,
                 features: [
                   t('pricing.pro_plan_feature1'),
                   t('pricing.pro_plan_feature2'),
                   t('pricing.pro_plan_feature3'),
                   t('pricing.pro_plan_feature4'),
-                  t('pricing.pro_plan_feature5'),
-                  t('pricing.pro_plan_feature6')
+                  t('pricing.pro_plan_feature5')
                 ],
                 color: 'from-teal-400 to-emerald-500',
                 borderColor: 'border-teal-500/30',
@@ -985,7 +983,7 @@ export default function Landing() {
               {
                 name: t('landing.pricing_lifetime'),
                 price: t('landing.pricing_lifetime_price'),
-                period: ' one-time',
+                period: t('pricing.lifetime_plan_period'),
                 features: [
                   t('pricing.lifetime_plan_feature1'),
                   t('pricing.lifetime_plan_feature2'),
@@ -1089,7 +1087,7 @@ export default function Landing() {
         {/* CTA Section */}
         <section className="container mx-auto px-6 py-24">
           <div className="text-center max-w-3xl mx-auto">
-            <h2 className="text-4xl md:text-6xl font-bold mb-6">{t('landing.ready_start_journey')}</h2>
+            <h2 className="text-4xl md:text-6xl font-bold mb-6">{t('landing.ready_start_journey', { brandName: t('navbar.brand_name') })}</h2>
             <p className="text-xl text-gray-400 mb-12">
               {t('landing.join_movement')}
             </p>
@@ -1240,7 +1238,7 @@ export default function Landing() {
           {/* Bottom Bar */}
           <div className="mt-5 flex flex-col md:flex-row items-center justify-center gap-4">
             <p className="text-gray-500 text-sm">
-              {t('footer.rights_reserved')}
+              {t('footer.rights_reserved', { brandName: t('navbar.brand_name') })}
             </p>
             <div className="flex items-center gap-6">
               <Link to="/privacy-policy" className="text-gray-500 hover:text-white text-sm transition-colors">

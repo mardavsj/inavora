@@ -35,7 +35,7 @@
     "connect_desc": "বুদ্ধিমান এআই-চালিত অন্তর্দৃষ্টি সহ।",
     "evolve": "বিকশিত হন",
     "evolve_desc": "ডেটা-চালিত প্রবৃদ্ধি এবং সামষ্টিক শেখার মাধ্যমে।",
-    "what_makes_unique": "কী ইনভোরাকে <highlight>অনন্য</highlight> করে তোলে?",
+    "what_makes_unique": "কী {{brandName}}কে <highlight>অনন্য</highlight> করে তোলে?",
     "interactive_engagement": "ইন্টারেক্টিভ এনগেজমেন্ট",
     "interactive_engagement_desc": "ভোট, কুইজ, প্রশ্নোত্তর এবং প্রতিক্রিয়ার মাধ্যমে কথোপকথনগুলিকে জীবন্ত করুন।",
     "ai_assistance": "এআই সহায়তা",
@@ -123,7 +123,7 @@
     "pricing_pro_original_price": "₹2,388",
     "pricing_lifetime_price": "₹4,999",
     "pricing_institution_price": "₹5,489",
-    "pricing_pro_yearly_price": "₹999/বছর"
+    "pricing_pro_yearly_price": "₹999"
   },
   "slide_types": {    "multiple_choice": "একাধিক পছন্দ",
     "word_cloud": "ওয়ার্ড ক্লাউড",

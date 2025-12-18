@@ -14,7 +14,7 @@
   "landing": {
     "interactive_engagement_platform": "Interactive Engagement Platform",
     "engage_connect_evolve": "Engage. Connect. Evolve.",
-    "with_inavora": "With Inavora",
+    "with_inavora": "With {{brandName}}",
     "how_do_you_prefer_to_engage": "How do you prefer to engage?",
     "live_polls": "Live Polls",
     "live_polls_percent": "58%",
@@ -35,7 +35,7 @@
     "connect_desc": "With intelligent AI-powered insights.",
     "evolve": "Evolve",
     "evolve_desc": "Through data-driven growth and collective learning.",
-    "what_makes_unique": "What makes Inavora <highlight>unique</highlight>?",
+    "what_makes_unique": "What makes {{brandName}} <highlight>unique</highlight>?",
     "interactive_engagement": "Interactive Engagement",
     "interactive_engagement_desc": "Bring conversations to life with polls, quizzes, Q&A and feedback that keeps everyone engaged.",
     "ai_assistance": "AI Assistance",
@@ -59,7 +59,7 @@
     "more_than_tools": "More than just tools - a movement of connection",
     "movement_description": "Inavora isn't just another engagement app. It's the place where technology and humanity meet. We don't just collect answers - we create meaning. We don't just automate - we empower voices.",
     "platform_journey": "Inavora is the platform where people unite to engage, connect and evolve.",
-    "ready_start_journey": "Ready to start your Inavora journey?",
+    "ready_start_journey": "Ready to start your {{brandName}} journey?",
     "join_movement": "Join the movement of intelligent engagement. Transform how you learn, lead and connect.",
     "sign_up_today": "Sign up today",
     "book_demo": "Book a Demo",
@@ -88,7 +88,7 @@
     "pricing_pro_original_price": "₹2,388",
     "pricing_lifetime_price": "₹4,999",
     "pricing_institution_price": "₹5,489",
-    "pricing_pro_yearly_price": "₹999/year",
+    "pricing_pro_yearly_price": "₹999",
     "hero_title_line1": "Interactive",
     "hero_title_line2": "Presentations",
     "hero_title_highlight": "Reimagined",
@@ -894,7 +894,7 @@
     "phone_number": "+91 9043411110",
     "location": "Location",
     "location_address": "Chennai, India",
-    "rights_reserved": "© 2025 Inavora. All rights reserved.",
+    "rights_reserved": "© 2025 {{brandName}}. All rights reserved.",
     "privacy_policy": "Privacy Policy",
     "terms_of_service": "Terms of Service"
   },
@@ -1103,7 +1103,7 @@
     "sending": "Sending...",
     "message_sent_success": "Message sent successfully!",
     "message_sent_error": "Failed to send message. Please try again.",
-    "footer_rights_reserved": "© 2025 Inavora. All rights reserved.",
+    "footer_rights_reserved": "© 2025 {{brandName}}. All rights reserved.",
     "back": "Back"
   },
   "support_widget": {

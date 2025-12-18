@@ -35,7 +35,7 @@
     "connect_desc": "திறமையான AI-இயக்கும் நுட்பங்களுடன்.",
     "evolve": "முன்னேற்றம்",
     "evolve_desc": "தரவு-சார்ந்த வளர்ச்சி மற்றும் கூட்டு கற்றல் மூலம்.",
-    "what_makes_unique": "இனவோராவை <highlight>தனித்துவமாக</highlight> என்ன ஆக்குகிறது?",
+    "what_makes_unique": "{{brandName}}வை <highlight>தனித்துவமாக</highlight> என்ன ஆக்குகிறது?",
     "interactive_engagement": "இடைசெயல் ஈடுபாடு",
     "interactive_engagement_desc": "வாக்களிப்புகள், வினாடி வினா, கேள்வி பதில்கள் மற்றும் கருத்துக்கள் மூலம் உரையாடல்களை உயிர்ப்பிக்கவும்.",
     "ai_assistance": "AI உதவி",
@@ -88,7 +88,7 @@
     "pricing_pro_original_price": "₹2,388",
     "pricing_lifetime_price": "₹4,999",
     "pricing_institution_price": "₹5,489",
-    "pricing_pro_yearly_price": "₹999/ஆண்டு"
+    "pricing_pro_yearly_price": "₹999"
   },
   "slide_types": {
     "multiple_choice": "பல தேர்வு",
