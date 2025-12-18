@@ -89,7 +89,7 @@ const TermsOfService = () => {
 
             <footer className="border-t border-white/10 bg-[#0f172a] pt-16 pb-8">
                 <div className="container mx-auto px-6 text-center">
-                    <p className="text-gray-500">{t('footer.rights_reserved')}</p>
+                    <p className="text-gray-500">{t('footer.rights_reserved', { brandName: t('navbar.brand_name') })}</p>
                 </div>
             </footer>
         </div>
