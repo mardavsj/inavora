@@ -76,4 +76,49 @@ router.get('/me', verifyToken, authController.getCurrentUser);
  */
 router.post('/refresh', verifyToken, authController.refreshToken);
 
+/**
+ * @swagger
+ * /api/auth/change-password:
+ *   put:
+ *     summary: Change user password
+ *     description: Change password for authenticated user. Requires re-authentication with current password via Firebase token.
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - firebaseToken
+ *               - newPassword
+ *             properties:
+ *               firebaseToken:
+ *                 type: string
+ *                 description: Fresh Firebase ID token obtained after re-authenticating with current password
+ *               newPassword:
+ *                 type: string
+ *                 minLength: 6
+ *                 description: New password (minimum length from settings)
+ *     responses:
+ *       200:
+ *         description: Password changed successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *       400:
+ *         $ref: '#/components/responses/ValidationError'
+ *       401:
+ *         $ref: '#/components/responses/UnauthorizedError'
+ */
+router.put('/change-password', verifyToken, authController.changePassword);
+
 module.exports = router;

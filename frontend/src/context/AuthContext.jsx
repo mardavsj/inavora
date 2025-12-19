@@ -6,7 +6,9 @@ import {
   onAuthStateChanged,
   updateProfile,
   GoogleAuthProvider,
-  signInWithPopup
+  signInWithPopup,
+  reauthenticateWithCredential,
+  EmailAuthProvider
 } from 'firebase/auth';
 import { auth } from '../config/firebase';
 import api from '../config/api';
@@ -225,6 +227,47 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  /**
+   * Re-authenticate user with current password
+   * Returns a fresh Firebase token for password change operations
+   */
+  const reauthenticate = async (currentPassword) => {
+    try {
+      const firebaseUser = auth.currentUser;
+      if (!firebaseUser || !firebaseUser.email) {
+        throw new Error('No user is currently signed in');
+      }
+
+      // Check if user has password provider
+      const hasPasswordProvider = firebaseUser.providerData.some(
+        provider => provider.providerId === 'password'
+      );
+
+      if (!hasPasswordProvider) {
+        throw new Error('Password change is not available for Google sign-in accounts');
+      }
+
+      // Create credential with email and current password
+      const credential = EmailAuthProvider.credential(
+        firebaseUser.email,
+        currentPassword
+      );
+
+      // Re-authenticate user
+      await reauthenticateWithCredential(firebaseUser, credential);
+
+      // Get fresh token after re-authentication
+      const freshToken = await firebaseUser.getIdToken();
+      return freshToken;
+    } catch (error) {
+      console.error('Re-authentication error:', error);
+      if (error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+        throw new Error('Current password is incorrect');
+      }
+      throw error;
+    }
+  };
+
   const value = {
     currentUser,
     user: currentUser, // Alias for consistency
@@ -236,7 +279,8 @@ export const AuthProvider = ({ children }) => {
     login,
     loginWithGoogle,
     logout,
-    refreshUser
+    refreshUser,
+    reauthenticate
   };
 
   return (

@@ -47,6 +47,11 @@ const authenticateWithFirebase = asyncHandler(async (req, res, next) => {
     // Get full user record from Firebase to get displayName
     const firebaseUser = await admin.auth().getUser(uid);
     const displayName = firebaseUser.displayName || name || 'Anonymous User';
+    
+    // Check if user has email/password provider (not just Google OAuth)
+    const hasPasswordProvider = firebaseUser.providerData.some(
+      provider => provider.providerId === 'password'
+    );
 
     // Check if user exists by firebaseUid
     let user = await User.findOne({ firebaseUid: uid });
@@ -128,7 +133,8 @@ const authenticateWithFirebase = asyncHandler(async (req, res, next) => {
       photoURL: user.photoURL,
       subscription: subscription,
       isInstitutionUser: user.isInstitutionUser,
-      institutionId: user.institutionId
+      institutionId: user.institutionId,
+      hasPasswordProvider: hasPasswordProvider
     }
   });
 });
@@ -163,6 +169,19 @@ const getCurrentUser = asyncHandler(async (req, res, next) => {
     }
   }
 
+  // Get Firebase user to check provider
+  let hasPasswordProvider = false;
+  if (user.firebaseUid) {
+    try {
+      const firebaseUser = await admin.auth().getUser(user.firebaseUid);
+      hasPasswordProvider = firebaseUser.providerData.some(
+        provider => provider.providerId === 'password'
+      );
+    } catch (error) {
+      Logger.error('Error getting Firebase user provider data', error);
+    }
+  }
+
   res.status(200).json({
     success: true,
     user: {
@@ -173,7 +192,8 @@ const getCurrentUser = asyncHandler(async (req, res, next) => {
       subscription: subscription,
       isInstitutionUser: user.isInstitutionUser,
       institutionId: user.institutionId,
-      createdAt: user.createdAt
+      createdAt: user.createdAt,
+      hasPasswordProvider: hasPasswordProvider
     }
   });
 });
@@ -199,8 +219,72 @@ const refreshToken = asyncHandler(async (req, res, next) => {
   });
 });
 
+/**
+ * Change user password
+ * Requires re-authentication with current password via Firebase token
+ * @route PUT /api/auth/change-password
+ * @access Private
+ */
+const changePassword = asyncHandler(async (req, res, next) => {
+  const { firebaseToken, newPassword } = req.body;
+  const userId = req.userId;
+
+  if (!firebaseToken || !newPassword) {
+    throw new AppError('Firebase token and new password are required', 400, 'VALIDATION_ERROR');
+  }
+
+  // Get user from database
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new AppError('User not found', 404, 'USER_NOT_FOUND');
+  }
+
+  // Verify Firebase token to ensure user re-authenticated with current password
+  let decodedToken;
+  try {
+    decodedToken = await admin.auth().verifyIdToken(firebaseToken);
+  } catch (error) {
+    throw new AppError('Invalid or expired authentication token. Please re-enter your current password.', 401, 'INVALID_TOKEN');
+  }
+
+  // Verify the token belongs to the current user
+  if (!user.firebaseUid || decodedToken.uid !== user.firebaseUid) {
+    throw new AppError('Token does not match current user', 401, 'UNAUTHORIZED');
+  }
+
+  // Get password minimum length from settings
+  const passwordMinLength = await settingsService.getPasswordMinLength();
+  
+  if (newPassword.length < passwordMinLength) {
+    throw new AppError(`New password must be at least ${passwordMinLength} characters long`, 400, 'VALIDATION_ERROR');
+  }
+
+  // Update password in Firebase
+  try {
+    await admin.auth().updateUser(decodedToken.uid, {
+      password: newPassword
+    });
+
+    Logger.info(`Password changed successfully for user: ${user.email}`);
+
+    res.status(200).json({
+      success: true,
+      message: 'Password changed successfully'
+    });
+  } catch (firebaseError) {
+    Logger.error('Firebase error during password change', firebaseError);
+    
+    if (firebaseError.code === 'auth/user-not-found') {
+      throw new AppError('User not found in authentication system', 404, 'USER_NOT_FOUND');
+    }
+    
+    throw new AppError('Failed to change password. Please try again.', 500, 'INTERNAL_ERROR');
+  }
+});
+
 module.exports = {
   authenticateWithFirebase,
   getCurrentUser,
-  refreshToken
+  refreshToken,
+  changePassword
 };

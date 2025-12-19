@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import toast from 'react-hot-toast';
-import { Plus, LogOut, ChevronDown, Presentation, LoaderCircle, Trash2, Search, ChevronLeft, ChevronRight, LayoutGrid, Crown, LayoutTemplate, BarChart3, Trophy, PieChart, MessageSquare, Mail, HelpCircle } from 'lucide-react';
+import { Plus, LogOut, ChevronDown, Presentation, LoaderCircle, Trash2, Search, ChevronLeft, ChevronRight, LayoutGrid, Crown, LayoutTemplate, BarChart3, Trophy, PieChart, MessageSquare, Mail, HelpCircle, Lock } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
 import { useAuth } from '../context/AuthContext';
 import * as presentationService from '../services/presentationService';
@@ -12,6 +12,7 @@ import { JoinPresentationBtn, JoinPresentationDialog } from './common/JoinPresen
 import LanguageSelector from './common/LanguageSelector/LanguageSelector';
 import SupportWidget from './common/SupportWidget';
 import { translateError } from '../utils/errorTranslator';
+import ChangePasswordModal from './common/ChangePasswordModal';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [showDialog, setShowDialog] = useState(false);
   const [showFreePlanLimitModal, setShowFreePlanLimitModal] = useState(false);
+  const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
 
   // Search & Pagination State
   const [searchTerm, setSearchTerm] = useState('');
@@ -369,6 +371,18 @@ const Dashboard = () => {
                   <Mail className='w-4 h-4' />
                   {t('dashboard.contact_support')}
                 </button>
+                {currentUser?.hasPasswordProvider && (
+                  <button
+                    onClick={() => {
+                      setShowUserMenu(false);
+                      setShowChangePasswordModal(true);
+                    }}
+                    className='px-4 py-3 border-b border-white/5 text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors flex items-center gap-2 w-full text-left'
+                  >
+                    <Lock className='w-4 h-4' />
+                    {t('dashboard.change_password') || 'Change Password'}
+                  </button>
+                )}
                 <button
                   onClick={(e) => handleLogout(e)}
                   data-logout-button="true"
@@ -740,6 +754,12 @@ const Dashboard = () => {
       
       {/* Support Widget */}
       <SupportWidget />
+
+      {/* Change Password Modal */}
+      <ChangePasswordModal 
+        isOpen={showChangePasswordModal} 
+        onClose={() => setShowChangePasswordModal(false)} 
+      />
     </div>
   );
 };
