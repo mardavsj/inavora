@@ -58,7 +58,7 @@ const VideoEditor = ({ slide, onUpdate }) => {
           const base64Video = event.target.result;
           
           // Check if base64 string is too large (shouldn't happen, but safety check)
-          if (base64Video.length > 200 * 1024 * 1024) { // ~150MB base64
+          if (base64Video.length > 150 * 1024 * 1024) { // ~100MB base64
             throw new Error('Video file is too large after encoding. Please use a smaller file.');
           }
           
@@ -178,14 +178,12 @@ const VideoEditor = ({ slide, onUpdate }) => {
   };
 
   // Clean Cloudinary URL by removing transformation parameters that might cause 400 errors
-  // This fixes broken eager transformation URLs
   const cleanCloudinaryUrl = (url) => {
     if (!url || !url.includes('cloudinary.com')) {
       return url;
     }
     
-    // If URL contains transformation parameters (like /br_auto,f_auto,q_auto:eco/)
-    // and it's a video URL, try to get the base URL
+    // If URL contains transformation parameters and it's a video URL, try to get the base URL
     // Pattern: https://res.cloudinary.com/cloud_name/video/upload/transformations/v1234567/folder/file.ext
     const cloudinaryVideoPattern = /(https:\/\/res\.cloudinary\.com\/[^\/]+\/video\/upload\/)([^\/]+\/)(v\d+\/.*)/;
     const match = url.match(cloudinaryVideoPattern);
@@ -299,7 +297,7 @@ const VideoEditor = ({ slide, onUpdate }) => {
                       controls
                       className="w-full h-full"
                       onError={(e) => {
-                        // If video fails to load, try the original URL without transformations
+                        // If video fails to load, try the original URL
                         const cleanedUrl = cleanCloudinaryUrl(videoUrl);
                         if (e.target.src !== videoUrl && cleanedUrl !== videoUrl) {
                           e.target.src = videoUrl;

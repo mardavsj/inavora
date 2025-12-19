@@ -133,24 +133,17 @@ async function uploadVideo(base64Video, folder = 'inavora/videos') {
 
     Logger.info(`Uploading video to Cloudinary (folder: ${folder})`);
     
-    // Upload video without eager transformations to avoid async processing issues
-    // Cloudinary will optimize videos automatically, and we can apply transformations
-    // on-the-fly via URL parameters if needed
+    // Upload video without transformations
     const result = await cloudinary.uploader.upload(base64Video, {
       folder: folder,
       resource_type: 'video',
       allowed_formats: ['mp4', 'mov', 'avi', 'wmv', 'flv', 'webm'],
-      // Remove eager transformations - they cause 400 errors when async
-      // Cloudinary will still optimize and compress videos automatically
       chunk_size: 6000000, // 6MB chunks for large files
       timeout: 600000 // 10 minute timeout
     });
 
     Logger.info(`Video uploaded successfully: ${result.public_id}`);
 
-    // Always return the original secure_url
-    // Cloudinary automatically optimizes videos, and we can apply transformations
-    // via URL parameters when serving if needed (e.g., q_auto:eco, f_auto)
     return {
       url: result.secure_url,
       publicId: result.public_id
@@ -167,8 +160,6 @@ async function uploadVideo(base64Video, folder = 'inavora/videos') {
 
     // Provide more specific error messages
     if (error.message && error.message.includes('eager_async')) {
-      // This error should not occur now that we're using eager_async: true
-      // But if it does, it means the video is extremely large
       throw new Error('Video is too large. Please use a smaller file or contact support.');
     } else if (error.http_code === 400) {
       throw new Error(`Invalid video file: ${error.message || 'Please check the video format and size'}`);

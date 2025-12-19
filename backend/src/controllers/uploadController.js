@@ -136,13 +136,9 @@ const uploadVideo = asyncHandler(async (req, res, next) => {
   const sizeInBytes = (video.length * 3) / 4;
   const sizeInMB = sizeInBytes / (1024 * 1024);
   
-  // Allow larger files for videos.
-  // Recommended max is ~100MB, but we accept up to 250MB and rely on Cloudinary compression.
-  if (sizeInMB > 250) {
-    throw new AppError(`Video too large (${sizeInMB.toFixed(1)}MB). Maximum supported size is 250MB.`, 400, 'VALIDATION_ERROR');
-  }
+  // Maximum file size is 100MB
   if (sizeInMB > 100) {
-    Logger.warn(`Large video upload detected (${sizeInMB.toFixed(1)}MB). This may take longer to upload and process.`);
+    throw new AppError(`Video too large (${sizeInMB.toFixed(1)}MB). Maximum supported size is 100MB.`, 400, 'VALIDATION_ERROR');
   }
 
   Logger.info(`Attempting to upload video for user ${userId}, size: ${sizeInMB.toFixed(2)}MB`);
