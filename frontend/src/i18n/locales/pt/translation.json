@@ -2308,6 +2308,9 @@
         "help1": "Usar o Centro de Ajuda",
         "help2": "Contatar suporte prioritário",
         "help3": "Compartilhar feedback diretamente do painel"
+      },
+      "q18": {
+        "question": "Dados e Privacidade – Perguntas Frequentes"
       }
     },
     "data_privacy_faq": {

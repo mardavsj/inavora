@@ -2290,6 +2290,9 @@
         "help1": "Usar el Centro de ayuda",
         "help2": "Contactar soporte prioritario",
         "help3": "Compartir comentarios directamente desde el panel"
+      },
+      "q18": {
+        "question": "Datos y Privacidad – Preguntas Frecuentes"
       }
     },
     "data_privacy_faq": {

@@ -2201,6 +2201,9 @@
         "help1": "Utiliser le centre d'aide",
         "help2": "Contacter le support prioritaire",
         "help3": "Partager des commentaires directement depuis le tableau de bord"
+      },
+      "q18": {
+        "question": "Données et Confidentialité – Questions Fréquemment Posées"
       }
     },
     "data_privacy_faq": {

@@ -1988,3 +1988,710 @@ const renderSlideToPDF = async (pdf, formattedData, slide, slideNumber, presenta
   return yPosition;
 };
 
+/**
+ * Export multiple slides to a single PDF - Pro Plan (Visualization Only)
+ * This version only includes charts/graphs, no detailed tables or participant data
+ */
+export const exportAllSlidesToPDFPro = async (allSlideData, presentationTitle, filename) => {
+  // Sanitize presentation title before using it
+  const sanitizeTitle = (title) => {
+    if (!title) return 'Presentation Results';
+    try {
+      // Ensure it's a string
+      let cleanTitle = String(title);
+      
+      // Remove any control characters, non-printable characters, and ensure valid text
+      // Keep only printable characters (including Unicode letters, numbers, spaces, and common punctuation)
+      cleanTitle = cleanTitle
+        .replace(/[\x00-\x1F\x7F-\x9F]/g, '') // Remove control characters
+        .replace(/[\u200B-\u200D\uFEFF]/g, '') // Remove zero-width characters
+        .trim();
+      
+      // If title is empty after sanitization, use default
+      if (!cleanTitle || cleanTitle.length === 0) {
+        return 'Presentation Results';
+      }
+      
+      // Limit length to prevent issues
+      if (cleanTitle.length > 100) {
+        cleanTitle = cleanTitle.substring(0, 100) + '...';
+      }
+      
+      return cleanTitle;
+    } catch (e) {
+      console.error('Error sanitizing presentation title:', e, title);
+      return 'Presentation Results';
+    }
+  };
+  
+  const cleanTitle = sanitizeTitle(presentationTitle);
+  
+  const pdf = new jsPDF({
+    orientation: 'portrait',
+    unit: 'mm',
+    format: 'a4'
+  });
+  
+  const pageWidth = pdf.internal.pageSize.getWidth();
+  const pageHeight = pdf.internal.pageSize.getHeight();
+  const margin = 15;
+  const contentWidth = pageWidth - (margin * 2);
+  let yPosition = margin;
+  
+  // Helper function to add new page if needed
+  const checkNewPage = (requiredHeight) => {
+    if (yPosition + requiredHeight > pageHeight - margin) {
+      pdf.addPage();
+      yPosition = margin;
+      return true;
+    }
+    return false;
+  };
+  
+  // Helper function to draw gradient background
+  const drawGradientHeader = (y, height) => {
+    const steps = 20;
+    const stepHeight = height / steps;
+    for (let i = 0; i < steps; i++) {
+      const ratio = i / steps;
+      const r = Math.round(30 + (20 - 30) * ratio);
+      const g = Math.round(58 + (45 - 58) * ratio);
+      const b = Math.round(138 + (110 - 138) * ratio);
+      pdf.setFillColor(r, g, b);
+      pdf.rect(margin, y + (i * stepHeight), contentWidth, stepHeight, 'F');
+    }
+  };
+  
+  // Title page header section
+  const titleHeaderHeight = 40;
+  drawGradientHeader(yPosition, titleHeaderHeight);
+  
+  // Helper function to sanitize text for PDF (remove control characters and ensure valid UTF-8)
+  const sanitizeText = (text) => {
+    if (!text) return '';
+    try {
+      // Convert to string and remove control characters (except newlines and tabs)
+      let sanitized = String(text)
+        .replace(/[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F-\x9F]/g, '')
+        .trim();
+      
+      // Ensure it's a valid string
+      if (typeof sanitized !== 'string') {
+        sanitized = String(sanitized);
+      }
+      
+      return sanitized;
+    } catch (e) {
+      console.error('Error sanitizing text:', e);
+      return String(text || '').substring(0, 100);
+    }
+  };
+  
+  // Main heading - use already sanitized title
+  pdf.setTextColor(255, 255, 255);
+  pdf.setFontSize(24);
+  pdf.setFont('helvetica', 'bold');
+  
+  // Use the clean title that was sanitized at function start
+  const mainHeading = cleanTitle;
+  
+  // Split title into multiple lines if needed
+  let headingLines;
+  try {
+    headingLines = pdf.splitTextToSize(mainHeading, contentWidth - 20);
+    // Ensure all lines are valid strings
+    headingLines = headingLines.map(line => {
+      if (typeof line !== 'string') {
+        return String(line || '').trim();
+      }
+      return line.trim();
+    }).filter(line => line.length > 0);
+  } catch (e) {
+    console.error('Error splitting heading text:', e);
+    // Fallback: use title as single line or default
+    headingLines = [mainHeading.length > 50 ? mainHeading.substring(0, 50) + '...' : mainHeading];
+  }
+  
+  const headingY = yPosition + 12;
+  
+  // Draw each line of the heading
+  headingLines.forEach((line, index) => {
+    if (line && line.trim().length > 0) {
+      try {
+        // Final sanitization before rendering
+        const finalLine = String(line).trim();
+        if (finalLine.length > 0) {
+          pdf.text(finalLine, pageWidth / 2, headingY + (index * 7), { align: 'center' });
+        }
+      } catch (e) {
+        console.error('Error rendering heading line:', e, line);
+        // Try to render a safe fallback
+        try {
+          pdf.text('Presentation Results', pageWidth / 2, headingY + (index * 7), { align: 'center' });
+        } catch (e2) {
+          console.error('Error rendering fallback heading:', e2);
+        }
+      }
+    }
+  });
+  
+  // Calculate next Y position based on heading lines
+  const nextY = headingY + (headingLines.length * 7) + 3;
+  
+  // Subtitle
+  pdf.setFontSize(14);
+  pdf.setFont('helvetica', 'normal');
+  const subtitle = 'Visual Summary Report';
+  pdf.text(subtitle, pageWidth / 2, nextY, { align: 'center' });
+  
+  // Generated date
+  pdf.setFontSize(11);
+  const generatedDate = `Generated on: ${new Date().toLocaleString()}`;
+  pdf.text(generatedDate, pageWidth / 2, nextY + 7, { align: 'center' });
+  
+  // Pro Plan badge
+  pdf.setFontSize(9);
+  pdf.setTextColor(255, 255, 255);
+  pdf.setFont('helvetica', 'italic');
+  pdf.text('Pro Plan - Visualization Only', pageWidth / 2, nextY + 14, { align: 'center' });
+  
+  yPosition += titleHeaderHeight + 20;
+  
+  // Export each slide
+  for (let dataIndex = 0; dataIndex < allSlideData.length; dataIndex++) {
+    const { slide, formattedData, slideIndex } = allSlideData[dataIndex];
+    // Add page break between slides (except first)
+    if (dataIndex > 0) {
+      pdf.addPage();
+      yPosition = margin;
+    }
+    
+    // Render slide with charts only
+    yPosition = await renderSlideToPDFPro(
+      pdf,
+      formattedData,
+      slide,
+      slideIndex + 1,
+      presentationTitle,
+      pageWidth,
+      pageHeight,
+      margin,
+      contentWidth,
+      yPosition,
+      checkNewPage
+    );
+  }
+  
+  // Add footer to all pages
+  const totalPages = pdf.internal.pages.length - 1;
+  for (let i = 1; i <= totalPages; i++) {
+    pdf.setPage(i);
+    pdf.setFontSize(8);
+    pdf.setTextColor(128, 128, 128);
+    pdf.setFont('helvetica', 'italic');
+    pdf.text(
+      `Page ${i} of ${totalPages} | Generated by Inavora`,
+      pageWidth / 2,
+      pageHeight - 10,
+      { align: 'center' }
+    );
+  }
+  
+  // Save PDF
+  pdf.save(`${filename || 'export'}.pdf`);
+};
+
+/**
+ * Render a single slide to PDF - Pro Plan (Charts Only)
+ * This version only renders visualizations, no tables or participant data
+ */
+const renderSlideToPDFPro = async (pdf, formattedData, slide, slideNumber, presentationTitle, pageWidth, pageHeight, margin, contentWidth, startY, checkNewPage) => {
+  if (!formattedData || typeof formattedData !== 'object') {
+    return startY;
+  }
+  const { question = '', timestamp = '', summary = [], detailed = [], metadata = {}, slideType = 'unknown' } = formattedData;
+  let yPosition = startY;
+  
+  // Helper function to draw gradient background
+  const drawGradientHeader = (y, height) => {
+    const steps = 20;
+    const stepHeight = height / steps;
+    for (let i = 0; i < steps; i++) {
+      const ratio = i / steps;
+      const r = Math.round(30 + (20 - 30) * ratio);
+      const g = Math.round(58 + (45 - 58) * ratio);
+      const b = Math.round(138 + (110 - 138) * ratio);
+      pdf.setFillColor(r, g, b);
+      pdf.rect(margin, y + (i * stepHeight), contentWidth, stepHeight, 'F');
+    }
+  };
+  
+  // Helper function to truncate long UUIDs
+  const formatLongId = (id, maxLength = 16) => {
+    if (!id || typeof id !== 'string') return id;
+    if (id.includes('-') && id.length > 20) {
+      return `${id.substring(0, 6)}...${id.substring(id.length - 4)}`;
+    }
+    if (id.length <= maxLength) return id;
+    return id.substring(0, maxLength - 3) + '...';
+  };
+  
+  // Helper function to draw a bar chart (reused from main export)
+  const drawBarChart = (chartData, x, y, width, height, options = {}) => {
+    const {
+      maxValue = null,
+      colors = ['#3b82f6', '#10b981', '#eab308', '#a855f7', '#ec4899', '#ef4444'],
+      showValues = true,
+      showLabels = true,
+      correctIndices = []
+    } = options;
+
+    const { labels = [], values = [] } = chartData;
+    if (!labels.length || !values.length) return y;
+
+    const maxVal = maxValue !== null ? maxValue : Math.max(...values, 1);
+    const barCount = labels.length;
+    const barSpacing = 3;
+    const labelHeight = showLabels ? 15 : 0;
+    const valueHeight = showValues ? 8 : 0;
+    const chartHeight = height - labelHeight - valueHeight;
+    const availableWidth = width - (barSpacing * (barCount - 1));
+    const barWidth = Math.min(availableWidth / barCount, 20);
+
+    let currentX = x;
+    const chartY = y + valueHeight;
+
+    values.forEach((value, index) => {
+      const barHeight = maxVal > 0 ? (value / maxVal) * chartHeight : 0;
+      const barX = currentX;
+      const barY = chartY + (chartHeight - barHeight);
+
+      let barColor;
+      if (correctIndices.includes(index)) {
+        barColor = { r: 16, g: 185, b: 129 };
+      } else {
+        const colorIndex = index % colors.length;
+        const hex = colors[colorIndex];
+        const rgb = hexToRgb(hex) || { r: 59, g: 130, b: 246 };
+        barColor = rgb;
+      }
+
+      pdf.setFillColor(barColor.r, barColor.g, barColor.b);
+      pdf.roundedRect(barX, barY, barWidth, barHeight, 1, 1, 'F');
+      
+      pdf.setDrawColor(barColor.r * 0.7, barColor.g * 0.7, barColor.b * 0.7);
+      pdf.setLineWidth(0.5);
+      pdf.roundedRect(barX, barY, barWidth, barHeight, 1, 1, 'D');
+
+      if (showValues && value > 0) {
+        pdf.setFontSize(8);
+        pdf.setTextColor(255, 255, 255);
+        pdf.setFont('helvetica', 'bold');
+        const valueText = String(value);
+        const textWidth = pdf.getTextWidth(valueText);
+        pdf.text(valueText, barX + (barWidth / 2) - (textWidth / 2), barY - 1);
+      }
+
+      if (showLabels) {
+        pdf.setFontSize(7);
+        pdf.setTextColor(33, 33, 33);
+        pdf.setFont('helvetica', 'normal');
+        const labelText = formatLongId(String(labels[index]), 15);
+        const labelLines = pdf.splitTextToSize(labelText, barWidth);
+        labelLines.forEach((line, lineIndex) => {
+          const lineWidth = pdf.getTextWidth(line);
+          pdf.text(line, barX + (barWidth / 2) - (lineWidth / 2), chartY + chartHeight + 5 + (lineIndex * 4));
+        });
+      }
+
+      currentX += barWidth + barSpacing;
+    });
+
+    return y + height;
+  };
+  
+  // Header with gradient - simpler design matching mockup
+  const headerHeight = 20;
+  checkNewPage(headerHeight + 100);
+  drawGradientHeader(yPosition, headerHeight);
+  
+  // Slide number on left
+  pdf.setTextColor(255, 255, 255);
+  pdf.setFontSize(14);
+  pdf.setFont('helvetica', 'bold');
+  pdf.text(`[Slide ${slideNumber}]`, margin + 5, yPosition + 12);
+  
+  yPosition += headerHeight + 15;
+  
+  // Question section - clean layout
+  pdf.setTextColor(33, 33, 33);
+  pdf.setFontSize(14);
+  pdf.setFont('helvetica', 'bold');
+  pdf.text('Question:', margin, yPosition);
+  yPosition += 6;
+  
+  pdf.setFontSize(12);
+  pdf.setFont('helvetica', 'normal');
+  const questionLines = pdf.splitTextToSize(question, contentWidth);
+  pdf.text(questionLines, margin, yPosition);
+  yPosition += questionLines.length * 5 + 8;
+  
+  // Type and Total Responses - simple text format
+  pdf.setFontSize(11);
+  pdf.setFont('helvetica', 'normal');
+  const slideTypeText = slideType.replace(/_/g, ' ').toUpperCase();
+  pdf.text(`Type: ${slideTypeText}`, margin, yPosition);
+  yPosition += 6;
+  
+  pdf.text(`Total Responses: ${metadata.totalResponses || 0}`, margin, yPosition);
+  yPosition += 12;
+  
+  // Extract chart data based on slide type
+  let chartData = null;
+  let chartOptions = {};
+  let additionalInfo = null;
+  
+  switch (slideType) {
+    case 'quiz':
+    case 'pick_answer':
+    case 'multiple_choice': {
+      const voteCounts = {};
+      if (Array.isArray(summary)) {
+        summary.forEach(row => {
+          if (row && typeof row === 'object' && row.Option != null && row.Votes !== undefined) {
+            const optionText = formatLongId(String(row.Option), 20);
+            voteCounts[optionText] = Number(row.Votes) || 0;
+          }
+        });
+      }
+      
+      const labels = Object.keys(voteCounts).filter(key => 
+        !key.includes('--- Summary ---') && 
+        !key.includes('Total Responses') && 
+        !key.includes('Correct Answers') && 
+        !key.includes('Incorrect Answers')
+      );
+      const values = labels.map(label => voteCounts[label] || 0);
+      
+      if (labels.length > 0 && values.length > 0) {
+        chartData = { labels, values };
+      }
+      
+      // For quiz, find correct answer index and add summary
+      if (slideType === 'quiz' && slide?.quizSettings?.correctOptionId) {
+        const correctOptionId = slide.quizSettings.correctOptionId;
+        const options = slide.quizSettings.options || [];
+        options.forEach((opt) => {
+          if (opt.id === correctOptionId) {
+            const correctLabel = formatLongId(opt.text || String(opt), 20);
+            const labelIndex = labels.findIndex(l => l === correctLabel || l.includes(opt.text));
+            if (labelIndex >= 0) {
+              chartOptions.correctIndices = [labelIndex];
+            }
+          }
+        });
+        
+        // Extract correct/incorrect counts from summary
+        const totalResponses = metadata.totalResponses || 0;
+        let correctCount = 0;
+        let incorrectCount = 0;
+        summary.forEach(row => {
+          if (row && typeof row === 'object') {
+            if (row.Option === 'Correct Answers' && row.Votes !== undefined) {
+              correctCount = Number(row.Votes) || 0;
+            } else if (row.Option === 'Incorrect Answers' && row.Votes !== undefined) {
+              incorrectCount = Number(row.Votes) || 0;
+            }
+          }
+        });
+        if (correctCount > 0 || incorrectCount > 0) {
+          additionalInfo = `Summary: ${correctCount} correct, ${incorrectCount} incorrect`;
+        }
+      }
+      
+      chartOptions.colors = ['#3b82f6', '#10b981', '#eab308', '#a855f7', '#ec4899', '#ef4444'];
+      break;
+    }
+    
+    case 'word_cloud': {
+      const wordFreq = {};
+      if (Array.isArray(summary)) {
+        summary.forEach(row => {
+          if (row && typeof row === 'object' && row.Word != null && row.Frequency !== undefined) {
+            wordFreq[String(row.Word)] = Number(row.Frequency) || 0;
+          }
+        });
+      }
+      
+      const sortedWords = Object.entries(wordFreq)
+        .sort((a, b) => (b[1] || 0) - (a[1] || 0))
+        .slice(0, 15);
+      
+      if (sortedWords.length > 0) {
+        chartData = {
+          labels: sortedWords.map(([word]) => formatLongId(word, 15)),
+          values: sortedWords.map(([, freq]) => freq || 0)
+        };
+      }
+      chartOptions.colors = ['#10b981', '#3b82f6', '#eab308', '#a855f7', '#ec4899'];
+      break;
+    }
+    
+    case 'scales': {
+      const distribution = {};
+      if (Array.isArray(summary)) {
+        summary.forEach(row => {
+          if (row && typeof row === 'object' && row['Rating Value'] != null && row.Count !== undefined) {
+            distribution[String(row['Rating Value'])] = Number(row.Count) || 0;
+          }
+        });
+      }
+      
+      const sortedEntries = Object.entries(distribution)
+        .filter(([val]) => val != null)
+        .sort((a, b) => Number(a[0]) - Number(b[0]));
+      if (sortedEntries.length > 0) {
+        chartData = {
+          labels: sortedEntries.map(([val]) => String(val)),
+          values: sortedEntries.map(([, count]) => Number(count) || 0)
+        };
+        
+        // Calculate average rating - will be shown below chart
+        const total = sortedEntries.reduce((sum, [, count]) => sum + Number(count), 0);
+        const weightedSum = sortedEntries.reduce((sum, [val, count]) => sum + (Number(val) * Number(count)), 0);
+        if (total > 0) {
+          const avgRating = (weightedSum / total).toFixed(1);
+          const maxRating = sortedEntries[sortedEntries.length - 1][0];
+          additionalInfo = `Average Rating: ${avgRating} / ${maxRating}`;
+        }
+      }
+      chartOptions.colors = ['#4CAF50'];
+      break;
+    }
+    
+    case 'ranking': {
+      const rankingData = Array.isArray(summary) ? summary.slice(0, 10).filter(row => row && typeof row === 'object') : [];
+      if (rankingData.length > 0) {
+        chartData = {
+          labels: rankingData.map(row => formatLongId(String(row.Item || row['Item'] || 'N/A'), 15)),
+          values: rankingData.map(row => Number(row.Score || row['Score']) || 0)
+        };
+      }
+      chartOptions.colors = ['#ef4444', '#3b82f6', '#7c3aed', '#ec4899', '#f59e0b'];
+      break;
+    }
+    
+    case 'hundred_points': {
+      const validRows = Array.isArray(summary) ? summary.filter(row => row && typeof row === 'object') : [];
+      if (validRows.length > 0) {
+        chartData = {
+          labels: validRows.map(row => formatLongId(String(row.Item || row['Item'] || 'N/A'), 15)),
+          values: validRows.map(row => parseFloat(row['Average Points']) || 0)
+        };
+      }
+      chartOptions.colors = ['#ef4444', '#3b82f6', '#7c3aed', '#ec4899', '#f59e0b'];
+      break;
+    }
+    
+    case 'guess_number': {
+      const distribution = {};
+      if (Array.isArray(summary)) {
+        summary.forEach(row => {
+          if (row && typeof row === 'object' && row.Guess != null && row.Count !== undefined) {
+            distribution[String(row.Guess)] = Number(row.Count) || 0;
+          }
+        });
+      }
+      
+      const sortedEntries = Object.entries(distribution)
+        .filter(([guess]) => guess != null)
+        .sort((a, b) => Number(a[0]) - Number(b[0]));
+      if (sortedEntries.length > 0) {
+        chartData = {
+          labels: sortedEntries.map(([guess]) => String(guess)),
+          values: sortedEntries.map(([, count]) => Number(count) || 0)
+        };
+      }
+      chartOptions.colors = ['#3b82f6'];
+      break;
+    }
+    
+    case 'qna': {
+      // For QnA, show top questions by votes
+      const questionVotes = {};
+      if (Array.isArray(summary)) {
+        summary.forEach((row, index) => {
+          if (row && typeof row === 'object' && row.Votes !== undefined) {
+            const questionNum = `Q${index + 1}`;
+            questionVotes[questionNum] = Number(row.Votes || row.voteCount) || 0;
+          }
+        });
+      }
+      
+      const sortedQuestions = Object.entries(questionVotes)
+        .sort((a, b) => (b[1] || 0) - (a[1] || 0))
+        .slice(0, 10);
+      
+      if (sortedQuestions.length > 0) {
+        chartData = {
+          labels: sortedQuestions.map(([q]) => q),
+          values: sortedQuestions.map(([, votes]) => votes || 0)
+        };
+      }
+      chartOptions.colors = ['#3b82f6', '#10b981', '#eab308', '#a855f7', '#ec4899'];
+      additionalInfo = 'Note: Question text and answers not shown in Pro Plan export.';
+      break;
+    }
+    
+    case 'leaderboard': {
+      // For leaderboard, show top positions (anonymized)
+      const leaderboardData = Array.isArray(summary) ? summary.slice(0, 10).filter(row => row && typeof row === 'object') : [];
+      if (leaderboardData.length > 0) {
+        chartData = {
+          labels: leaderboardData.map((row, index) => `Position ${index + 1}`),
+          values: leaderboardData.map(row => {
+            // Try to extract score from various possible fields
+            return Number(row.Score || row.Points || row['Total Score'] || 0);
+          })
+        };
+      }
+      chartOptions.colors = ['#ef4444', '#3b82f6', '#7c3aed', '#ec4899', '#f59e0b'];
+      additionalInfo = 'Note: Participant names not shown in Pro Plan export.';
+      break;
+    }
+    
+    case 'open_ended':
+    case 'type_answer': {
+      // Text responses - show info only
+      additionalInfo = `Text responses collected: ${metadata.totalResponses || 0}\n\nNote: Individual responses are not included in Pro Plan export. Upgrade to Lifetime or Institution plan for full data access.`;
+      break;
+    }
+    
+    case 'pin_on_image':
+    case 'miro': {
+      // Spatial/interactive data - show info only
+      additionalInfo = `Interactive responses collected: ${metadata.totalResponses || 0}\n\nNote: Spatial/interactive data not shown in visualization format. Upgrade to Lifetime or Institution plan for full data access.`;
+      break;
+    }
+    
+    case 'instruction': {
+      // Instruction slides - minimal content
+      if (metadata?.accessCode) {
+        additionalInfo = `Access Code: ${metadata.accessCode}`;
+      }
+      break;
+    }
+  }
+  
+  // Determine chart title based on slide type
+  let chartTitle = 'Response Visualization';
+  switch (slideType) {
+    case 'multiple_choice':
+    case 'pick_answer':
+    case 'quiz':
+      chartTitle = 'Response Distribution';
+      break;
+    case 'word_cloud':
+      chartTitle = 'Top Words by Frequency';
+      break;
+    case 'scales':
+      chartTitle = 'Rating Distribution';
+      break;
+    case 'ranking':
+      chartTitle = 'Top Ranked Items (by Average Score)';
+      break;
+    case 'hundred_points':
+      chartTitle = 'Average Points Allocation';
+      break;
+    case 'guess_number':
+      chartTitle = 'Guess Distribution';
+      break;
+    case 'qna':
+      chartTitle = 'Top Questions by Votes';
+      break;
+    case 'leaderboard':
+      chartTitle = 'Top Participants (Anonymized)';
+      break;
+  }
+  
+  // Draw chart if data is available
+  if (chartData && chartData.labels.length > 0) {
+    checkNewPage(80);
+    yPosition += 8;
+    
+    const chartHeight = 70; // Larger chart for Pro export (matching mockup)
+    const chartWidth = contentWidth;
+    
+    // Chart title - matching mockup style
+    pdf.setFontSize(12);
+    pdf.setTextColor(33, 33, 33);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text(chartTitle, margin, yPosition);
+    yPosition += 10;
+    
+    // Draw chart background box - matching mockup
+    pdf.setFillColor(250, 250, 250);
+    pdf.setDrawColor(224, 224, 224);
+    pdf.setLineWidth(0.5);
+    pdf.roundedRect(margin, yPosition, chartWidth, chartHeight, 2, 2, 'FD');
+    
+    // Draw bars
+    yPosition = drawBarChart(
+      chartData,
+      margin + 8,
+      yPosition + 8,
+      chartWidth - 16,
+      chartHeight - 16,
+      chartOptions
+    ) + 8;
+    
+    yPosition += 8;
+    
+    // Show summary info below chart if available (for quiz and scales)
+    if (additionalInfo && (slideType === 'quiz' || slideType === 'scales')) {
+      pdf.setFontSize(10);
+      pdf.setTextColor(66, 66, 66);
+      pdf.setFont('helvetica', 'normal');
+      pdf.text(additionalInfo, margin, yPosition);
+      yPosition += 8;
+    }
+  }
+  
+  // Show additional info if available (for slides without charts or with extra context)
+  if (additionalInfo && (!chartData || slideType !== 'quiz')) {
+    checkNewPage(30);
+    yPosition += 8;
+    
+    // Create info box for text-only slides
+    if (!chartData) {
+      pdf.setFillColor(250, 250, 250);
+      pdf.setDrawColor(224, 224, 224);
+      pdf.setLineWidth(0.5);
+      const infoBoxHeight = Math.min(40, additionalInfo.split('\n').length * 6 + 10);
+      pdf.roundedRect(margin, yPosition, contentWidth, infoBoxHeight, 2, 2, 'FD');
+      yPosition += 5;
+    }
+    
+    pdf.setFontSize(10);
+    pdf.setTextColor(66, 66, 66);
+    pdf.setFont('helvetica', 'normal');
+    const infoLines = pdf.splitTextToSize(additionalInfo, contentWidth - 10);
+    pdf.text(infoLines, margin + (chartData ? 0 : 5), yPosition);
+    yPosition += infoLines.length * 5 + (chartData ? 0 : 5);
+  }
+  
+  // For slides with no data
+  if (!chartData && !additionalInfo && (metadata.totalResponses === 0 || !metadata.totalResponses)) {
+    checkNewPage(20);
+    yPosition += 5;
+    
+    pdf.setFontSize(10);
+    pdf.setTextColor(128, 128, 128);
+    pdf.setFont('helvetica', 'italic');
+    pdf.text('No responses collected for this slide.', margin, yPosition);
+    yPosition += 10;
+  }
+  
+  return yPosition;
+};
+

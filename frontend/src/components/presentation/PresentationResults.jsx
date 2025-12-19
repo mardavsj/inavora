@@ -3,7 +3,7 @@ import { LoaderCircle, Download } from 'lucide-react';
 import { io } from 'socket.io-client';
 import { getSocketUrl } from '../../utils/config';
 import * as presentationService from '../../services/presentationService';
-import { formatSlideDataForExport, exportAllSlidesToPDF } from '../../utils/exportUtils';
+import { formatSlideDataForExport, exportAllSlidesToPDF, exportAllSlidesToPDFPro } from '../../utils/exportUtils';
 import toast from 'react-hot-toast';
 import * as XLSX from 'xlsx';
 import { useAuth } from '../../context/AuthContext';
@@ -43,8 +43,8 @@ const PresentationResults = ({ slides, presentationId }) => {
     const resultsRef = useRef(null);
     const socketRef = useRef(null);
 
-    // Check if user has access to export (Lifetime plan or Institution plan users)
-    const canExport = (() => {
+    // Check if user has access to full export (Lifetime plan or Institution plan users)
+    const canExportFullPDF = (() => {
         // Check if user is an institution admin (has institutionAdminToken)
         const hasInstitutionAdminToken = sessionStorage.getItem('institutionAdminToken') !== null;
         
@@ -75,7 +75,7 @@ const PresentationResults = ({ slides, presentationId }) => {
             fullUser: currentUser
         });
         
-        // Show export for:
+        // Show full export for:
         // 1. Lifetime plan users
         // 2. Institution plan users (plan === 'institution')
         // 3. Users linked to institutions (isInstitutionUser, hasInstitutionId, or hasInstitutionPlan)
@@ -85,6 +85,22 @@ const PresentationResults = ({ slides, presentationId }) => {
                hasInstitutionId ||
                hasInstitutionPlan;
     })();
+
+    // Check if user has access to Pro export (Pro plan users)
+    const canExportProPDF = (() => {
+        if (!currentUser) {
+            return false;
+        }
+        
+        const plan = currentUser?.subscription?.plan;
+        const status = currentUser?.subscription?.status;
+        
+        // Pro users with active subscription can export Pro PDF
+        return plan === 'pro' && status === 'active';
+    })();
+
+    // Legacy canExport for backward compatibility (used for CSV/Excel exports)
+    const canExport = canExportFullPDF || canExportProPDF;
 
     // Fetch initial data
     useEffect(() => {
@@ -496,6 +512,119 @@ const PresentationResults = ({ slides, presentationId }) => {
         }
     };
 
+    const handleExportToPDFPro = async () => {
+        if (!presentationId || !slides || slides.length === 0) {
+            toast.error(t('presentation_results.no_presentation_available'));
+            return;
+        }
+        
+        setIsExporting(true);
+        try {
+            // Fetch all slide responses
+            const allSlideData = [];
+            
+            for (const slide of slides) {
+                try {
+                    const slideId = slide.id || slide._id;
+                    if (!slideId) continue;
+                    
+                    const slideType = slide.type;
+                    const isInstructionSlide = slideType === 'instruction';
+                    
+                    // For instruction slides, format directly from slide object without API call
+                    if (isInstructionSlide) {
+                        // Pass presentation access code in aggregatedData for instruction slides
+                        const instructionAggregatedData = {
+                            accessCode: presentation?.accessCode || ''
+                        };
+                        const formattedData = formatSlideDataForExport(
+                            slide,
+                            [],
+                            instructionAggregatedData
+                        );
+                        allSlideData.push({
+                            slide: slide,
+                            formattedData,
+                            slideIndex: slides.indexOf(slide)
+                        });
+                        continue;
+                    }
+                    
+                    // For other slides, fetch responses from API
+                    const response = await presentationService.getSlideResponses(presentationId, slideId);
+                    
+                    // Include slides even if they don't have responses (e.g., leaderboard slides)
+                    if (response && response.success && response.slide) {
+                        const responseSlideType = response.slide.type || slideType;
+                        const hasData = Array.isArray(response.responses) && response.responses.length > 0;
+                        const hasLeaderboardData = responseSlideType === 'leaderboard' && 
+                            response.aggregatedData && 
+                            Array.isArray(response.aggregatedData.leaderboard) && 
+                            response.aggregatedData.leaderboard.length > 0;
+                        
+                        // Include if it has responses or has leaderboard data
+                        if (hasData || hasLeaderboardData) {
+                            const formattedData = formatSlideDataForExport(
+                                response.slide,
+                                response.responses || [],
+                                response.aggregatedData || {}
+                            );
+                            allSlideData.push({
+                                slide: response.slide,
+                                formattedData,
+                                slideIndex: slides.indexOf(slide)
+                            });
+                        }
+                    }
+                } catch (err) {
+                    console.error(`Error fetching data for slide ${slide.id || slide._id}:`, err);
+                    // For instruction slides, still try to include them even if API fails
+                    if (slide.type === 'instruction') {
+                        try {
+                            const instructionAggregatedData = {
+                                accessCode: presentation?.accessCode || ''
+                            };
+                            const formattedData = formatSlideDataForExport(
+                                slide,
+                                [],
+                                instructionAggregatedData
+                            );
+                            allSlideData.push({
+                                slide: slide,
+                                formattedData,
+                                slideIndex: slides.indexOf(slide)
+                            });
+                        } catch (formatErr) {
+                            console.error(`Error formatting instruction slide:`, formatErr);
+                        }
+                    }
+                    // Continue with other slides even if one fails
+                }
+            }
+            
+            if (allSlideData.length === 0) {
+                toast.error(t('presentation_results.no_data_to_export'));
+                setIsExporting(false);
+                return;
+            }
+            
+            // Generate filename
+            const sanitizedTitle = (presentation?.title || t('presentation_results.default_title')).replace(/[^a-z0-9]/gi, '_').toLowerCase();
+            const dateStr = new Date().toISOString().split('T')[0];
+            const filename = `${sanitizedTitle}_visual_summary_${dateStr}`;
+            
+            // Export all slides to PDF Pro (visualization only)
+            await exportAllSlidesToPDFPro(allSlideData, presentation?.title || t('presentation_results.default_title'), filename);
+            
+            toast.success(t('presentation_results.exported_pdf_success', { count: allSlideData.length }));
+        } catch (error) {
+            console.error('Pro PDF export error:', error);
+            toast.error(t('presentation_results.export_pdf_failed'));
+        } finally {
+            setIsExporting(false);
+        }
+    };
+
     if (isLoading) {
         return (
             <div className="flex-1 bg-[#1A1A1A] p-4 sm:p-6 md:p-8 overflow-y-auto">
@@ -600,7 +729,7 @@ const PresentationResults = ({ slides, presentationId }) => {
                             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#E0E0E0] mb-1 sm:mb-2">{t('presentation_results.title')}</h2>
                             <p className="text-sm sm:text-base text-[#B0B0B0]">{t('presentation_results.subtitle')}</p>
                         </div>
-                        {canExport && (
+                        {(canExportFullPDF || canExportProPDF) && (
                             <div className="flex gap-2">
                                 <div className="relative group">
                                     <button
@@ -610,28 +739,44 @@ const PresentationResults = ({ slides, presentationId }) => {
                                         <Download className="w-4 h-4" />
                                         {isExporting ? t('presentation_results.exporting') : t('presentation_results.export')}
                                     </button>
-                                    <div className="absolute right-0 top-full mt-1 w-48 bg-[#1e293b] border border-white/10 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10">
-                                        <button
-                                            onClick={handleExportToPDF}
-                                            disabled={isExporting}
-                                            className="w-full text-left px-4 py-2 hover:bg-white/5 text-sm text-white disabled:opacity-50"
-                                        >
-                                            {t('presentation_results.export_pdf')}
-                                        </button>
-                                        <button
-                                            onClick={() => handleExportData('csv')}
-                                            disabled={isExporting}
-                                            className="w-full text-left px-4 py-2 hover:bg-white/5 text-sm text-white disabled:opacity-50"
-                                        >
-                                            {t('presentation_results.export_csv')}
-                                        </button>
-                                        <button
-                                            onClick={() => handleExportData('excel')}
-                                            disabled={isExporting}
-                                            className="w-full text-left px-4 py-2 hover:bg-white/5 text-sm text-white disabled:opacity-50"
-                                        >
-                                            {t('presentation_results.export_excel')}
-                                        </button>
+                                    <div className="absolute right-0 top-full mt-1 w-56 bg-[#1e293b] border border-white/10 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10">
+                                        {canExportFullPDF && (
+                                            <button
+                                                onClick={handleExportToPDF}
+                                                disabled={isExporting}
+                                                className="w-full text-left px-4 py-2 hover:bg-white/5 text-sm text-white disabled:opacity-50"
+                                            >
+                                                {t('presentation_results.export_pdf')} (Full Report)
+                                            </button>
+                                        )}
+                                        {canExportProPDF && (
+                                            <button
+                                                onClick={handleExportToPDFPro}
+                                                disabled={isExporting}
+                                                className="w-full text-left px-4 py-2 hover:bg-white/5 text-sm text-white disabled:opacity-50"
+                                            >
+                                                {t('presentation_results.export_pdf')} (Visual Summary)
+                                            </button>
+                                        )}
+                                        {canExport && (
+                                            <>
+                                                <div className="h-px bg-white/10 my-1"></div>
+                                                <button
+                                                    onClick={() => handleExportData('csv')}
+                                                    disabled={isExporting}
+                                                    className="w-full text-left px-4 py-2 hover:bg-white/5 text-sm text-white disabled:opacity-50"
+                                                >
+                                                    {t('presentation_results.export_csv')}
+                                                </button>
+                                                <button
+                                                    onClick={() => handleExportData('excel')}
+                                                    disabled={isExporting}
+                                                    className="w-full text-left px-4 py-2 hover:bg-white/5 text-sm text-white disabled:opacity-50"
+                                                >
+                                                    {t('presentation_results.export_excel')}
+                                                </button>
+                                            </>
+                                        )}
                                     </div>
                                 </div>
                             </div>

@@ -1219,7 +1219,7 @@ const HowItWorks = () => {
                         </PricingFAQItem>
 
                         {/* Question 18 */}
-                        <PricingFAQItem index={18} question={"Data & Privacy FAQs"}>
+                        <PricingFAQItem index={18} question={t('how_it_works.pricing_faq.q18.question')}>
                             <div className="space-y-4">
                                 <NestedDataPrivacyFAQItem index={1} question={t('how_it_works.data_privacy_faq.q1.question')} icon={Database}>
                                     <p className="text-gray-300 mb-3">{t('how_it_works.data_privacy_faq.q1.answer')}</p>
