@@ -5,7 +5,8 @@ import api from '../../../config/api';
 
 const LeaderboardPresenterResults = ({ 
   slide,
-  leaderboard = []
+  leaderboard = [],
+  slides = []
 }) => {
   const { id: presentationId } = useParams();
   const [leaderboardSummary, setLeaderboardSummary] = useState(null);
@@ -27,10 +28,59 @@ const LeaderboardPresenterResults = ({
     };
 
     fetchLeaderboard();
-  }, [presentationId, slide?._id]);
+  }, [presentationId, slide?._id, slide?.id]);
 
-  // Always show final leaderboard for presenter
-  const displayLeaderboard = leaderboardSummary?.finalLeaderboard || [];
+  // Determine if this is a quiz-linked leaderboard or final leaderboard
+  const linkedQuizSlideId = slide?.leaderboardSettings?.linkedQuizSlideId;
+  const linkedQuizSlideIdStr = linkedQuizSlideId ? String(linkedQuizSlideId) : null;
+  
+  // Find the quiz slide to get its question - handle all ID formats
+  const quizSlide = linkedQuizSlideIdStr ? slides.find(s => {
+    if (!s || s.type !== 'quiz') return false;
+    const slideId1 = s.id;
+    const slideId2 = s._id;
+    
+    // Try both id and _id fields, and handle object IDs
+    if (slideId1) {
+      if (String(slideId1) === linkedQuizSlideIdStr) return true;
+      if (typeof slideId1 === 'object' && slideId1.toString && slideId1.toString() === linkedQuizSlideIdStr) return true;
+    }
+    if (slideId2) {
+      if (String(slideId2) === linkedQuizSlideIdStr) return true;
+      if (typeof slideId2 === 'object' && slideId2.toString && slideId2.toString() === linkedQuizSlideIdStr) return true;
+    }
+    return false;
+  }) : null;
+  
+  const quizQuestion = quizSlide?.question || 'Quiz';
+
+  // Get the appropriate leaderboard data
+  let displayLeaderboard = [];
+  let leaderboardTitle = 'Final Leaderboard';
+  let leaderboardSubtitle = 'Overall standings for this presentation';
+
+  if (linkedQuizSlideIdStr && leaderboardSummary?.perQuizLeaderboards) {
+    // Find the per-quiz leaderboard entry - handle all ID formats
+    const perQuizEntry = leaderboardSummary.perQuizLeaderboards.find(
+      (entry) => {
+        if (!entry.quizSlideId) return false;
+        const entryIdStr = String(entry.quizSlideId);
+        return entryIdStr === linkedQuizSlideIdStr;
+      }
+    );
+    
+    if (perQuizEntry) {
+      displayLeaderboard = perQuizEntry.leaderboard || [];
+      leaderboardTitle = `${quizQuestion} leaderboard results`;
+      leaderboardSubtitle = `Results for: ${quizQuestion}`;
+    } else {
+      // Fallback to final leaderboard if per-quiz entry not found
+      displayLeaderboard = leaderboardSummary?.finalLeaderboard || [];
+    }
+  } else {
+    // Final leaderboard (no linked quiz)
+    displayLeaderboard = leaderboardSummary?.finalLeaderboard || [];
+  }
   const getMedalIcon = (rank) => {
     if (rank === 0) return <Trophy className="h-8 w-8 text-amber-400" />;
     if (rank === 1) return <Medal className="h-8 w-8 text-[#B0B0B0]" />;
@@ -56,10 +106,10 @@ const LeaderboardPresenterResults = ({
             </div>
             <div>
               <h2 className="text-xl sm:text-2xl font-bold text-[#E0E0E0]">
-                Final Leaderboard
+                {leaderboardTitle}
               </h2>
               <p className="text-xs sm:text-sm text-[#6C6C6C]">
-                Cumulative scores from all quizzes
+                {leaderboardSubtitle}
               </p>
             </div>
           </div>

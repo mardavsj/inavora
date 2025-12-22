@@ -299,16 +299,17 @@ const SlideCanvas = ({ slide, presentation, isPresenter = false, onSettingsChang
       return null;
     }
 
-    const isFinal = lastPerQuizEntry && lastPerQuizEntry.quizSlideId === linkedQuizSlideId;
-    const leaderboardList = isFinal
-      ? leaderboardSummary.finalLeaderboard || perQuizEntry.leaderboard || []
-      : perQuizEntry.leaderboard || [];
+    // For quiz-linked leaderboards, use the quiz question/title
+    const quizQuestion = perQuizEntry.question || 'Quiz';
+    const leaderboardTitle = `${quizQuestion} leaderboard results`;
+
+    const leaderboardList = perQuizEntry.leaderboard || [];
 
     return {
-      title: isFinal ? 'Final Leaderboard' : 'Leaderboard After Quiz',
-      subtitle: perQuizEntry.question,
+      title: leaderboardTitle,
+      subtitle: `Results for: ${quizQuestion}`,
       leaderboard: leaderboardList,
-      isFinalLeaderboard: isFinal,
+      isFinalLeaderboard: false,
     };
   }, [leaderboardSummary, linkedQuizSlideId]);
 

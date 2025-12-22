@@ -642,7 +642,7 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
           </div>
         );
 
-      case 'pdf':
+      case 'pdf': {
         const pdfPages = slide?.pdfPages || [];
         return (
           <div className="w-full h-full p-1.5 flex flex-col gap-1 bg-gradient-to-br from-[#1F1F1F] to-[#181818]">
@@ -667,6 +667,7 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
             </div>
           </div>
         );
+      }
 
       default:
         return (
@@ -981,6 +982,39 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
     };
   }, [displaySlides, handleTouchStart, handleSlideSelect]);
 
+  const handleTouchCancel = useCallback(() => {
+    const dragState = touchDragStateRef.current;
+    stopAutoScroll();
+    
+    // Remove non-passive handler if it was added
+    if (dragState.nonPassiveHandler) {
+      document.removeEventListener('touchmove', dragState.nonPassiveHandler);
+      dragState.nonPassiveHandler = null;
+    }
+    
+    if (dragState.draggedElement) {
+      dragState.draggedElement.style.opacity = '';
+      dragState.draggedElement.style.transform = '';
+      dragState.draggedElement.style.zIndex = '';
+    }
+    touchDragStateRef.current = {
+      isActive: false,
+      startIndex: null,
+      startX: null,
+      startY: null,
+      currentX: null,
+      currentY: null,
+      draggedElement: null,
+      containerScrollLeft: null,
+      containerScrollTop: null,
+      nonPassiveHandler: null,
+    };
+    setTouchDragActive(false);
+    setDraggedIndex(null);
+    setDragOverIndex(null);
+    setIsDragging(false);
+  }, [stopAutoScroll]);
+
   const handleTouchMove = useCallback((e) => {
     const dragState = touchDragStateRef.current;
     if (!dragState.isActive) return;
@@ -1129,7 +1163,7 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
     
     // Handle auto-scroll
     handleAutoScroll(touchX, touchY);
-  }, [isHorizontal, handleAutoScroll]);
+  }, [isHorizontal, handleAutoScroll, handleTouchCancel]);
 
   const handleTouchEnd = useCallback((e) => {
     const dragState = touchDragStateRef.current;
@@ -1191,39 +1225,6 @@ const SlideBar = ({ slides, currentSlideIndex, onSlideSelect, onDeleteSlide, onN
       setIsDragging(false);
     });
   }, [dragOverIndex, handleSlideReorder, handleSlideSelect, stopAutoScroll]);
-
-  const handleTouchCancel = useCallback(() => {
-    const dragState = touchDragStateRef.current;
-    stopAutoScroll();
-    
-    // Remove non-passive handler if it was added
-    if (dragState.nonPassiveHandler) {
-      document.removeEventListener('touchmove', dragState.nonPassiveHandler);
-      dragState.nonPassiveHandler = null;
-    }
-    
-    if (dragState.draggedElement) {
-      dragState.draggedElement.style.opacity = '';
-      dragState.draggedElement.style.transform = '';
-      dragState.draggedElement.style.zIndex = '';
-    }
-    touchDragStateRef.current = {
-      isActive: false,
-      startIndex: null,
-      startX: null,
-      startY: null,
-      currentX: null,
-      currentY: null,
-      draggedElement: null,
-      containerScrollLeft: null,
-      containerScrollTop: null,
-      nonPassiveHandler: null,
-    };
-    setTouchDragActive(false);
-    setDraggedIndex(null);
-    setDragOverIndex(null);
-    setIsDragging(false);
-  }, [stopAutoScroll]);
 
   // Add global touch move and end listeners when dragging
   useEffect(() => {

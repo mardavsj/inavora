@@ -1,13 +1,54 @@
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { Trophy, TrendingUp, Medal, Award } from 'lucide-react';
 import { motion } from 'framer-motion';
+import api from '../../../config/api';
 
 const LeaderboardParticipantView = ({ 
   slide,
   leaderboard = [],
   participantId 
 }) => {
-  const myRank = leaderboard.findIndex(p => p.participantId === participantId);
-  const myData = myRank !== -1 ? leaderboard[myRank] : null;
+  const { id: presentationId } = useParams();
+  const [fetchedLeaderboard, setFetchedLeaderboard] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Fetch leaderboard data if not provided or if it's a virtual final leaderboard
+  useEffect(() => {
+    const fetchLeaderboard = async () => {
+      if (!presentationId) return;
+      
+      // Check if this is a virtual final leaderboard or if leaderboard prop is empty
+      const isVirtualFinal = slide?.id === 'virtual-final-leaderboard' || 
+                             slide?._id === 'virtual-final-leaderboard' ||
+                             slide?.leaderboardSettings?.isFinalLeaderboard;
+      
+      if (isVirtualFinal || leaderboard.length === 0) {
+        setIsLoading(true);
+        try {
+          const response = await api.get(`/presentations/${presentationId}/leaderboard?limit=10`);
+          // API response structure: { success: true, finalLeaderboard: [...], perQuizLeaderboards: [...] }
+          const finalLeaderboard = response.data?.finalLeaderboard || [];
+          setFetchedLeaderboard(finalLeaderboard);
+        } catch (error) {
+          console.error('Failed to fetch leaderboard:', error);
+          setFetchedLeaderboard([]);
+        } finally {
+          setIsLoading(false);
+        }
+      } else {
+        // Use provided leaderboard
+        setFetchedLeaderboard(leaderboard);
+      }
+    };
+
+    fetchLeaderboard();
+  }, [presentationId, slide?.id, slide?._id, slide?.leaderboardSettings?.isFinalLeaderboard, leaderboard]);
+
+  // Use fetched leaderboard if available, otherwise use prop
+  const displayLeaderboard = fetchedLeaderboard.length > 0 ? fetchedLeaderboard : leaderboard;
+  const myRank = displayLeaderboard.findIndex(p => p.participantId === participantId);
+  const myData = myRank !== -1 ? displayLeaderboard[myRank] : null;
 
   const getMedalIcon = (rank) => {
     if (rank === 0) return <Trophy className="h-6 w-6 text-amber-400" />;
@@ -76,8 +117,12 @@ const LeaderboardParticipantView = ({
         </div>
 
         <div className="divide-y divide-gray-100">
-          {leaderboard.length > 0 ? (
-            leaderboard.map((participant, index) => {
+          {isLoading ? (
+            <div className="p-12 text-center text-[#6C6C6C]">
+              <p className="text-lg">Loading leaderboard...</p>
+            </div>
+          ) : displayLeaderboard.length > 0 ? (
+            displayLeaderboard.map((participant, index) => {
               const isMe = participant.participantId === participantId;
               
               return (
@@ -149,7 +194,7 @@ const LeaderboardParticipantView = ({
       </div>
 
       {/* Footer Message */}
-      {!myData && leaderboard.length > 0 && (
+      {!myData && displayLeaderboard.length > 0 && (
         <div className="mt-6 text-center text-[#B0B0B0]">
           <p>Keep answering quizzes to climb the leaderboard! 🚀</p>
         </div>
