@@ -92,9 +92,13 @@ const HundredPointsParticipantInput = ({
   if (!slide) return null;
 
   return (
-    <div className="w-full max-w-2xl mx-auto space-y-6 py-4">
+    <div className="w-full max-w-2xl mx-auto space-y-4 sm:space-y-6 py-2 sm:py-4 px-2 sm:px-4">
       <div className="text-left">
-        <h2 className="text-2xl font-bold text-[#E0E0E0] mb-8">{slide.question}</h2>
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#E0E0E0] mb-4 sm:mb-6 md:mb-8 px-2">
+          {typeof slide.question === 'string' 
+            ? slide.question 
+            : (slide.question?.text || slide.question?.label || '')}
+        </h2>
       </div>
 
       {hasSubmitted ? (
@@ -164,22 +168,26 @@ const HundredPointsParticipantInput = ({
           <div className="space-y-6">
             {items.map((item) => (
               <div key={item.id} className="space-y-2">
-                <div className="text-lg font-semibold text-[#E0E0E0]">{item.label}</div>
-                <div className="flex items-center gap-3">
+                <div className="text-base sm:text-lg font-semibold text-[#E0E0E0]">
+                  {typeof item.label === 'string' 
+                    ? item.label 
+                    : (item.text || item.label?.text || item.label?.label || '')}
+                </div>
+                <div className="flex items-center gap-2 sm:gap-3">
                   <button
                     type="button"
                     onClick={() => handleAdjust(item.id, -10)}
                     disabled={allocations[item.id] === 0 || hasSubmitted}
-                    className={`flex h-12 px-6 items-center justify-center rounded-full text-base font-medium transition ${
+                    className={`flex h-10 sm:h-12 px-4 sm:px-6 items-center justify-center rounded-full text-sm sm:text-base font-medium transition touch-manipulation ${
                       allocations[item.id] === 0 || hasSubmitted
                         ? 'bg-[#2A2A2A] text-[#6C6C6C] cursor-not-allowed'
-                        : 'bg-[#1F1F1F] border-2 border-[#4CAF50] text-[#4CAF50] hover:bg-[#2A2A2A]'
+                        : 'bg-[#1F1F1F] border-2 border-[#4CAF50] text-[#4CAF50] hover:bg-[#2A2A2A] active:scale-95'
                     }`}
                   >
                     -10
                   </button>
                   
-                  <div className="flex-1 flex h-12 items-center justify-center rounded-2xl border-2 border-[#2A2A2A] bg-[#1F1F1F] text-xl font-normal text-[#E0E0E0]">
+                  <div className="flex-1 flex h-10 sm:h-12 items-center justify-center rounded-xl sm:rounded-2xl border-2 border-[#2A2A2A] bg-[#1F1F1F] text-lg sm:text-xl font-normal text-[#E0E0E0]">
                     {allocations[item.id] || 0}
                   </div>
                   
@@ -187,10 +195,10 @@ const HundredPointsParticipantInput = ({
                     type="button"
                     onClick={() => handleAdjust(item.id, 10)}
                     disabled={pointsRemaining < 10 || hasSubmitted}
-                    className={`flex h-12 px-6 items-center justify-center rounded-full text-base font-medium transition ${
+                    className={`flex h-10 sm:h-12 px-4 sm:px-6 items-center justify-center rounded-full text-sm sm:text-base font-medium transition touch-manipulation ${
                       pointsRemaining < 10 || hasSubmitted
                         ? 'bg-[#2A2A2A] text-[#6C6C6C] cursor-not-allowed'
-                        : 'bg-[#1F1F1F] border-2 border-[#2A2A2A] text-[#E0E0E0] hover:bg-[#2A2A2A]'
+                        : 'bg-[#1F1F1F] border-2 border-[#2A2A2A] text-[#E0E0E0] hover:bg-[#2A2A2A] active:scale-95'
                     }`}
                   >
                     +10
@@ -201,14 +209,14 @@ const HundredPointsParticipantInput = ({
             ))}
           </div>
 
-          <div className="flex justify-center pt-4">
+          <div className="flex justify-center pt-2 sm:pt-4">
             <button
               type="button"
               onClick={handleSubmit}
               disabled={totalAllocated === 0 || totalAllocated > 100}
-              className="mt-6 flex items-center gap-2 rounded-full bg-gradient-to-r from-[#388E3C] to-[#2E7D32] hover:from-[#4CAF50] hover:to-[#388E3C] disabled:from-[#1F1F1F] disabled:to-[#1F1F1F] disabled:text-[#6C6C6C] px-8 py-3 text-lg font-semibold text-white transition-all active:scale-95 disabled:active:scale-100 shadow-lg shadow-[#4CAF50]/20 disabled:shadow-none disabled:cursor-not-allowed"
+              className="mt-4 sm:mt-6 flex items-center gap-2 rounded-full bg-gradient-to-r from-[#388E3C] to-[#2E7D32] hover:from-[#4CAF50] hover:to-[#388E3C] disabled:from-[#1F1F1F] disabled:to-[#1F1F1F] disabled:text-[#6C6C6C] px-6 sm:px-8 py-2.5 sm:py-3 text-base sm:text-lg font-semibold text-white transition-all active:scale-95 disabled:active:scale-100 shadow-lg shadow-[#4CAF50]/20 disabled:shadow-none disabled:cursor-not-allowed touch-manipulation"
             >
-              <Send className="h-5 w-5" />
+              <Send className="h-4 w-4 sm:h-5 sm:w-5" />
               {t('slide_editors.hundred_points.submit_allocation') || 'Submit allocation'}
             </button>
           </div>

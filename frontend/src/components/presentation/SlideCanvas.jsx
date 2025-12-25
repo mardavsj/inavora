@@ -378,7 +378,9 @@ const SlideCanvas = ({ slide, presentation, isPresenter = false, onSettingsChang
             <div className="rounded-3xl border border-[#2F2F2F] bg-[#1F1F1F] shadow-[0_12px_40px_rgba(0,0,0,0.45)]">
               <div className="border-b border-[#2A2A2A] px-4 sm:px-6 lg:px-10 pt-6 sm:pt-8 lg:pt-10 pb-4 sm:pb-6">
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-[#E0E0E0] text-center">
-                  {slide?.question || t('slide_editors.mcq.question_placeholder')}
+                  {typeof slide?.question === 'string' 
+                    ? slide.question 
+                    : (slide?.question?.text || slide?.question?.label || t('slide_editors.mcq.question_placeholder'))}
                 </h2>
               </div>
 
@@ -465,7 +467,9 @@ const SlideCanvas = ({ slide, presentation, isPresenter = false, onSettingsChang
                               {index + 1}
                             </span>
                             <p className="text-sm sm:text-base lg:text-lg font-medium text-[#E0E0E0] truncate">
-                              {option.text || `Option ${index + 1}`}
+                              {typeof option === 'string' 
+                                ? option 
+                                : (typeof option.text === 'string' ? option.text : `Option ${index + 1}`)}
                             </p>
                           </div>
                           {isCorrect && (
@@ -892,12 +896,12 @@ const SlideCanvas = ({ slide, presentation, isPresenter = false, onSettingsChang
 
       case 'text':
         return (
-          <div className="w-full max-w-3xl mx-auto">
-            <div className="rounded-3xl border border-[#2F2F2F] bg-[#1F1F1F] shadow-[0_12px_40px_rgba(0,0,0,0.45)] p-4 sm:p-6 lg:p-10">
-              <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-[#E0E0E0] mb-4 sm:mb-6 text-center">
+          <div className="w-full max-w-3xl mx-auto px-2 sm:px-4">
+            <div className="rounded-2xl sm:rounded-3xl border border-[#2F2F2F] bg-[#1F1F1F] shadow-[0_12px_40px_rgba(0,0,0,0.45)] p-4 sm:p-5 md:p-6 lg:p-8 xl:p-10">
+              <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-[#E0E0E0] mb-3 sm:mb-4 md:mb-6 text-center px-2">
                 {question || t('slide_editors.text.default_title')}
               </h2>
-              <div className="prose prose-invert max-w-none text-[#E0E0E0] text-sm sm:text-base lg:text-lg leading-relaxed whitespace-pre-wrap">
+              <div className="prose prose-invert max-w-none text-[#E0E0E0] text-sm sm:text-base md:text-lg leading-relaxed whitespace-pre-wrap break-words">
                 {slide?.textContent || t('slide_editors.text.default_content')}
               </div>
             </div>
@@ -906,22 +910,22 @@ const SlideCanvas = ({ slide, presentation, isPresenter = false, onSettingsChang
 
       case 'image':
         return (
-          <div className="w-full max-w-4xl mx-auto">
-            <div className="rounded-3xl border border-[#2F2F2F] bg-[#1F1F1F] shadow-[0_12px_40px_rgba(0,0,0,0.45)] p-4 sm:p-6 lg:p-8">
-              <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-[#E0E0E0] mb-4 sm:mb-6 text-center">
+          <div className="w-full max-w-4xl mx-auto px-2 sm:px-4">
+            <div className="rounded-2xl sm:rounded-3xl border border-[#2F2F2F] bg-[#1F1F1F] shadow-[0_12px_40px_rgba(0,0,0,0.45)] p-3 sm:p-4 md:p-6 lg:p-8">
+              <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-[#E0E0E0] mb-3 sm:mb-4 md:mb-6 text-center px-2">
                 {question || t('slide_editors.image.default_title')}
               </h2>
               {slide?.imageUrl ? (
-                <div className="rounded-xl overflow-hidden border border-[#2F2F2F] bg-[#232323]">
+                <div className="rounded-lg sm:rounded-xl overflow-hidden border border-[#2F2F2F] bg-[#232323]">
                   <img 
                     src={slide.imageUrl} 
                     alt="Slide content" 
-                    className="w-full h-auto object-contain max-h-[60vh]"
+                    className="w-full h-auto object-contain max-h-[50vh] sm:max-h-[60vh] md:max-h-[70vh]"
                   />
                 </div>
               ) : (
-                <div className="rounded-xl border-2 border-dashed border-[#3A3A3A] bg-[#232323] py-12 sm:py-16 text-center">
-                  <p className="text-[#9E9E9E]">{t('slide_editors.image.upload_prompt')}</p>
+                <div className="rounded-lg sm:rounded-xl border-2 border-dashed border-[#3A3A3A] bg-[#232323] py-8 sm:py-12 md:py-16 text-center px-4">
+                  <p className="text-sm sm:text-base text-[#9E9E9E]">{t('slide_editors.image.upload_prompt')}</p>
                 </div>
               )}
             </div>
@@ -930,13 +934,13 @@ const SlideCanvas = ({ slide, presentation, isPresenter = false, onSettingsChang
 
       case 'video':
         return (
-          <div className="w-full max-w-4xl mx-auto">
-            <div className="rounded-3xl border border-[#2F2F2F] bg-[#1F1F1F] shadow-[0_12px_40px_rgba(0,0,0,0.45)] p-4 sm:p-6 lg:p-8">
-              <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-[#E0E0E0] mb-4 sm:mb-6 text-center">
+          <div className="w-full max-w-4xl mx-auto px-2 sm:px-4">
+            <div className="rounded-2xl sm:rounded-3xl border border-[#2F2F2F] bg-[#1F1F1F] shadow-[0_12px_40px_rgba(0,0,0,0.45)] p-3 sm:p-4 md:p-6 lg:p-8">
+              <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-[#E0E0E0] mb-3 sm:mb-4 md:mb-6 text-center px-2">
                 {question || t('slide_editors.video.default_title')}
               </h2>
               {(slide?.videoUrl && slide.videoUrl.trim() !== '') ? (
-                <div className="rounded-xl overflow-hidden border border-[#2F2F2F] bg-[#232323] aspect-video">
+                <div className="rounded-lg sm:rounded-xl overflow-hidden border border-[#2F2F2F] bg-[#232323] aspect-video w-full">
                   {isValidVideoUrl(slide.videoUrl) ? (
                     // YouTube/Vimeo URL - use iframe
                     <iframe
@@ -967,8 +971,8 @@ const SlideCanvas = ({ slide, presentation, isPresenter = false, onSettingsChang
                   )}
                 </div>
               ) : (
-                <div className="rounded-xl border-2 border-dashed border-[#3A3A3A] bg-[#232323] py-12 sm:py-16 text-center">
-                  <p className="text-[#9E9E9E]">{t('slide_editors.video.enter_url_prompt')}</p>
+                <div className="rounded-lg sm:rounded-xl border-2 border-dashed border-[#3A3A3A] bg-[#232323] py-8 sm:py-12 md:py-16 text-center px-4">
+                  <p className="text-sm sm:text-base text-[#9E9E9E]">{t('slide_editors.video.enter_url_prompt')}</p>
                 </div>
               )}
             </div>

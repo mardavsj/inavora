@@ -10,7 +10,11 @@ const PowerPointResult = ({ slide, data }) => {
         
         <div className="mb-6">
           <h4 className="text-lg font-medium text-gray-300 mb-2">Question/Instruction</h4>
-          <p className="text-gray-400">{slide.question}</p>
+          <p className="text-gray-400">
+            {typeof slide.question === 'string' 
+              ? slide.question 
+              : (slide.question?.text || slide.question?.label || '')}
+          </p>
         </div>
 
         <div className="mb-6">

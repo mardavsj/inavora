@@ -25,7 +25,11 @@ const ScalesResult = ({ slide, data }) => {
                     return (
                         <div key={index} className="scale-container">
                             <div className="scale-header">
-                                <h4 className="scale-label">{statement}</h4>
+                                <h4 className="scale-label">
+                                    {typeof statement === 'string' 
+                                      ? statement 
+                                      : (statement?.text || statement?.label || `Statement ${index + 1}`)}
+                                </h4>
                                 <div className="scale-value">{avg.toFixed(1)}</div>
                             </div>
 

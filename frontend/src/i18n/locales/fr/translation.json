@@ -79,7 +79,7 @@
     "pricing_lifetime_everything_in_pro": "Tout ce qui est dans Pro",
     "pricing_lifetime_access": "Accès à vie",
     "pricing_lifetime_no_fees": "Pas de frais mensuels",
-    "pricing_lifetime_detailed_export": "Résultats d'Exportation Détaillés",
+    "pricing_lifetime_detailed_export": "Exporter les résultats",
     "pricing_institution_admin_dashboard": "Tableau de bord administrateur",
     "pricing_institution_custom_branding": "Marque personnalisée",
     "pricing_institution_bulk_management": "Gestion en masse",
@@ -351,7 +351,12 @@
       "url_hint": "Entrez un lien direct vers une image (jpg, png, gif, webp, etc.)",
       "image_load_error": "Échec du chargement de l'image",
       "drop_image_here": "Déposez l'image ici",
-      "drag_drop_hint": "Glissez-déposez ou collez l'image"
+      "drag_drop_hint": "Glissez-déposez ou collez l'image",
+      "no_image": "Aucune image disponible",
+      "alt_text": "Diapositive image",
+      "participant_responses": "Réponses des participants",
+      "anonymous": "Anonyme",
+      "no_response_content": "Aucun contenu de réponse"
     },
     "text": {
       "title_label": "Titre",
@@ -1204,7 +1209,7 @@
     "lifetime_plan_feature2": "Accès à vie",
     "lifetime_plan_feature3": "Pas de frais mensuels",
     "lifetime_plan_feature4": "Fonctions IA (Bientôt disponible)",
-    "lifetime_plan_feature5": "Résultats d'Exportation Détaillés",
+    "lifetime_plan_feature5": "Exporter les Résultats",
     "institution_plan_name": "Institution",
     "institution_plan_price": "₹499",
     "institution_plan_period": "/utilisateur/an",
@@ -1229,7 +1234,7 @@
     "users_feature": "Utilisateurs",
     "ai_features_feature": "Fonctions IA (Bientôt disponible)",
     "export_results_feature": "Exporter les résultats",
-    "detailed_export_results_feature": "Résultats d'Exportation Détaillés",
+    "detailed_export_results_feature": "Exporter les résultats",
     "priority_support_feature": "Support prioritaire",
     "lifetime_access_feature": "Accès à vie",
     "custom_branding_feature": "Marque personnalisée",
@@ -1587,7 +1592,7 @@
     "feature_ai_features": "Fonctionnalités IA (Bientôt disponible)",
     "feature_api_access": "Accès API",
     "feature_bulk_user_management": "Gestion en Masse des Utilisateurs",
-    "feature_detailed_export_results": "Résultats d'Exportation Détaillés"
+    "feature_detailed_export_results": "Exporter les Résultats"
   },
   "institution_admin": {
     "fetch_users_error": "Échec du chargement des utilisateurs",

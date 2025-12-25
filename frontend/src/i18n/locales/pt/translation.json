@@ -79,7 +79,7 @@
     "pricing_lifetime_everything_in_pro": "Tudo no Pro",
     "pricing_lifetime_access": "Acesso vitalício",
     "pricing_lifetime_no_fees": "Sem taxas mensais",
-    "pricing_lifetime_detailed_export": "Resultados de Exportação Detalhados",
+    "pricing_lifetime_detailed_export": "Exportar resultados",
     "pricing_institution_admin_dashboard": "Painel administrativo",
     "pricing_institution_custom_branding": "Marca personalizada",
     "pricing_institution_bulk_management": "Gestão em massa",
@@ -341,7 +341,12 @@
       "url_hint": "Digite um link direto para uma imagem (jpg, png, gif, webp, etc.)",
       "image_load_error": "Falha ao carregar a imagem",
       "drop_image_here": "Solte a imagem aqui",
-      "drag_drop_hint": "Arraste e solte ou cole a imagem"
+      "drag_drop_hint": "Arraste e solte ou cole a imagem",
+      "no_image": "Nenhuma imagem disponível",
+      "alt_text": "Slide de imagem",
+      "participant_responses": "Respostas dos Participantes",
+      "anonymous": "Anônimo",
+      "no_response_content": "Nenhum conteúdo de resposta"
     },
     "text": {
       "title_label": "Título",
@@ -1239,7 +1244,7 @@
     "lifetime_plan_feature2": "Acesso vitalício",
     "lifetime_plan_feature3": "Sem taxas mensais",
     "lifetime_plan_feature4": "Recursos de IA (Em Breve)",
-    "lifetime_plan_feature5": "Resultados de Exportação Detalhados",
+    "lifetime_plan_feature5": "Exportar Resultados",
     "institution_plan_name": "Instituição",
     "institution_plan_price": "₹499",
     "institution_plan_period": "/usuário/ano",
@@ -1264,7 +1269,7 @@
     "users_feature": "Usuários",
     "ai_features_feature": "Recursos de IA (Em Breve)",
     "export_results_feature": "Exportar Resultados",
-    "detailed_export_results_feature": "Resultados de Exportação Detalhados",
+    "detailed_export_results_feature": "Exportar Resultados",
     "priority_support_feature": "Suporte Prioritário",
     "lifetime_access_feature": "Acesso Vitalício",
     "custom_branding_feature": "Marca Personalizada",
@@ -2080,7 +2085,7 @@
     "feature_ai_features": "Recursos de IA (Em Breve)",
     "feature_api_access": "Acesso à API",
     "feature_bulk_user_management": "Gerenciamento em Massa de Usuários",
-    "feature_detailed_export_results": "Resultados de Exportação Detalhados"
+    "feature_detailed_export_results": "Exportar Resultados"
   },
   "testimonials": {
     "back": "Voltar",

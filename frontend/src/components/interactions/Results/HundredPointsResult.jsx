@@ -23,7 +23,11 @@ const HundredPointsResult = ({ slide, data }) => {
                     >
                         {/* Circular Progress or similar could be cool, but let's do a clean bar/stat layout */}
                         <div className="flex justify-between items-start mb-4 z-10">
-                            <h4 className="text-lg font-medium text-slate-200">{item.label}</h4>
+                            <h4 className="text-lg font-medium text-slate-200">
+                                {typeof item.label === 'string' 
+                                  ? item.label 
+                                  : (item.text || item.label?.text || item.label?.label || `Item ${index + 1}`)}
+                            </h4>
                             <div className="text-right">
                                 <div className="text-3xl font-bold text-pink-400">{Math.round(item.averagePoints)}</div>
                                 <div className="text-xs text-slate-500">{t('slide_editors.hundred_points.avg_points')}</div>

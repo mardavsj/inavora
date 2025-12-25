@@ -22,7 +22,11 @@ const MiroPresenterView = ({ slide, responses = [] }) => {
       <div className="flex-grow flex flex-col items-center justify-center p-4">
         <div className="w-full max-w-6xl">
           {slide?.question && (
-            <h2 className="text-2xl font-bold text-white mb-4 text-center">{slide.question}</h2>
+            <h2 className="text-2xl font-bold text-white mb-4 text-center">
+              {typeof slide.question === 'string' 
+                ? slide.question 
+                : (slide.question?.text || slide.question?.label || '')}
+            </h2>
           )}
           
           {embedUrl ? (

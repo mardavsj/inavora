@@ -1265,7 +1265,9 @@ const PresentMode = () => {
           <div className="w-full max-w-4xl mx-auto">
             <div className="mb-4 sm:mb-6">
               <h2 className="text-2xl sm:text-3xl font-semibold text-[#E0E0E0] text-center leading-tight">
-                {slide.question || 'Ask your question here...'}
+                {typeof slide.question === 'string' 
+                  ? slide.question 
+                  : (slide.question?.text || slide.question?.label || 'Ask your question here...')}
               </h2>
             </div>
             <MCQPresenterResults
@@ -1510,7 +1512,11 @@ const PresentMode = () => {
       default:
         return (
           <div className="text-center">
-            <h2 className="text-2xl sm:text-3xl font-semibold text-[#E0E0E0]">{slide.question}</h2>
+            <h2 className="text-2xl sm:text-3xl font-semibold text-[#E0E0E0]">
+              {typeof slide.question === 'string' 
+                ? slide.question 
+                : (slide.question?.text || slide.question?.label || '')}
+            </h2>
           </div>
         );
     }

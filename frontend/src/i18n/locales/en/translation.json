@@ -79,7 +79,7 @@
     "pricing_lifetime_everything_in_pro": "Everything in Pro",
     "pricing_lifetime_access": "Lifetime Access",
     "pricing_lifetime_no_fees": "No Monthly Fees",
-    "pricing_lifetime_detailed_export": "Detailed Export Results",
+    "pricing_lifetime_detailed_export": "Export Results",
     "pricing_institution_admin_dashboard": "Admin Dashboard",
     "pricing_institution_custom_branding": "Custom Branding",
     "pricing_institution_bulk_management": "Bulk Management",
@@ -364,7 +364,12 @@
       "url_hint": "Enter a direct link to an image (jpg, png, gif, webp, etc.)",
       "image_load_error": "Failed to load image",
       "drop_image_here": "Drop image here",
-      "drag_drop_hint": "Drag & drop or paste image"
+      "drag_drop_hint": "Drag & drop or paste image",
+      "no_image": "No image available",
+      "alt_text": "Image slide",
+      "participant_responses": "Participant Responses",
+      "anonymous": "Anonymous",
+      "no_response_content": "No response content"
     },
     "text": {
       "title_label": "Title",
@@ -1278,7 +1283,7 @@
     "lifetime_plan_feature2": "Lifetime access",
     "lifetime_plan_feature3": "No monthly fees",
     "lifetime_plan_feature4": "AI Features (Coming Soon)",
-    "lifetime_plan_feature5": "Detailed Export Results",
+    "lifetime_plan_feature5": "Export Results",
     "lifetime_plan_button": "Get Lifetime Access",
     "institution_plan_name": "Institution",
     "institution_plan_price": "₹499",
@@ -1304,7 +1309,7 @@
     "users_feature": "Users",
     "ai_features_feature": "AI Features (Coming Soon)",
     "export_results_feature": "Export Results",
-    "detailed_export_results_feature": "Detailed Export Results",
+    "detailed_export_results_feature": "Export Results",
     "priority_support_feature": "Priority Support",
     "lifetime_access_feature": "Lifetime Access",
     "custom_branding_feature": "Custom Branding",
@@ -2258,7 +2263,7 @@
     "feature_ai_features": "AI Features (Coming Soon)",
     "feature_api_access": "API Access",
     "feature_bulk_user_management": "Bulk User Management",
-    "feature_detailed_export_results": "Detailed Export Results"
+    "feature_detailed_export_results": "Export Results"
   },
   "testimonials": {
     "back": "Back",

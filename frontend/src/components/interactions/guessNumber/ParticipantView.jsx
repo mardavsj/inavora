@@ -23,22 +23,24 @@ const ParticipantGuessView = ({
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto space-y-8">
+    <div className="w-full max-w-2xl mx-auto space-y-6 sm:space-y-8 px-2 sm:px-4">
       <div>
-        <h2 className="text-4xl font-bold text-[#E0E0E0] text-center leading-tight">
-          {slide?.question || 'Guess the Number'}
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#E0E0E0] text-center leading-tight px-2">
+          {typeof slide?.question === 'string' 
+            ? slide.question 
+            : (slide.question?.text || slide.question?.label || 'Guess the Number')}
         </h2>
-        <p className="text-center text-[#B0B0B0] mt-2">
+        <p className="text-center text-[#B0B0B0] mt-2 text-sm sm:text-base px-2">
           Use the slider to make your guess
         </p>
       </div>
 
       {!hasSubmitted ? (
-        <div className="bg-[#1F1F1F] rounded-2xl shadow-lg border border-[#2A2A2A] p-8 space-y-6">
+        <div className="bg-[#1F1F1F] rounded-2xl shadow-lg border border-[#2A2A2A] p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-6">
           {/* Current Value Display */}
           <div className="text-center">
-            <div className="inline-block px-8 py-4 bg-[#1D2A20] rounded-2xl">
-              <p className="text-6xl font-bold text-[#4CAF50]">{guess}</p>
+            <div className="inline-block px-4 sm:px-6 md:px-8 py-3 sm:py-4 bg-[#1D2A20] rounded-xl sm:rounded-2xl">
+              <p className="text-4xl sm:text-5xl md:text-6xl font-bold text-[#4CAF50]">{guess}</p>
             </div>
           </div>
 
@@ -64,9 +66,9 @@ const ParticipantGuessView = ({
           {/* Submit Button */}
           <button
             onClick={handleSubmit}
-            className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-[#388E3C] to-[#2E7D32] hover:from-[#4CAF50] hover:to-[#388E3C] text-white rounded-xl font-semibold text-lg transition-all active:scale-95 shadow-lg shadow-[#4CAF50]/20"
+            className="w-full flex items-center justify-center gap-2 px-4 sm:px-6 py-3 sm:py-4 bg-gradient-to-r from-[#388E3C] to-[#2E7D32] hover:from-[#4CAF50] hover:to-[#388E3C] text-white rounded-xl font-semibold text-base sm:text-lg transition-all active:scale-95 shadow-lg shadow-[#4CAF50]/20 touch-manipulation"
           >
-            <Send className="h-5 w-5" />
+            <Send className="h-4 w-4 sm:h-5 sm:w-5" />
             Submit Guess
           </button>
         </div>

@@ -198,7 +198,11 @@ const RankingParticipantInput = ({
   return (
     <div className="w-full max-w-4xl mx-auto space-y-8">
       <div className="text-center">
-        <h2 className="text-3xl font-semibold text-[#E0E0E0]">{slide.question}</h2>
+        <h2 className="text-3xl font-semibold text-[#E0E0E0]">
+          {typeof slide.question === 'string' 
+            ? slide.question 
+            : (slide.question?.text || slide.question?.label || '')}
+        </h2>
         <p className="mt-2 text-sm text-[#B0B0B0]">{t('slide_editors.ranking.drag_instructions_participant') || 'Drag items into the ranking zone and reorder to show your priorities.'}</p>
       </div>
 

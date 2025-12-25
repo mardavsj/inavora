@@ -79,7 +79,7 @@
     "pricing_lifetime_everything_in_pro": "ప్రొలో ప్రతిదీ",
     "pricing_lifetime_access": "జీవితకాల ప్రాప్తి",
     "pricing_lifetime_no_fees": "నెలవారీ ఫీజులు లేవు",
-    "pricing_lifetime_detailed_export": "వివరణాత్మక ఎగుమతి ఫలితాలు",
+    "pricing_lifetime_detailed_export": "ఫలితాలను ఎగుమతి చేయండి",
     "pricing_institution_admin_dashboard": "నిర్వహణ డాష్‌బోర్డ్",
     "pricing_institution_custom_branding": "కస్టమ్ బ్రాండింగ్",
     "pricing_institution_bulk_management": "థోక నిర్వహణ",
@@ -613,7 +613,7 @@
     "lifetime_plan_feature2": "జీవితకాలం యాక్సెస్",
     "lifetime_plan_feature3": "నెలవారీ ఫీజులు లేవు",
     "lifetime_plan_feature4": "ఏఐ ఫీచర్‌లు (త్వరలో వస్తుంది)",
-    "lifetime_plan_feature5": "వివరణాత్మక ఎగుమతి ఫలితాలు",
+    "lifetime_plan_feature5": "ఫలితాలను ఎగుమతి చేయండి",
     "lifetime_plan_button": "జీవితకాలం యాక్సెస్ పొందండి",
     "institution_plan_name": "సంస్థ",
     "institution_plan_price": "₹499",
@@ -639,7 +639,7 @@
     "users_feature": "వినియోగదారులు",
     "ai_features_feature": "ఏఐ ఫీచర్‌లు (త్వరలో వస్తుంది)",
     "export_results_feature": "ఫలితాలను ఎగుమతి చేయండి",
-    "detailed_export_results_feature": "వివరణాత్మక ఎగుమతి ఫలితాలు",
+    "detailed_export_results_feature": "ఫలితాలను ఎగుమతి చేయండి",
     "priority_support_feature": "ప్రాధాన్య మద్దతు",
     "lifetime_access_feature": "జీవితకాలం యాక్సెస్",
     "custom_branding_feature": "కస్టమ్ బ్రాండింగ్",
@@ -1279,7 +1279,12 @@
       "url_hint": "చిత్రానికి ప్రత్యక్ష లింక్ నమోదు చేయండి (jpg, png, gif, webp, మొదలైనవి)",
       "image_load_error": "చిత్రాన్ని లోడ్ చేయడంలో విఫలమైంది",
       "drop_image_here": "ఇక్కడ చిత్రాన్ని డ్రాప్ చేయండి",
-      "drag_drop_hint": "చిత్రాన్ని లాగండి మరియు డ్రాప్ చేయండి లేదా పేస్ట్ చేయండి"
+      "drag_drop_hint": "చిత్రాన్ని లాగండి మరియు డ్రాప్ చేయండి లేదా పేస్ట్ చేయండి",
+      "no_image": "చిత్రం అందుబాటులో లేదు",
+      "alt_text": "చిత్ర స్లైడ్",
+      "participant_responses": "పాల్గొనేవారి స్పందనలు",
+      "anonymous": "అజ్ఞాత",
+      "no_response_content": "స్పందన కంటెంట్ లేదు"
     },
     "video": {
       "title_label": "శీర్షిక",
@@ -1526,7 +1531,7 @@
     "feature_ai_features": "AI లక్షణాలు (త్వరలో వస్తుంది)",
     "feature_api_access": "API ప్రాప్యత",
     "feature_bulk_user_management": "బల్క్ వినియోగదారు నిర్వహణ",
-    "feature_detailed_export_results": "వివరణాత్మక ఎగుమతి ఫలితాలు"
+    "feature_detailed_export_results": "ఫలితాలను ఎగుమతి చేయండి"
   },
   "institution_admin": {
     "fetch_users_error": "వినియోగదారులను పొందడంలో విఫలమైంది",

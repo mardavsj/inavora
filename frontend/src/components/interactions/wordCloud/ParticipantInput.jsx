@@ -39,10 +39,12 @@ const WordCloudParticipantInput = ({
   }, [wordFrequencies]);
 
   return (
-    <div className="w-full max-w-3xl mx-auto">
-      <div className="mb-8 sm:mb-12">
-        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-[#E0E0E0] text-center leading-tight">
-          {slide.question}
+    <div className="w-full max-w-3xl mx-auto px-2 sm:px-4">
+      <div className="mb-6 sm:mb-8 md:mb-12">
+        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-[#E0E0E0] text-center leading-tight px-2">
+          {typeof slide.question === 'string' 
+            ? slide.question 
+            : (slide.question?.text || slide.question?.label || '')}
         </h2>
         {typeof slide.maxWordsPerParticipant === 'number' && !hasSubmitted && (
           <div className="text-center text-[#B0B0B0] mt-3 sm:mt-4 text-xs sm:text-sm space-y-1">

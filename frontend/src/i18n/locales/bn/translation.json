@@ -114,7 +114,7 @@
     "pricing_lifetime_everything_in_pro": "প্রো-তে সবকিছু",
     "pricing_lifetime_access": "জীবনকাল অ্যাক্সেস",
     "pricing_lifetime_no_fees": "কোনও মাসিক ফি নেই",
-    "pricing_lifetime_detailed_export": "বিস্তারিত রপ্তানি ফলাফল",
+    "pricing_lifetime_detailed_export": "ফলাফল রপ্তানি করুন",
     "pricing_institution_admin_dashboard": "অ্যাডমিন ড্যাশবোর্ড",
     "pricing_institution_custom_branding": "কাস্টম ব্র্যান্ডিং",
     "pricing_institution_bulk_management": "বাল্ক পরিচালনা",
@@ -352,7 +352,12 @@
       "url_hint": "একটি ছবির সরাসরি লিঙ্ক লিখুন (jpg, png, gif, webp, ইত্যাদি)",
       "image_load_error": "ছবি লোড করতে ব্যর্থ",
       "drop_image_here": "এখানে ছবি ছেড়ে দিন",
-      "drag_drop_hint": "ছবি টেনে আনুন বা পেস্ট করুন"
+      "drag_drop_hint": "ছবি টেনে আনুন বা পেস্ট করুন",
+      "no_image": "কোন ছবি উপলব্ধ নেই",
+      "alt_text": "ছবি স্লাইড",
+      "participant_responses": "অংশগ্রহণকারী প্রতিক্রিয়া",
+      "anonymous": "অজ্ঞাত",
+      "no_response_content": "কোন প্রতিক্রিয়া সামগ্রী নেই"
     },
     "text": {
       "title_label": "শিরোনাম",
@@ -1222,7 +1227,7 @@
     "lifetime_plan_feature2": "জীবনকাল অ্যাক্সেস",
     "lifetime_plan_feature3": "কোনও মাসিক ফি নেই",
     "lifetime_plan_feature4": "এআই বৈশিষ্ট্য (শীঘ্রই আসছে)",
-    "lifetime_plan_feature5": "বিস্তারিত রপ্তানি ফলাফল",
+    "lifetime_plan_feature5": "ফলাফল রপ্তানি করুন",
     "lifetime_plan_button": "জীবনকাল অ্যাক্সেস পান",
     "institution_plan_name": "প্রতিষ্ঠান",
     "institution_plan_price": "₹499",
@@ -1248,7 +1253,7 @@
     "users_feature": "ব্যবহারকারী",
     "ai_features_feature": "এআই বৈশিষ্ট্য (শীঘ্রই আসছে)",
     "export_results_feature": "ফলাফল রপ্তানি করুন",
-    "detailed_export_results_feature": "বিস্তারিত রপ্তানির ফলাফল",
+    "detailed_export_results_feature": "ফলাফল রপ্তানি করুন",
     "priority_support_feature": "অগ্রাধিকার সমর্থন",
     "lifetime_access_feature": "জীবনকাল অ্যাক্সেস",
     "custom_branding_feature": "কাস্টম ব্র্যান্ডিং",
@@ -2058,7 +2063,7 @@
     "feature_ai_features": "AI বৈশিষ্ট্য (শীঘ্রই আসছে)",
     "feature_api_access": "API অ্যাক্সেস",
     "feature_bulk_user_management": "বাল্ক ব্যবহারকারী ব্যবস্থাপনা",
-    "feature_detailed_export_results": "বিস্তারিত রপ্তানি ফলাফল"
+    "feature_detailed_export_results": "ফলাফল রপ্তানি করুন"
   },
   "testimonials": {
     "back": "পিছনে",

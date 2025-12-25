@@ -79,7 +79,7 @@
     "pricing_lifetime_everything_in_pro": "प्रो में सब कुछ",
     "pricing_lifetime_access": "आजीवन पहुंच",
     "pricing_lifetime_no_fees": "कोई मासिक शुल्क नहीं",
-    "pricing_lifetime_detailed_export": "विस्तृत निर्यात परिणाम",
+    "pricing_lifetime_detailed_export": "निर्यात परिणाम",
     "pricing_institution_admin_dashboard": "व्यवस्थापक डैशबोर्ड",
     "pricing_institution_custom_branding": "कस्टम ब्रांडिंग",
     "pricing_institution_bulk_management": "थोक प्रबंधन",
@@ -321,7 +321,12 @@
       "url_hint": "एक छवि का सीधा लिंक दर्ज करें (jpg, png, gif, webp, आदि)",
       "image_load_error": "छवि लोड करने में विफल",
       "drop_image_here": "यहाँ छवि छोड़ें",
-      "drag_drop_hint": "छवि खींचें और छोड़ें या पेस्ट करें"
+      "drag_drop_hint": "छवि खींचें और छोड़ें या पेस्ट करें",
+      "no_image": "कोई छवि उपलब्ध नहीं",
+      "alt_text": "छवि स्लाइड",
+      "participant_responses": "प्रतिभागी प्रतिक्रियाएं",
+      "anonymous": "अज्ञात",
+      "no_response_content": "कोई प्रतिक्रिया सामग्री नहीं"
     },
     "text": {
       "title_label": "शीर्षक",
@@ -1196,7 +1201,7 @@
     "lifetime_plan_feature2": "आजीवन पहुंच",
     "lifetime_plan_feature3": "कोई मासिक शुल्क नहीं",
     "lifetime_plan_feature4": "एआई सुविधाएँ (जल्द आ रहा है)",
-    "lifetime_plan_feature5": "विस्तृत निर्यात परिणाम",
+    "lifetime_plan_feature5": "निर्यात परिणाम",
     "institution_plan_name": "संस्थान",
     "institution_plan_price": "₹499",
     "institution_plan_period": "/उपयोगकर्ता/वर्ष",
@@ -1221,7 +1226,7 @@
     "users_feature": "उपयोगकर्ता",
     "ai_features_feature": "एआई सुविधाएँ (जल्द आ रहा है)",
     "export_results_feature": "निर्यात परिणाम",
-    "detailed_export_results_feature": "विस्तृत निर्यात परिणाम",
+    "detailed_export_results_feature": "निर्यात परिणाम",
     "priority_support_feature": "प्राथमिकता समर्थन",
     "lifetime_access_feature": "आजीवन पहुंच",
     "custom_branding_feature": "कस्टम ब्रांडिंग",
@@ -2038,7 +2043,7 @@
     "feature_ai_features": "AI सुविधाएं (जल्द आ रहा है)",
     "feature_api_access": "API एक्सेस",
     "feature_bulk_user_management": "बल्क उपयोगकर्ता प्रबंधन",
-    "feature_detailed_export_results": "विस्तृत निर्यात परिणाम"
+    "feature_detailed_export_results": "निर्यात परिणाम"
   },
   "testimonials": {
     "back": "वापस",

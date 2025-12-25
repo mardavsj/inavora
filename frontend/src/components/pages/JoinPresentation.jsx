@@ -1020,7 +1020,11 @@ const JoinPresentation = () => {
       default:
         return (
           <div className="text-center">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-[#E0E0E0]">{currentSlide.question}</h2>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-[#E0E0E0]">
+              {typeof currentSlide.question === 'string' 
+                ? currentSlide.question 
+                : (currentSlide.question?.text || currentSlide.question?.label || '')}
+            </h2>
           </div>
         );
     }

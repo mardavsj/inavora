@@ -207,7 +207,11 @@ const ScalesParticipantInput = ({
     <div className="mx-auto w-full max-w-4xl space-y-6 sm:space-y-8">
       {slide?.question && (
         <div className="text-center">
-          <h2 className="text-2xl sm:text-3xl font-semibold text-[#E0E0E0]">{slide.question}</h2>
+          <h2 className="text-2xl sm:text-3xl font-semibold text-[#E0E0E0]">
+            {typeof slide.question === 'string' 
+              ? slide.question 
+              : (slide.question?.text || slide.question?.label || '')}
+          </h2>
         </div>
       )}
 

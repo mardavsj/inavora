@@ -38,7 +38,11 @@ const RankingResult = ({ slide, data }) => {
 
                             {/* Content */}
                             <div className="flex-1 z-10">
-                                <h4 className="text-lg font-medium text-slate-200">{item.label}</h4>
+                                <h4 className="text-lg font-medium text-slate-200">
+                                    {typeof item.label === 'string' 
+                                      ? item.label 
+                                      : (item.text || item.label?.text || item.label?.label || `Item ${index + 1}`)}
+                                </h4>
                             </div>
 
                             {/* Score */}

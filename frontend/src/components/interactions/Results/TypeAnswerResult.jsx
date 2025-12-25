@@ -36,7 +36,11 @@ const TypeAnswerResult = ({ slide, data }) => {
     <div className="space-y-6">
       <div className="bg-[#1F1F1F] rounded-xl border border-[#2A2A2A] p-6">
         <h3 className="text-xl font-semibold text-[#E0E0E0] mb-4">{t('presentation_results.common_labels.question')}</h3>
-        <p className="text-[#E0E0E0] text-lg">{slide.question}</p>
+        <p className="text-[#E0E0E0] text-lg">
+          {typeof slide.question === 'string' 
+            ? slide.question 
+            : (slide.question?.text || slide.question?.label || '')}
+        </p>
       </div>
 
       {/* Sorting controls */}

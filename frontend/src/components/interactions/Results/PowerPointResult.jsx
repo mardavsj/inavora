@@ -13,11 +13,19 @@ const PowerPointResult = ({ slide, data }) => {
     >
       <div className="space-y-6">
         <div className="bg-[#1F1F1F] rounded-lg p-6 border border-[#2A2A2A]">
-          <h3 className="text-xl font-semibold text-white mb-4">{slide.question || t('slide_editors.powerpoint.default_title')}</h3>
+          <h3 className="text-xl font-semibold text-white mb-4">
+            {typeof slide.question === 'string' 
+              ? slide.question 
+              : (slide.question?.text || slide.question?.label || t('slide_editors.powerpoint.default_title'))}
+          </h3>
           
           <div className="mb-6">
             <h4 className="text-lg font-medium text-gray-300 mb-2">{t('slide_editors.powerpoint.question_instruction')}</h4>
-            <p className="text-gray-400">{slide.question}</p>
+            <p className="text-gray-400">
+              {typeof slide.question === 'string' 
+                ? slide.question 
+                : (slide.question?.text || slide.question?.label || '')}
+            </p>
           </div>
 
           <div className="mb-6">

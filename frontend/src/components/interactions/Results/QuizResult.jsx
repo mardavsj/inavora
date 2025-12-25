@@ -53,7 +53,9 @@ const QuizResult = ({ slide, data }) => {
                                             </div>
                                         )}
                                         <span className={`font-medium text-lg ${isCorrect ? 'text-green-100' : 'text-slate-200'} quiz-option-text`}>
-                                            {option.text}
+                                            {typeof option.text === 'string' 
+                                              ? option.text 
+                                              : (typeof option === 'string' ? option : `Option ${index + 1}`)}
                                         </span>
                                     </div>
 

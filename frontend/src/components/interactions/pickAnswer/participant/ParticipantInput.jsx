@@ -32,7 +32,9 @@ const PickAnswerParticipantInput = ({
     <div className="w-full max-w-3xl mx-auto">
       <div className="mb-8 sm:mb-12">
         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-[#E0E0E0] text-center leading-tight">
-          {slide.question}
+          {typeof slide.question === 'string' 
+            ? slide.question 
+            : (slide.question?.text || slide.question?.label || '')}
         </h2>
       </div>
 

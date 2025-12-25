@@ -79,7 +79,7 @@
     "pricing_lifetime_everything_in_pro": "专业版的所有功能",
     "pricing_lifetime_access": "终身访问",
     "pricing_lifetime_no_fees": "无月费",
-    "pricing_lifetime_detailed_export": "详细导出结果",
+    "pricing_lifetime_detailed_export": "导出结果",
     "pricing_institution_admin_dashboard": "管理仪表板",
     "pricing_institution_custom_branding": "自定义品牌",
     "pricing_institution_bulk_management": "批量管理",
@@ -352,7 +352,12 @@
       "url_hint": "输入图片的直接链接（jpg、png、gif、webp等）",
       "image_load_error": "加载图片失败",
       "drop_image_here": "将图片拖放到此处",
-      "drag_drop_hint": "拖放或粘贴图片"
+      "drag_drop_hint": "拖放或粘贴图片",
+      "no_image": "没有可用图片",
+      "alt_text": "图片幻灯片",
+      "participant_responses": "参与者回复",
+      "anonymous": "匿名",
+      "no_response_content": "无回复内容"
     },
     "text": {
       "title_label": "标题",
@@ -1255,7 +1260,7 @@
     "lifetime_plan_feature2": "终身访问",
     "lifetime_plan_feature3": "无月费",
     "lifetime_plan_feature4": "AI功能（即将推出）",
-    "lifetime_plan_feature5": "详细导出结果",
+    "lifetime_plan_feature5": "导出结果",
     "institution_plan_name": "机构版",
     "institution_plan_price": "₹499",
     "institution_plan_period": "/用户/年",
@@ -1280,7 +1285,7 @@
     "users_feature": "用户",
     "ai_features_feature": "AI功能（即将推出）",
     "export_results_feature": "导出结果",
-    "detailed_export_results_feature": "详细导出结果",
+    "detailed_export_results_feature": "导出结果",
     "priority_support_feature": "优先支持",
     "lifetime_access_feature": "终身访问",
     "custom_branding_feature": "自定义品牌",
@@ -2092,7 +2097,7 @@
     "feature_ai_features": "AI功能（即将推出）",
     "feature_api_access": "API访问",
     "feature_bulk_user_management": "批量用户管理",
-    "feature_detailed_export_results": "详细导出结果"
+    "feature_detailed_export_results": "导出结果"
   },
   "testimonials": {
     "back": "返回",

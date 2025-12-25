@@ -13,7 +13,11 @@ const VideoResult = ({ slide, data }) => {
     >
       <div className="space-y-6">
         <div className="bg-[#1F1F1F] rounded-lg p-6 border border-[#2A2A2A]">
-          <h3 className="text-xl font-semibold text-white mb-4">{slide.question || t('slide_editors.video.default_title')}</h3>
+          <h3 className="text-xl font-semibold text-white mb-4">
+            {typeof slide.question === 'string' 
+              ? slide.question 
+              : (slide.question?.text || slide.question?.label || t('slide_editors.video.default_title'))}
+          </h3>
           
           {slide.videoUrl ? (
             <div className="flex justify-center">

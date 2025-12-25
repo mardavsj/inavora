@@ -36,34 +36,36 @@ const ResultCard = ({ slide, totalResponses, children, qnaProp }) => {
             className="w-full max-w-5xl mx-auto mb-12 bg-[#1e293b]/50 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden shadow-xl"
         >
             {/* Header */}
-            <div className="px-8 py-6 border-b border-white/5 flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                    <div className={`p-2 rounded-lg ${bg}`}>
-                        <Icon className={`w-5 h-5 ${color}`} />
+            <div className="px-4 sm:px-6 md:px-8 py-4 sm:py-5 md:py-6 border-b border-white/5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0">
+                <div className="flex items-center gap-2 sm:gap-4">
+                    <div className={`p-1.5 sm:p-2 rounded-lg ${bg}`}>
+                        <Icon className={`w-4 h-4 sm:w-5 sm:h-5 ${color}`} />
                     </div>
-                    <span className={`text-sm font-medium ${color} uppercase tracking-wider`}>
+                    <span className={`text-xs sm:text-sm font-medium ${color} uppercase tracking-wider`}>
                         {label}
                     </span>
                 </div>
-                <div className="flex items-center gap-2 text-[#B0B0B0] text-sm">
+                <div className="flex items-center gap-2 text-[#B0B0B0] text-xs sm:text-sm">
                     <span className="font-semibold text-[#E0E0E0]">{totalResponses || 0}</span>
                     <span>{t('presentation_results.responses')}</span>
                 </div>
             </div>
 
             {/* Question/Title */}
-            <div className={`px-8 py-6 ${qnaProp && 'flex items-center justify-between gap-2'}`}>
-                <h3 className="text-2xl font-semibold text-[#E0E0E0] leading-tight">
-                    {slide?.question || t('presentation_results.untitled_slide')}
+            <div className={`px-4 sm:px-6 md:px-8 py-4 sm:py-5 md:py-6 ${qnaProp && 'flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-2'}`}>
+                <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-[#E0E0E0] leading-tight">
+                    {typeof slide?.question === 'string' 
+                        ? slide.question 
+                        : (slide?.question?.text || slide?.question?.label || t('presentation_results.untitled_slide'))}
                 </h3>
                 {qnaProp && 
-                <div className="flex justify-center">
+                <div className="flex justify-center w-full sm:w-auto">
                     <div className="flex p-1 bg-[#2A2A2A] rounded-xl border border-[#2F2F2F]">
                         {['all', 'answered', 'unanswered'].map((f) => (
                             <button
                                 key={f}
                                 onClick={() => qnaProp.setFilter(f)}
-                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${qnaProp.filter === f
+                                className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-all ${qnaProp.filter === f
                                     ? 'bg-[#1F1F1F] text-[#E0E0E0] shadow-sm'
                                     : 'text-[#B0B0B0] hover:text-[#E0E0E0]'
                                     }`}
@@ -77,7 +79,7 @@ const ResultCard = ({ slide, totalResponses, children, qnaProp }) => {
             </div>
 
             {/* Content */}
-            <div className="px-8 pb-8">
+            <div className="px-4 sm:px-6 md:px-8 pb-4 sm:pb-6 md:pb-8">
                 {children}
             </div>
         </motion.div>

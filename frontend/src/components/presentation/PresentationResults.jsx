@@ -50,9 +50,12 @@ const PresentationResults = ({ slides, presentationId }) => {
     const [clearDialogType, setClearDialogType] = useState(null); // 'all' or 'slide'
     const [slideToClear, setSlideToClear] = useState(null); // Store slideId when clearing a specific slide
     const [showClearDropdown, setShowClearDropdown] = useState(false);
+    const [showExportDropdown, setShowExportDropdown] = useState(false);
     const [showIndividualClearButtons, setShowIndividualClearButtons] = useState(false); // Show clear buttons on each slide
     const resultsRef = useRef(null);
     const socketRef = useRef(null);
+    const exportButtonRef = useRef(null);
+    const clearButtonRef = useRef(null);
 
     // Check if user has access to export (CSV/Excel only)
     const canExport = (() => {
@@ -700,14 +703,25 @@ const PresentationResults = ({ slides, presentationId }) => {
             }
         }
         
-        // Debug: Log when results are not found
-        console.warn('getSlideResults: No results found for slide', {
-            slideId: slideIdStr,
-            slideType: slide.type,
-            availableResultKeys: resultKeys.slice(0, 5), // Show first 5 keys
-            slideIdType: typeof slideId,
-            slideIdValue: slideId
-        });
+        // Only log warning for slide types that are expected to have results
+        // Some slide types (image, text, video, instruction) may not have responses
+        const slideTypesWithExpectedResults = [
+            'multiple_choice', 'word_cloud', 'open_ended', 'scales', 'ranking',
+            'hundred_points', 'quiz', 'qna', 'guess_number', '2x2_grid',
+            'pin_on_image', 'pick_answer', 'type_answer', 'leaderboard'
+        ];
+        
+        const shouldHaveResults = slideTypesWithExpectedResults.includes(slide.type);
+        
+        // Only log warning in development mode and for slides that should have results
+        if (shouldHaveResults && process.env.NODE_ENV === 'development') {
+            console.debug('getSlideResults: No results found for slide', {
+                slideId: slideIdStr,
+                slideType: slide.type,
+                availableResultKeys: resultKeys.slice(0, 5),
+                slideIdType: typeof slideId
+            });
+        }
         
         return {};
     };
@@ -1026,80 +1040,106 @@ const PresentationResults = ({ slides, presentationId }) => {
         <div className="flex-1 bg-[#1A1A1A] overflow-y-auto">
             <div className="max-w-5xl mx-auto">
                 {/* Sticky Header */}
-                <div className="sticky top-0 z-30 bg-[#1A1A1A] border-b border-[#2A2A2A] p-4 sm:p-6 md:p-8 mb-4 sm:mb-6 md:mb-8">
+                <div className="sticky top-0 z-30 bg-[#1A1A1A] border-b border-[#2A2A2A] p-4 sm:p-6 md:p-8 mb-4 sm:mb-6 md:mb-8 overflow-visible">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                         <div>
                             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#E0E0E0] mb-1 sm:mb-2">{t('presentation_results.title')}</h2>
                             <p className="text-sm sm:text-base text-[#B0B0B0]">{t('presentation_results.subtitle')}</p>
                         </div>
-                        <div className="flex gap-2">
+                        <div className="flex flex-wrap gap-2 relative z-50">
                             {canExport && (
-                                <div className="relative group">
+                                <div className="relative z-50">
                                     <button
+                                        ref={exportButtonRef}
+                                        onClick={() => setShowExportDropdown(!showExportDropdown)}
                                         disabled={isExporting}
-                                        className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600 text-white rounded-lg transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap shadow-lg hover:shadow-xl"
+                                        className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600 text-white rounded-lg transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap shadow-lg hover:shadow-xl text-sm sm:text-base touch-manipulation"
                                     >
-                                        <Download className="w-4 h-4" />
+                                        <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                                         {isExporting ? t('presentation_results.exporting') : t('presentation_results.export')}
+                                        <ChevronDown className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                                     </button>
-                                    <div className="absolute right-0 top-full mt-1 w-56 bg-[#1e293b] border border-white/10 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10">
-                                        <button
-                                            onClick={() => handleExportData('csv')}
-                                            disabled={isExporting}
-                                            className="w-full text-left px-4 py-2 hover:bg-white/5 text-sm text-white disabled:opacity-50"
-                                        >
-                                            {t('presentation_results.export_csv')}
-                                        </button>
-                                        <button
-                                            onClick={() => handleExportData('excel')}
-                                            disabled={isExporting}
-                                            className="w-full text-left px-4 py-2 hover:bg-white/5 text-sm text-white disabled:opacity-50"
-                                        >
-                                            {t('presentation_results.export_excel')}
-                                        </button>
-                                        <button
-                                            onClick={() => handleExportData('pdf')}
-                                            disabled={isExporting}
-                                            className="w-full text-left px-4 py-2 hover:bg-white/5 text-sm text-white disabled:opacity-50"
-                                        >
-                                            {t('presentation_results.export_pdf')}
-                                        </button>
-                                    </div>
+                                    {showExportDropdown && (
+                                        <>
+                                            <div 
+                                                className="fixed inset-0 z-40" 
+                                                onClick={() => setShowExportDropdown(false)}
+                                            />
+                                            <div className="absolute left-0 top-full mt-1 w-48 sm:w-56 bg-[#1e293b] border border-white/10 rounded-lg shadow-xl z-[60] min-w-max">
+                                                <button
+                                                    onClick={() => {
+                                                        handleExportData('csv');
+                                                        setShowExportDropdown(false);
+                                                    }}
+                                                    disabled={isExporting}
+                                                    className="w-full text-left px-3 sm:px-4 py-2.5 hover:bg-white/5 text-xs sm:text-sm text-white disabled:opacity-50 flex items-center gap-2 touch-manipulation active:bg-white/10"
+                                                >
+                                                    <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
+                                                    <span className="whitespace-nowrap">{t('presentation_results.export_csv')}</span>
+                                                </button>
+                                                <div className="h-px bg-white/10"></div>
+                                                <button
+                                                    onClick={() => {
+                                                        handleExportData('excel');
+                                                        setShowExportDropdown(false);
+                                                    }}
+                                                    disabled={isExporting}
+                                                    className="w-full text-left px-3 sm:px-4 py-2.5 hover:bg-white/5 text-xs sm:text-sm text-white disabled:opacity-50 flex items-center gap-2 touch-manipulation active:bg-white/10"
+                                                >
+                                                    <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
+                                                    <span className="whitespace-nowrap">{t('presentation_results.export_excel')}</span>
+                                                </button>
+                                                <div className="h-px bg-white/10"></div>
+                                                <button
+                                                    onClick={() => {
+                                                        handleExportData('pdf');
+                                                        setShowExportDropdown(false);
+                                                    }}
+                                                    disabled={isExporting}
+                                                    className="w-full text-left px-3 sm:px-4 py-2.5 hover:bg-white/5 text-xs sm:text-sm text-white disabled:opacity-50 flex items-center gap-2 touch-manipulation active:bg-white/10"
+                                                >
+                                                    <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
+                                                    <span className="whitespace-nowrap">{t('presentation_results.export_pdf')}</span>
+                                                </button>
+                                            </div>
+                                        </>
+                                    )}
                                 </div>
                             )}
-                            <div className="relative">
+                            <div className="relative z-50">
                                 <button
+                                    ref={clearButtonRef}
                                     onClick={() => setShowClearDropdown(!showClearDropdown)}
                                     disabled={isClearing || isExporting}
-                                    className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap shadow-lg hover:shadow-xl"
+                                    className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap shadow-lg hover:shadow-xl text-sm sm:text-base touch-manipulation"
                                 >
-                                    <Trash2 className="w-4 h-4" />
+                                    <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                                     {t('presentation_results.clear_results')}
-                                    <ChevronDown className="w-4 h-4" />
+                                    <ChevronDown className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                                 </button>
                                 {showClearDropdown && (
                                     <>
                                         <div 
-                                            className="fixed inset-0 z-10" 
+                                            className="fixed inset-0 z-40" 
                                             onClick={() => setShowClearDropdown(false)}
                                         />
-                                        <div className="absolute right-0 top-full mt-1 w-56 bg-[#1e293b] border border-white/10 rounded-lg shadow-xl z-20">
+                                        <div className="absolute right-0 top-full mt-1 w-48 sm:w-56 bg-[#1e293b] border border-white/10 rounded-lg shadow-xl z-[60] min-w-max">
                                             <button
                                                 onClick={handleClearAllClick}
                                                 disabled={isClearing || isExporting}
-                                                className="w-full text-left px-4 py-2 hover:bg-white/5 text-sm text-white disabled:opacity-50 flex items-center gap-2"
+                                                className="w-full text-left px-3 sm:px-4 py-2.5 hover:bg-white/5 text-xs sm:text-sm text-white disabled:opacity-50 flex items-center gap-2 touch-manipulation active:bg-white/10"
                                             >
-                                                <Trash2 className="w-4 h-4" />
-                                                {t('presentation_results.clear_all_results')}
+                                                <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
+                                                <span className="whitespace-nowrap">{t('presentation_results.clear_all_results')}</span>
                                             </button>
                                             <div className="h-px bg-white/10"></div>
                                             <button
                                                 onClick={handleClearSlideClick}
                                                 disabled={isClearing || isExporting}
-                                                className="w-full text-left px-4 py-2 hover:bg-white/5 text-sm text-white disabled:opacity-50 flex items-center gap-2"
+                                                className="w-full text-left px-3 sm:px-4 py-2.5 hover:bg-white/5 text-xs sm:text-sm text-white disabled:opacity-50 flex items-center gap-2 touch-manipulation active:bg-white/10"
                                             >
-                                                <Trash2 className="w-4 h-4" />
-                                                {t('presentation_results.clear_current_slide')}
+                                                <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
+                                                <span className="whitespace-nowrap">{t('presentation_results.clear_current_slide')}</span>
                                             </button>
                                         </div>
                                     </>

@@ -958,7 +958,7 @@ const InstitutionRegister = () => {
                   'AI Features': 'institution_register.feature_ai_features',
                   'API Access': 'institution_register.feature_api_access',
                   'Bulk User Management': 'institution_register.feature_bulk_user_management',
-                  'Detailed Export Results': 'institution_register.feature_detailed_export_results'
+                  'Export Results': 'institution_register.feature_detailed_export_results'
                 };
                 const translationKey = featureKeyMap[feature] || feature;
                 const displayFeature = translationKey.startsWith('institution_register.') ? t(translationKey) : feature;

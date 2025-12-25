@@ -79,7 +79,7 @@
     "pricing_lifetime_everything_in_pro": "சிறப்பு முறையில் எல்லாம்",
     "pricing_lifetime_access": "வாழ்நாள் முழுவதும் அணுகல்",
     "pricing_lifetime_no_fees": "மாதாந்திர கட்டணம் இல்லை",
-    "pricing_lifetime_detailed_export": "விரிவான ஏற்றுமதி முடிவுகள்",
+    "pricing_lifetime_detailed_export": "முடிவுகளை ஏற்றுமதி செய்யவும்",
     "pricing_institution_admin_dashboard": "நிர்வாக டாஷ்போர்டு",
     "pricing_institution_custom_branding": "தனிப்பயன் பிராண்டிங்",
     "pricing_institution_bulk_management": "மொத்த மேலாண்மை",
@@ -617,7 +617,7 @@
     "lifetime_plan_feature2": "வாழ்நாள் முழுவதும் அணுகல்",
     "lifetime_plan_feature3": "மாதாந்திர கட்டணம் இல்லை",
     "lifetime_plan_feature4": "ஏஐ அம்சங்கள் (விரைவில் வருகின்றன)",
-    "lifetime_plan_feature5": "விரிவான ஏற்றுமதி முடிவுகள்",
+    "lifetime_plan_feature5": "முடிவுகளை ஏற்றுமதி செய்யவும்",
     "lifetime_plan_button": "வாழ்நாள் முழுவதுமாக அணுகலைப் பெறுங்கள்",
     "institution_plan_name": "நிறுவனம்",
     "institution_plan_price": "₹499",
@@ -643,7 +643,7 @@
     "users_feature": "பயனர்கள்",
     "ai_features_feature": "ஏஐ அம்சங்கள் (விரைவில் வருகின்றன)",
     "export_results_feature": "முடிவுகளை ஏற்றுமதி செய்யவும்",
-    "detailed_export_results_feature": "விரிவான ஏற்றுமதி முடிவுகள்",
+    "detailed_export_results_feature": "முடிவுகளை ஏற்றுமதி செய்யவும்",
     "priority_support_feature": "முன்னுரிமை ஆதரவு",
     "lifetime_access_feature": "வாழ்நாள் முழுவதும் அணுகல்",
     "custom_branding_feature": "தனிப்பயன் பிராண்டிங்",
@@ -1057,7 +1057,12 @@
       "url_hint": "படத்தின் நேரடி இணைப்பை உள்ளிடவும் (jpg, png, gif, webp, முதலியன)",
       "image_load_error": "படத்தை ஏற்ற முடியவில்லை",
       "drop_image_here": "இங்கே படத்தை விடவும்",
-      "drag_drop_hint": "படத்தை இழுத்து விடவும் அல்லது ஒட்டவும்"
+      "drag_drop_hint": "படத்தை இழுத்து விடவும் அல்லது ஒட்டவும்",
+      "no_image": "படம் கிடைக்கவில்லை",
+      "alt_text": "பட ஸ்லைடு",
+      "participant_responses": "பங்கேற்பாளர் பதில்கள்",
+      "anonymous": "அடையாளம் தெரியாத",
+      "no_response_content": "பதில் உள்ளடக்கம் இல்லை"
     },
     "text": {
       "title_label": "தலைப்பு",
@@ -1588,7 +1593,7 @@
     "feature_ai_features": "AI அம்சங்கள் (விரைவில் வருகின்றன)",
     "feature_api_access": "API அணுகல்",
     "feature_bulk_user_management": "மொத்த பயனர் மேலாண்மை",
-    "feature_detailed_export_results": "விரிவான ஏற்றுமதி முடிவுகள்"
+    "feature_detailed_export_results": "முடிவுகளை ஏற்றுமதி செய்யவும்"
   },
   "institution_admin": {
     "fetch_users_error": "பயனர்களைப் பெறுவதில் தோல்வி",

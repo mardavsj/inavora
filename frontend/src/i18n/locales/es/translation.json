@@ -79,7 +79,7 @@
     "pricing_lifetime_everything_in_pro": "Todo en Pro",
     "pricing_lifetime_access": "Acceso de por vida",
     "pricing_lifetime_no_fees": "Sin tarifas mensuales",
-    "pricing_lifetime_detailed_export": "Resultados de Exportación Detallados",
+    "pricing_lifetime_detailed_export": "Exportar resultados",
     "pricing_institution_admin_dashboard": "Panel de administración",
     "pricing_institution_custom_branding": "Marca personalizada",
     "pricing_institution_bulk_management": "Gestión masiva",
@@ -322,7 +322,12 @@
       "url_hint": "Ingrese un enlace directo a una imagen (jpg, png, gif, webp, etc.)",
       "image_load_error": "Error al cargar la imagen",
       "drop_image_here": "Suelta la imagen aquí",
-      "drag_drop_hint": "Arrastra y suelta o pega la imagen"
+      "drag_drop_hint": "Arrastra y suelta o pega la imagen",
+      "no_image": "No hay imagen disponible",
+      "alt_text": "Diapositiva de imagen",
+      "participant_responses": "Respuestas de Participantes",
+      "anonymous": "Anónimo",
+      "no_response_content": "Sin contenido de respuesta"
     },
     "text": {
       "title_label": "Título",
@@ -1225,7 +1230,7 @@
     "lifetime_plan_feature2": "Acceso de por vida",
     "lifetime_plan_feature3": "Sin tarifas mensuales",
     "lifetime_plan_feature4": "Funciones de IA (Próximamente)",
-    "lifetime_plan_feature5": "Resultados de Exportación Detallados",
+    "lifetime_plan_feature5": "Exportar Resultados",
     "institution_plan_name": "Institución",
     "institution_plan_price": "₹499",
     "institution_plan_period": "/usuario/año",
@@ -1250,7 +1255,7 @@
     "users_feature": "Usuarios",
     "ai_features_feature": "Funciones de IA (Próximamente)",
     "export_results_feature": "Exportar Resultados",
-    "detailed_export_results_feature": "Resultados de Exportación Detallados",
+    "detailed_export_results_feature": "Exportar Resultados",
     "priority_support_feature": "Soporte Prioritario",
     "lifetime_access_feature": "Acceso de por Vida",
     "custom_branding_feature": "Marca Personalizada",
@@ -2062,7 +2067,7 @@
     "feature_ai_features": "Características de IA (Próximamente)",
     "feature_api_access": "Acceso API",
     "feature_bulk_user_management": "Gestión Masiva de Usuarios",
-    "feature_detailed_export_results": "Resultados de Exportación Detallados"
+    "feature_detailed_export_results": "Exportar Resultados"
   },
   "testimonials": {
     "back": "Volver",

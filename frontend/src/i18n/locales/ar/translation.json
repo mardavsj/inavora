@@ -79,7 +79,7 @@
     "pricing_lifetime_everything_in_pro": "كل شيء في الاحترافي",
     "pricing_lifetime_access": "وصول مدى الحياة",
     "pricing_lifetime_no_fees": "لا رسوم شهرية",
-    "pricing_lifetime_detailed_export": "نتائج التصدير التفصيلية",
+    "pricing_lifetime_detailed_export": "تصدير النتائج",
     "pricing_institution_admin_dashboard": "لوحة تحكم الإدارة",
     "pricing_institution_custom_branding": "علامة تجارية مخصصة",
     "pricing_institution_bulk_management": "إدارة جماعية",
@@ -376,7 +376,12 @@
       "url_hint": "أدخل رابط مباشر لصورة (jpg, png, gif, webp، إلخ)",
       "image_load_error": "فشل تحميل الصورة",
       "drop_image_here": "أسقط الصورة هنا",
-      "drag_drop_hint": "اسحب وأفلت أو الصق الصورة"
+      "drag_drop_hint": "اسحب وأفلت أو الصق الصورة",
+      "no_image": "لا توجد صورة متاحة",
+      "alt_text": "شريحة صورة",
+      "participant_responses": "ردود المشاركين",
+      "anonymous": "مجهول",
+      "no_response_content": "لا يوجد محتوى رد"
     },
     "text": {
       "title_label": "العنوان",
@@ -1172,7 +1177,7 @@
     "lifetime_plan_feature2": "وصول مدى الحياة",
     "lifetime_plan_feature3": "لا رسوم شهرية",
     "lifetime_plan_feature4": "ميزات الذكاء الاصطناعي (قريباً)",
-    "lifetime_plan_feature5": "نتائج التصدير التفصيلية",
+    "lifetime_plan_feature5": "تصدير النتائج",
     "lifetime_plan_button": "الحصول على الوصول مدى الحياة",
     "institution_plan_name": "مؤسسي",
     "institution_plan_price": "₹499",
@@ -1584,7 +1589,7 @@
     "feature_ai_features": "ميزات الذكاء الاصطناعي (قريباً)",
     "feature_api_access": "الوصول إلى API",
     "feature_bulk_user_management": "إدارة المستخدمين بالجملة",
-    "feature_detailed_export_results": "نتائج التصدير التفصيلية"
+    "feature_detailed_export_results": "تصدير النتائج"
   },
   "institution_admin": {
     "fetch_users_error": "فشل في جلب المستخدمين",

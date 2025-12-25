@@ -126,15 +126,17 @@ const PinOnImageParticipantInput = ({
   const canSubmit = pin && !hasSubmitted;
 
   return (
-    <div className="w-full max-w-4xl mx-auto">
-      <div className="rounded-3xl border border-[#2A2A2A] bg-[#1F1F1F] shadow-sm p-8">
+    <div className="w-full max-w-4xl mx-auto px-2 sm:px-4">
+      <div className="rounded-2xl sm:rounded-3xl border border-[#2A2A2A] bg-[#1F1F1F] shadow-sm p-4 sm:p-6 md:p-8">
         {/* Question */}
-        <h2 className="text-2xl font-semibold text-[#E0E0E0] text-center mb-6">
-          {slide?.question || 'Place your pin on the image'}
+        <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[#E0E0E0] text-center mb-4 sm:mb-6 px-2">
+          {typeof slide?.question === 'string' 
+            ? slide.question 
+            : (slide.question?.text || slide.question?.label || 'Place your pin on the image')}
         </h2>
 
         {/* Instructions */}
-        <p className="text-sm text-[#B0B0B0] text-center mb-6">
+        <p className="text-xs sm:text-sm text-[#B0B0B0] text-center mb-4 sm:mb-6 px-2">
           {hasSubmitted 
             ? (isCorrect !== null 
                 ? (isCorrect 
@@ -148,7 +150,7 @@ const PinOnImageParticipantInput = ({
         {/* Image Container */}
         <div 
           ref={containerRef}
-          className="relative w-full rounded-xl overflow-hidden border-2 border-[#2A2A2A] bg-[#1F1F1F] mb-6"
+          className="relative w-full rounded-lg sm:rounded-xl overflow-hidden border-2 border-[#2A2A2A] bg-[#1F1F1F] mb-4 sm:mb-6"
           style={{ maxHeight: '500px' }}
         >
           <img
@@ -156,8 +158,7 @@ const PinOnImageParticipantInput = ({
             src={imageUrl}
             alt="Pin placement"
             onClick={handleImageClick}
-            className={`w-full h-auto object-contain ${!hasSubmitted && 'cursor-crosshair'}`}
-            style={{ maxHeight: '500px' }}
+            className={`w-full h-auto object-contain max-h-[300px] sm:max-h-[500px] ${!hasSubmitted && 'cursor-crosshair touch-manipulation'}`}
             draggable={false}
           />
 
@@ -318,15 +319,15 @@ const PinOnImageParticipantInput = ({
               onClick={handleSubmit}
               disabled={!canSubmit}
               className={`
-                inline-flex items-center gap-2 px-8 py-3 rounded-full font-medium text-base
-                transition-all duration-200 transform
+                inline-flex items-center gap-2 px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-medium text-sm sm:text-base
+                transition-all duration-200 transform touch-manipulation
                 ${canSubmit
-                  ? 'bg-gradient-to-r from-[#388E3C] to-[#2E7D32] hover:from-[#4CAF50] hover:to-[#388E3C] text-white shadow-lg hover:shadow-xl hover:scale-105'
+                  ? 'bg-gradient-to-r from-[#388E3C] to-[#2E7D32] hover:from-[#4CAF50] hover:to-[#388E3C] text-white shadow-lg hover:shadow-xl hover:scale-105 active:scale-95'
                   : 'bg-[#2A2A2A] text-[#6C6C6C] cursor-not-allowed'
                 }
               `}
             >
-              <Send className="w-5 h-5" />
+              <Send className="w-4 h-4 sm:w-5 sm:h-5" />
               Submit
             </button>
           </div>

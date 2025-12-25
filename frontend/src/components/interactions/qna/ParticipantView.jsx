@@ -47,12 +47,14 @@ const ParticipantQnaView = ({
   const remainingCharacters = MAX_CHARACTERS - questionText.length;
 
   return (
-    <div className="w-full max-w-3xl mx-auto space-y-8">
+    <div className="w-full max-w-3xl mx-auto space-y-6 sm:space-y-8 px-2 sm:px-4">
       <div>
-        <h2 className="text-4xl font-bold text-[#E0E0E0] text-center leading-tight">
-          {slide?.question || 'Ask a Question'}
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#E0E0E0] text-center leading-tight px-2">
+          {typeof slide?.question === 'string' 
+            ? slide.question 
+            : (slide.question?.text || slide.question?.label || 'Ask a Question')}
         </h2>
-        <p className="text-center text-[#B0B0B0] mt-2">
+        <p className="text-center text-[#B0B0B0] mt-2 text-sm sm:text-base px-2">
           {allowMultiple 
             ? 'You can ask multiple questions.' 
             : 'You can ask one question for this slide.'}
@@ -61,13 +63,14 @@ const ParticipantQnaView = ({
 
       {/* Floating Ask Question Button */}
       {canAskMore && !isDrawerOpen && (
-        <div className="fixed bottom-8 right-5 z-50">
+        <div className="fixed bottom-4 sm:bottom-8 right-4 sm:right-5 z-50">
           <button
             onClick={() => setIsDrawerOpen(true)}
-            className="flex items-center gap-2 px-6 py-4 bg-gradient-to-r from-[#388E3C] to-[#2E7D32] hover:from-[#4CAF50] hover:to-[#388E3C] text-white rounded-full shadow-2xl font-semibold transition-all hover:scale-105"
+            className="flex items-center gap-2 px-4 sm:px-6 py-3 sm:py-4 bg-gradient-to-r from-[#388E3C] to-[#2E7D32] hover:from-[#4CAF50] hover:to-[#388E3C] text-white rounded-full shadow-2xl font-semibold transition-all hover:scale-105 text-sm sm:text-base"
           >
-            <MessageSquare className="h-5 w-5" />
-            Ask a Question
+            <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5" />
+            <span className="hidden sm:inline">Ask a Question</span>
+            <span className="sm:hidden">Ask</span>
           </button>
         </div>
       )}
@@ -91,15 +94,16 @@ const ParticipantQnaView = ({
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-              className="fixed max-sm:w-full w-1/3 max-md:w-2/3 bottom-0 left-1/2 -translate-x-1/2 bg-[#1F1F1F] rounded-t-3xl shadow-2xl z-50 max-h-[80vh] overflow-hidden border-t border-[#2A2A2A]"
+              className="fixed w-full sm:w-2/3 md:w-1/2 lg:w-1/3 bottom-0 left-1/2 -translate-x-1/2 bg-[#1F1F1F] rounded-t-2xl sm:rounded-t-3xl shadow-2xl z-50 max-h-[85vh] sm:max-h-[80vh] overflow-hidden border-t border-[#2A2A2A]"
             >
-              <div className="p-6 space-y-4">
+              <div className="p-4 sm:p-6 space-y-3 sm:space-y-4">
                 {/* Header */}
                 <div className="flex items-center justify-between">
-                  <h3 className="text-xl font-semibold text-[#E0E0E0]">Ask Your Question</h3>
+                  <h3 className="text-lg sm:text-xl font-semibold text-[#E0E0E0]">Ask Your Question</h3>
                   <button
                     onClick={() => setIsDrawerOpen(false)}
-                    className="p-2 hover:bg-[#2A2A2A] rounded-full transition-colors"
+                    className="p-2 hover:bg-[#2A2A2A] rounded-full transition-colors touch-manipulation"
+                    aria-label="Close"
                   >
                     <X className="h-5 w-5 text-[#E0E0E0]" />
                   </button>
