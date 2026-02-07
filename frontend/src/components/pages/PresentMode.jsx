@@ -1376,6 +1376,7 @@ const PresentMode = () => {
       case '2x2_grid':
         return (
           <TwoByTwoGridPresenterView
+            slide={slide}
             gridResults={gridResults}
             totalResponses={totalResponses}
           />

@@ -40,13 +40,10 @@ const TwoByTwoGridPresenterView = ({
   
   const hasResponses = totalResponses > 0 && Array.isArray(gridResults) && gridResults.length > 0;
 
-  console.log("slide data", slide);
   const axisXLabel = useMemo(() => slide?.gridAxisXLabel || 'Horizontal', [slide?.gridAxisXLabel]);
   const axisYLabel = useMemo(() => slide?.gridAxisYLabel || 'Vertical', [slide?.gridAxisYLabel]);
 
   const axisRange = useMemo(() => {
-    console.log('Presenter slide data:', slide);
-    console.log('Axis range:', slide?.gridAxisRange);
     return {
       min: slide?.gridAxisRange?.min ?? 0,
       max: slide?.gridAxisRange?.max ?? 10
@@ -234,7 +231,7 @@ const TwoByTwoGridPresenterView = ({
             <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-[#E0E0E0] px-1">
               {typeof slide?.question === 'string' 
                 ? slide.question 
-                : (slide.question?.text || slide.question?.label || '2×2 Grid results')}
+                : (slide?.question?.text || slide?.question?.label || '2×2 Grid results')}
             </h2>
             <div className="flex items-center gap-2 rounded-full bg-[#1D2A20] border border-[#2E7D32]/30 px-3 sm:px-4 py-1.5 sm:py-2">
               <Users className="h-3 w-3 sm:h-4 sm:w-4 text-[#4CAF50]" />
